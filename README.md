@@ -3,6 +3,7 @@
 ### Developers:
 
 - Elizabeth Koning
+- Sam Tuit (sjt28)
 
 ## Vision Statement
 

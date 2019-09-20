@@ -2,7 +2,7 @@
 
 ### Developers:
 
-- Elizabeth Koning
+- Elizabeth Koning (kodingkoning)
 
 ## Vision Statement
 

@@ -3,6 +3,8 @@
 ### Developers:
 
 - Elizabeth Koning (kodingkoning)
+- Sam Tuit (sjt28)
+- Nathan Meyer
 
 ## Vision Statement
 

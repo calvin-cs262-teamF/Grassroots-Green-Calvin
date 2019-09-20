@@ -3,6 +3,7 @@
 ### Developers:
 
 - Elizabeth Koning
+- Nathan Meyer
 
 ## Vision Statement
 

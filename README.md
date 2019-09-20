@@ -5,6 +5,7 @@
 - Elizabeth Koning
 - Sam Tuit (sjt28)
 - Nathan Meyer
+- Mason VanMeurs
 
 
 ## Vision Statement

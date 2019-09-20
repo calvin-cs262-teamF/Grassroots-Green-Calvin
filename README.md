@@ -1,5 +1,9 @@
 # Grassroots Green @ Calvin University
 
+### Developers:
+
+- Elizabeth Koning
+
 ## Vision Statement
 
 As the app developers of Grassroots Green, we strive to provide an app that will:

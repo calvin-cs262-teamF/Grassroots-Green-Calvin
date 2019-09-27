@@ -25,3 +25,4 @@ We chose Flutter because it gives us the ability to code in one language for bot
 - Sam Tuit (sjt28)
 - Nathan Meyer
 - Mason VanMeurs
+- Lorrayya Williams (llw5)

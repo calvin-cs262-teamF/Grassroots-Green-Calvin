@@ -100,6 +100,29 @@ class _MyHomePageState extends State<MyHomePage> {
                 // ...
               },
             ),
+            ListTile(
+              title: Text('Item 3'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+            ListTile(
+              title: Text('Settings'),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context){
+                      return Scaffold(
+                        appBar: AppBar(
+                          title: Text('Settings'),
+                        ),
+                      );
+                    }
+                  )
+                );
+              },
+            ),
           ],
         )
       ),

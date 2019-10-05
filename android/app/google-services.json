@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "738847662918",
+    "firebase_url": "https://grassroots-green-f30d4.firebaseio.com",
+    "project_id": "grassroots-green-f30d4",
+    "storage_bucket": "grassroots-green-f30d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:738847662918:android:8a54ea20ec08ce491f3b47",
+        "android_client_info": {
+          "package_name": "erk24.cs262.calvin.edu.grassrootsGreen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "738847662918-8h2pu420it78pkhs09utk49p4spraonl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUnon_GwSZE-ofqkpRIQs-c9-IO9H1g-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "738847662918-8h2pu420it78pkhs09utk49p4spraonl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "738847662918-af9a16p0jbpjq7108h40vk04m8lms3k5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "erk24.cs262.calvin.edu.grassrootsGreen"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

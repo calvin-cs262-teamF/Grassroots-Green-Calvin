@@ -45,6 +45,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  String mealsPerDayValue = '3';
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -53,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -113,9 +116,54 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.of(context).push(
                   MaterialPageRoute<void>(
                     builder: (BuildContext context){
+                      // Returns Scaffold for the Settings Page
                       return Scaffold(
                         appBar: AppBar(
                           title: Text('Settings'),
+                        ),
+                        body: Container(
+                          //Column of Rows for each Text and Set Option Pair
+                          child: Column(
+                            children: [
+                              //Meals a Day
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Meals per Day:'
+                                  ),
+                                  //Dropdown for how many meals per day
+                                  DropdownButton<String>(
+                                    value: mealsPerDayValue,
+                                    icon: Icon(Icons.arrow_downward),
+                                      iconSize: 24,
+                                      elevation: 16,
+                                      style: TextStyle(
+                                        color: Colors.black
+                                    ),
+                                    underline: Container(
+                                      height: 2,
+                                      color: Colors.green,
+                                    ),
+                                    onChanged: (String newValue){
+                                      setState(() {
+                                        mealsPerDayValue = newValue;
+                                      });
+                                    },
+                                    items: <String>['1', '2', '3', '4', '5', '6']
+                                        .map<DropdownMenuItem<String>>((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    })
+                                        .toList(),
+                                  )
+                                ]
+                              ),
+                              //Default Meal Type
+                            ]
+                          )
                         ),
                       );
                     }

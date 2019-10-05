@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grassroots_green/settings.dart';
 
 void main() => runApp(MyApp());
 
@@ -7,6 +8,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      //This declares all routes
+      routes: <String, WidgetBuilder>{
+        //Route declared for settings route
+        Settings.routeName: (context) => Settings()
+      },
+
+      //When a route is generated, return the route to page,
+      // which is set to the settings route
+      onGenerateRoute: (RouteSettings settings) {
+        var page;
+        page = Settings();
+        return MaterialPageRoute(builder: (context) => page);
+      },
+
       title: 'Grassroots Green',
       theme: ThemeData(
         // This is the theme of your application.
@@ -26,6 +41,10 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+
+  //Routename sed for Navigation
+  //static const String routeName = "/";
+
   MyHomePage({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -44,8 +63,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-  String mealsPerDayValue = '3';
 
   @override
   Widget build(BuildContext context) {
@@ -113,62 +130,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: Text('Settings'),
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context){
-                      // Returns Scaffold for the Settings Page
-                      return Scaffold(
-                        appBar: AppBar(
-                          title: Text('Settings'),
-                        ),
-                        body: Container(
-                          //Column of Rows for each Text and Set Option Pair
-                          child: Column(
-                            children: [
-                              //Meals a Day
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Meals per Day:'
-                                  ),
-                                  //Dropdown for how many meals per day
-                                  DropdownButton<String>(
-                                    value: mealsPerDayValue,
-                                    icon: Icon(Icons.arrow_downward),
-                                      iconSize: 24,
-                                      elevation: 16,
-                                      style: TextStyle(
-                                        color: Colors.black
-                                    ),
-                                    underline: Container(
-                                      height: 2,
-                                      color: Colors.green,
-                                    ),
-                                    onChanged: (String newValue){
-                                      setState(() {
-                                        mealsPerDayValue = newValue;
-                                      });
-                                    },
-                                    items: <String>['1', '2', '3', '4', '5', '6']
-                                        .map<DropdownMenuItem<String>>((String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    })
-                                        .toList(),
-                                  )
-                                ]
-                              ),
-                              //Default Meal Type
-                            ]
-                          )
-                        ),
-                      );
-                    }
-                  )
-                );
+                //push the settings route to the Navigator
+                Navigator.pushNamed(context, Settings.routeName);
               },
             ),
           ],

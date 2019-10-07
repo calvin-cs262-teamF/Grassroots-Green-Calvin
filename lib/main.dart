@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grassroots_green/settings.dart';
 
 void main() => runApp(MyApp());
 
@@ -7,7 +8,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      //This declares all routes
+      routes: <String, WidgetBuilder>{
+        //Route declared for settings route
+        Settings.routeName: (context) => Settings()
+      },
+
+      //When a route is generated, return the route to page,
+      // which is set to the settings route
+      onGenerateRoute: (RouteSettings settings) {
+        var page;
+        page = Settings();
+        return MaterialPageRoute(builder: (context) => page);
+      },
+
+      title: 'Grassroots Green',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -26,6 +41,10 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+
+  //Routename sed for Navigation
+  //static const String routeName = "/";
+
   MyHomePage({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -44,18 +63,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,11 +72,70 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+      ),
+      drawer: Drawer(
+        // Now we add children to populate the Drawer
+
+        // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.green,
+              ),
+                child: Container(
+                    child: Column(
+                      children: <Widget>[
+                        Material(
+                          child: Image.asset('assets/Grassroots_Green_Logo_16x9.PNG')
+                        ),
+                        Text(
+                          'Users Name',
+                          style: TextStyle(color: Colors.white, fontSize: 30),
+                        ),
+                      ],
+                    )
+                )
+            ),
+            ListTile(
+              title: Text('Item 1'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+            ListTile(
+              title: Text('Item 2'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+            ListTile(
+              title: Text('Item 3'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+            ListTile(
+              title: Text('Settings'),
+              onTap: () {
+                //push the settings route to the Navigator
+                Navigator.pushNamed(context, Settings.routeName);
+              },
+            ),
+          ],
+        )
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -91,20 +157,8 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

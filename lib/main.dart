@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grassroots_green/settings.dart';
+import 'package:grassroots_green/goals.dart';
 
 void main() => runApp(MyApp());
 
@@ -35,7 +36,8 @@ class MyApp extends StatelessWidget {
         // is not restarted..
         primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: 'Welcome to Grassroots Green!'),
+      // home: MyHomePage(title: 'Welcome to Grassroots Green!'),
+      home: Goals(),
     );
   }
 }

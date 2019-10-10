@@ -16,12 +16,36 @@ class GoalsPage extends StatefulWidget {
 }
 
 class GoalsPageState extends State<GoalsPage> {
+  String _progress_image = 'assets/goal_progress/overall_prog.png';
+
+  void _vegetarian_prog() {
+    setState(() {
+      _progress_image = 'assets/goal_progress/vegetarian_prog.png';
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         children: <Widget>[
-          Image.asset('assets/goal_progress/overall_prog.png'),
+          Image.asset(_progress_image),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              RaisedButton(
+                onPressed: null,
+                child: Text('Overall')
+              ),
+              RaisedButton(
+                onPressed: _vegetarian_prog,
+                child: Text('Vegetarian')
+              ),
+              RaisedButton(
+                onPressed: null,
+                child: Text('Vegan')
+              ),
+            ],
+          )
         ],
       )
     );

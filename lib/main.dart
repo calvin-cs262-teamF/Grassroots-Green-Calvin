@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       // home: MyHomePage(title: 'Welcome to Grassroots Green!'),
-      home: Goals(),
+      home: MyHomePage(),
     );
   }
 }

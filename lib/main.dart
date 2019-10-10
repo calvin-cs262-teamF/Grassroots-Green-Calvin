@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grassroots_green/settings.dart';
+import 'package:grassroots_green/login.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,7 +12,8 @@ class MyApp extends StatelessWidget {
       //This declares all routes
       routes: <String, WidgetBuilder>{
         //Route declared for settings route
-        Settings.routeName: (context) => Settings()
+        Settings.routeName: (context) => Settings(),
+        Login.routeName: (context) => Login(),
       },
 
       //When a route is generated, return the route to page,
@@ -132,6 +134,12 @@ class _MyHomePageState extends State<MyHomePage> {
               onTap: () {
                 //push the settings route to the Navigator
                 Navigator.pushNamed(context, Settings.routeName);
+              },
+            ),
+            ListTile(
+              title: Text('Login'),
+              onTap: () {
+                Navigator.pushNamed(context, Login.routeName);
               },
             ),
           ],

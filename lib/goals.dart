@@ -18,13 +18,12 @@ class GoalsPage extends StatefulWidget {
 class GoalsPageState extends State<GoalsPage> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          child: Text("Hullo thar!")
-        ),
-      ],
+    return Center(
+      child: Column(
+        children: <Widget>[
+          Image.asset('assets/goal_progress/overall_prog.png'),
+        ],
+      )
     );
   }
 }

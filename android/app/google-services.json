@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:738847662918:android:8a54ea20ec08ce491f3b47",
         "android_client_info": {
-          "package_name": "erk24.cs262.calvin.edu.grassrootsGreen"
+          "package_name": "erk24.cs262.calvin.edu.grassroots_green"
         }
       },
       "oauth_client": [
@@ -35,7 +35,7 @@
               "client_id": "738847662918-af9a16p0jbpjq7108h40vk04m8lms3k5.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "erk24.cs262.calvin.edu.grassrootsGreen"
+                "bundle_id": "erk24.cs262.calvin.edu.grassroots_green"
               }
             }
           ]

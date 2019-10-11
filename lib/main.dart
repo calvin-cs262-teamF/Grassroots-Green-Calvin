@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grassroots_green/settings.dart';
 import 'package:grassroots_green/login.dart';
 import 'package:grassroots_green/goals.dart';
+import 'package:grassroots_green/auth.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,12 +10,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       //This declares all routes
       routes: <String, WidgetBuilder>{
         //Route declared for settings route
         Settings.routeName: (context) => Settings(),
-        Login.routeName: (context) => Login(),
+        Login.routeName: (context) => Login(auth: new Auth()),
       },
 
       //When a route is generated, return the route to page,

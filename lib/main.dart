@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
   static double _height = 2;
 
   //Default values for Drop Downs
-  String emptyDropDownValue = '3';
+  String emptyDropDownValue = 'Commons';
 
   void _SubmitForm() {
     //TODO: Add a submit here
@@ -173,7 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[ Text('Submit a Meal:', style: TextStyle(color: Colors.green, fontSize: 26, fontWeight: FontWeight.bold,)),
+          children: <Widget>[ Text('Record a Meal:', style: TextStyle(color: Colors.green, fontSize: 26, fontWeight: FontWeight.bold,)),
             Padding( padding: const EdgeInsets.all(10.0),
             child: Row( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
               Radio( value: 0, groupValue: _radioValue1, onChanged: _handleRadioValueChange1),
@@ -203,7 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         emptyDropDownValue = newValue;
                       });
                     },
-                    items: <String>['1', '2', '3']
+                    items: <String>['Commons', 'Knollcrest', 'Other']
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,

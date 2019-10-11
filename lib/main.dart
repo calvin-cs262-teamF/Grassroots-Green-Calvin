@@ -63,6 +63,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int _radioValue1 = -1;
+
+  void _handleRadioValueChange1(int value) {
+    setState(() {
+      _radioValue1 = value;
+    });}
+  static double _iconSize = 24;
+  static int _elevation = 16;
+  static double _height = 2;
+
+  //Default values for Drop Downs
+  String emptyDropDownValue = '3';
+
+  void _SubmitForm() {
+    //TODO: Add a submit here
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -156,10 +172,54 @@ class _MyHomePageState extends State<MyHomePage> {
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-          ],
-        ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+          children: <Widget>[ Text('Submit a Meal:', style: TextStyle(color: Colors.green, fontSize: 26, fontWeight: FontWeight.bold,)),
+            Padding( padding: const EdgeInsets.all(10.0),
+            child: Row( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              Radio( value: 0, groupValue: _radioValue1, onChanged: _handleRadioValueChange1),
+              Text('Vegetarian', style: TextStyle(fontSize: 16.0),),
+              Radio( value: 1, groupValue: _radioValue1, onChanged: _handleRadioValueChange1),
+              Text('Vegan', style: TextStyle(fontSize: 16.0),),
+              Radio( value: 2, groupValue: _radioValue1, onChanged: _handleRadioValueChange1),
+              Text('Neither', style: TextStyle(fontSize: 16.0),),
+            ],)),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Location:', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold,)),
+
+                  //Dropdown for the location the meal has been eaten
+                  DropdownButton<String>(
+                    value: emptyDropDownValue,
+                    icon: Icon(Icons.arrow_downward),
+                    iconSize: _iconSize,
+                    elevation: _elevation,
+                    underline: Container(
+                      height: _height,
+                      color: Colors.green,
+                    ),
+                    onChanged: (String newValue){
+                      setState(() {
+                        emptyDropDownValue = newValue;
+                      });
+                    },
+                    items: <String>['1', '2', '3']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    })
+                        .toList(),
+                  )
+                ]
+            ),
+            RaisedButton(
+              onPressed: () { _SubmitForm(); },
+              child: Text('Submit'),
+            )
+          ]
+      )
+    )
     );
+    }
   }
-}

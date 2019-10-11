@@ -1,22 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:grassroots_green/auth.dart';
+import 'package:email_validator/email_validator.dart';
 
 class Login extends StatelessWidget {
+  Login({this.auth});
+
   static const String routeName = "/login";
+  final BaseAuth auth;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Login')),
-      body: LoginStatefulWidget(),
+      body: LoginStatefulWidget(auth: auth),
     );
   }
 }
 
 class LoginStatefulWidget extends StatefulWidget {
-  LoginStatefulWidget({Key key}) : super(key: key);
+  LoginStatefulWidget({Key key, this.auth}) : super(key: key);
+
+  final BaseAuth auth;
 
   @override
   _LoginStatefulWidgetState createState() => _LoginStatefulWidgetState();
+
+  void onSignedIn() {
+    // TODO: define. Specifically, make it go back to home
+  }
 }
 
 enum FormMode { LOGIN, SIGNUP }
@@ -25,14 +36,18 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
 
   //Default values for Drop Downs
   final _formKey = GlobalKey<FormState>();
-  String _errorMessage = null;
+  String _errorMessage = "";
   FormMode _formMode = FormMode.LOGIN;
+  bool _isLoading = true;
+  bool _isIos;
+  String _email = "";
+  String _password = "";
 
 
   @override
   Widget build(BuildContext context) {
-    String _email = "";
-    String _password = "";
+
+    _isIos = Theme.of(context).platform == TargetPlatform.iOS;
 
     return Scaffold(
       body: Stack(
@@ -62,7 +77,7 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
                         color: Colors.grey,
                       )
                     ),
-                    validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
+                    validator: (value) => EmailValidator.validate(value) ? null : "Invalid email",
                     onSaved: (value) => _email = value.trim(),
                   )
                 ),
@@ -80,10 +95,11 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
                         color: Colors.grey,
                       )
                     ),
-                    validator: (value) => value.isEmpty ? "Password can\'t be empty" : null,
+                    validator: (value) => value.isEmpty || value.length < 6 ? "Password must be at least 6 characters" : null,
                     onSaved: (value) => _password = value.trim(),
                   )
                 ),
+                _showErrorMessage(),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                   child: new MaterialButton(
@@ -128,7 +144,62 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
     });
   }
 
-  void _validateAndSubmit() async {
-    // TODO: implement interaction with Firebase
+  _validateAndSubmit() async {
+    setState(() {
+      _errorMessage = "";
+      _isLoading = true;
+    });
+    if (_validateAndSave()) {
+      String userId = "";
+      try {
+        if (_formMode == FormMode.LOGIN) {
+          print("MESSAGE 0)");
+          userId = await widget.auth.signIn(_email, _password);
+          print('Signed in: $userId');
+        } else {
+          userId = await widget.auth.signUp(_email, _password);
+          print('Signed up user: $userId');
+        }
+        if (userId.length > 0 && userId != null) {
+          widget.onSignedIn();
+        }
+      } catch (e) {
+        print('Error: $e');
+        setState(() {
+          _isLoading = false;
+          if (_isIos) {
+            _errorMessage = e.details;
+          } else
+            _errorMessage = e.message;
+        });
+      }
+    }
+  }
+
+  // Check if form is valid before perform login or signup
+  bool _validateAndSave() {
+    final form = _formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
+  }
+
+  Widget _showErrorMessage() {
+    if (_errorMessage.length > 0 && _errorMessage != null) {
+      return new Text(
+        _errorMessage,
+        style: TextStyle(
+            fontSize: 13.0,
+            color: Colors.red,
+            height: 1.0,
+            fontWeight: FontWeight.w300),
+      );
+    } else {
+      return new Container(
+        height: 0.0,
+      );
+    }
   }
 }

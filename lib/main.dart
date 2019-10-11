@@ -2,20 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:grassroots_green/settings.dart';
 import 'package:grassroots_green/login.dart';
 import 'package:grassroots_green/goals.dart';
+import 'package:grassroots_green/auth.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+
+  final BaseAuth auth = new Auth();
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       //This declares all routes
       routes: <String, WidgetBuilder>{
         //Route declared for settings route
         Settings.routeName: (context) => Settings(),
-        Login.routeName: (context) => Login(),
         Goals.routeName: (context) => Goals(),
+        Login.routeName: (context) => Login(auth: auth),
       },
 
       //When a route is generated, return the route to page,
@@ -40,7 +45,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       // home: MyHomePage(title: 'Welcome to Grassroots Green!'),
-      home: MyHomePage(),
+      home: MyHomePage(auth: auth),
     );
   }
 }
@@ -50,7 +55,7 @@ class MyHomePage extends StatefulWidget {
   //Routename sed for Navigation
   //static const String routeName = "/";
 
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key key, this.title, this.auth}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -62,9 +67,10 @@ class MyHomePage extends StatefulWidget {
   // always marked "final".
 
   final String title;
+  final BaseAuth auth;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState(auth: auth);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -79,14 +85,19 @@ class _MyHomePageState extends State<MyHomePage> {
   static double _height = 2;
 
   //Default values for Drop Downs
-  String emptyDropDownValue = '3';
+  String emptyDropDownValue = 'Commons';
 
   void _SubmitForm() {
     //TODO: Add a submit here
   }
 
+  _MyHomePageState({this.auth});
+
+  final BaseAuth auth;
+
   @override
   Widget build(BuildContext context) {
+
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -122,9 +133,22 @@ class _MyHomePageState extends State<MyHomePage> {
                         Material(
                           child: Image.asset('assets/Grassroots_Green_Logo_16x9.PNG')
                         ),
-                        Text(
-                          'Users Name',
-                          style: TextStyle(color: Colors.white, fontSize: 30),
+                        new FutureBuilder<String>(
+                          future: auth.getUserName(), // a Future<String> or null
+                          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.none: return new Text('Press button to start');
+                              case ConnectionState.waiting: return new Text('Awaiting result...');
+                              default:
+                                if (snapshot.hasError)
+                                  return new Text('Error: ${snapshot.error}', style: TextStyle(color: Colors.white, fontSize: 30),);
+                                else if (snapshot.data == null || snapshot.data == "")
+                                  return new Text('User', style: TextStyle(color: Colors.white, fontSize: 30),);
+                                else
+                                  return new Text('${snapshot.data}', style: TextStyle(color: Colors.white, fontSize: 30),);
+                            }
+                          },
+
                         ),
                       ],
                     )
@@ -171,7 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[ Text('Submit a Meal:', style: TextStyle(color: Colors.green, fontSize: 26, fontWeight: FontWeight.bold,)),
+          children: <Widget>[ Text('Record a Meal:', style: TextStyle(color: Colors.green, fontSize: 26, fontWeight: FontWeight.bold,)),
             Padding( padding: const EdgeInsets.all(10.0),
             child: Row( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
               Radio( value: 0, groupValue: _radioValue1, onChanged: _handleRadioValueChange1),
@@ -201,7 +225,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         emptyDropDownValue = newValue;
                       });
                     },
-                    items: <String>['1', '2', '3']
+                    items: <String>['Commons', 'Knollcrest', 'Other']
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,

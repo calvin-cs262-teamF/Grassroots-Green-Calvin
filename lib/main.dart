@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
         //Route declared for settings route
         Settings.routeName: (context) => Settings(),
         Login.routeName: (context) => Login(),
+        Goals.routeName: (context) => Goals(),
       },
 
       //When a route is generated, return the route to page,
@@ -122,10 +123,11 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: Text('Goal Progress'),
               onTap: () {
-                Navigator.of(context).pop();
-                Navigator.push(context, new MaterialPageRoute(
-                  builder: (BuildContext context) => new GoalsPage())
-                );
+                Navigator.pushNamed(context, Goals.routeName);
+                // Navigator.of(context).pop();
+                // Navigator.push(context, new MaterialPageRoute(
+                //   builder: (BuildContext context) => new GoalsPage())
+                // );
               },
             ),
             ListTile(

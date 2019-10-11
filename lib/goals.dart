@@ -12,21 +12,21 @@ class GoalsPageState extends State<GoalsPage> {
   String _chartImage = 'assets/goal_progress/overall_chart.png';
   String _scope = 'Overall';
 
-  void _setOverallProg() {
+  void _setOverall() {
     setState(() {
       _progressImage = 'assets/goal_progress/overall_prog.png';
       _chartImage = 'assets/goal_progress/overall_chart.png';
       _scope = 'Overall';
     });
   }
-  void _setVegetarianProg() {
+  void _setVegetarian() {
     setState(() {
       _progressImage = 'assets/goal_progress/vegetarian_prog.png';
       _chartImage = 'assets/goal_progress/vegetarian_chart.png';
       _scope = 'Vegetarian';
     });
   }
-  void _setVeganProg() {
+  void _setVegan() {
     setState(() {
       _progressImage = 'assets/goal_progress/vegan_prog.png';
       _chartImage = 'assets/goal_progress/vegan_chart.png';
@@ -78,15 +78,15 @@ class GoalsPageState extends State<GoalsPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 RaisedButton(
-                  onPressed: _setOverallProg,
+                  onPressed: _setOverall,
                   child: Text('Overall')
                 ),
                 RaisedButton(
-                  onPressed: _setVegetarianProg,
+                  onPressed: _setVegetarian,
                   child: Text('Vegetarian')
                 ),
                 RaisedButton(
-                  onPressed: _setVeganProg,
+                  onPressed: _setVegan,
                   child: Text('Vegan')
                 ),
               ],

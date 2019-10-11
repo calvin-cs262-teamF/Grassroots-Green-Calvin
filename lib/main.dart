@@ -123,10 +123,12 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title: Text('Item 3'),
+              title: Text('Goal Progress'),
               onTap: () {
-                // Update the state of the app.
-                // ...
+                Navigator.of(context).pop();
+                Navigator.push(context, new MaterialPageRoute(
+                  builder: (BuildContext context) => new GoalsPage())
+                );
               },
             ),
             ListTile(

@@ -2,16 +2,6 @@
 
 import 'package:flutter/material.dart';
 
-class Goals extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text('Your Weekly Goal')),
-        body: GoalsPage(),
-    );
-  }
-}
-
 class GoalsPage extends StatefulWidget {
   @override
   GoalsPageState createState() => GoalsPageState();

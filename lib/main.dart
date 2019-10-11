@@ -142,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // Center is a layout widget. It takes a single child and positions it
     // in the middle of the parent.
       padding: new EdgeInsets.all(0),
-      height:180,
+      height:190,
       child: Column(
     // Column is also a layout widget. It takes a list of children and
     // arranges them vertically. By default, it sizes itself to fit its
@@ -158,37 +158,39 @@ class _MyHomePageState extends State<MyHomePage> {
     // center the children vertically; the main axis here is the vertical
     // axis because Columns are vertical (the cross axis would be
     // horizontal).
+        //padding: EdgeInsets.all(10),
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+       // crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
       new Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
         new FlatButton(
-        padding: const EdgeInsets.all(46),
+        padding: const EdgeInsets.all(20),
         textColor: Colors.white,
         color: Colors.green,
         onPressed: (){},
-        child: new Text("LEARN",
-        style: TextStyle(fontSize: 20)),
+        child: new Text("  EAT  ",
+        style: TextStyle(fontSize: 25)),
         ),
         new FlatButton(
         onPressed: () {},
         textColor: Colors.white,
         color: Colors.green,
-        padding: const EdgeInsets.all(46),
+        padding: const EdgeInsets.all(20),
         child: new Text(
-        "EAT",
-        //style: new TextStyle(fontSize: 15),
+        " LEARN   ",
+        style: TextStyle(fontSize: 25)
         ),
         ),
         new FlatButton(
         onPressed: () {},
         textColor: Colors.white,
         color: Colors.green,
-        padding: const EdgeInsets.all(46),
-        child:new Text("COMPETE"),
+        padding: const EdgeInsets.all(20),
+        child:new Text("COMPETE",
+        style: TextStyle(fontSize:25 )),
     )
     ],
     ),
@@ -201,8 +203,9 @@ class _MyHomePageState extends State<MyHomePage> {
     new RaisedButton(onPressed: () {},
     textColor: Colors.white,
     color: Colors.green,
-    padding: const EdgeInsets.all(25),
-    child:new Text("RECORD MEAL"))
+    padding: const EdgeInsets.all(20),
+    child:new Text("RECORD MEAL",
+    style: TextStyle(fontSize:30)))
     ],
     )
     ]

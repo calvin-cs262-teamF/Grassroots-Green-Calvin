@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         //Route declared for settings route
         Settings.routeName: (context) => Settings(),
+        Goals.routeName: (context) => Goals(),
         Login.routeName: (context) => Login(auth: auth),
       },
 
@@ -162,10 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: Text('Goal Progress'),
               onTap: () {
-                Navigator.of(context).pop();
-                Navigator.push(context, new MaterialPageRoute(
-                  builder: (BuildContext context) => new GoalsPage())
-                );
+                Navigator.pushNamed(context, Goals.routeName);
               },
             ),
             ListTile(

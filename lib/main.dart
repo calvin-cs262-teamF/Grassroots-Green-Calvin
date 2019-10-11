@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text('Grassroots Green'),
       ),
       drawer: Drawer(
         // Now we add children to populate the Drawer
@@ -123,6 +123,10 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
+              // title: Text('Item 3'),
+              // onTap: () {
+
+              // },
               title: Text('Goal Progress'),
               onTap: () {
                 Navigator.of(context).pop();

@@ -12,7 +12,7 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Login')),
-      body: LoginStatefulWidget(),
+      body: LoginStatefulWidget(auth: auth),
     );
   }
 }
@@ -153,6 +153,7 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
       String userId = "";
       try {
         if (_formMode == FormMode.LOGIN) {
+          print("MESSAGE 0)");
           userId = await widget.auth.signIn(_email, _password);
           print('Signed in: $userId');
         } else {

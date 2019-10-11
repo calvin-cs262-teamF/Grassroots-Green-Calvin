@@ -114,17 +114,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
             ),
             ListTile(
-              title: Text('Item 1'),
+              title: Text('Login'),
               onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-            ListTile(
-              title: Text('Item 2'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
+                Navigator.pushNamed(context, Login.routeName);
               },
             ),
             ListTile(
@@ -141,12 +133,6 @@ class _MyHomePageState extends State<MyHomePage> {
               onTap: () {
                 //push the settings route to the Navigator
                 Navigator.pushNamed(context, Settings.routeName);
-              },
-            ),
-            ListTile(
-              title: Text('Login'),
-              onTap: () {
-                Navigator.pushNamed(context, Login.routeName);
               },
             ),
           ],

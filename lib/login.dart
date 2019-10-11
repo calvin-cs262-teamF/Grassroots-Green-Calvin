@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
 
 class Login extends StatelessWidget {
   static const String routeName = "/login";
@@ -24,11 +23,6 @@ enum FormMode { LOGIN, SIGNUP }
 
 class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
 
-  //Static parameters for Drop Downs
-  static double _iconSize = 24;
-  static int _elevation = 16;
-  static double _height = 2;
-
   //Default values for Drop Downs
   final _formKey = GlobalKey<FormState>();
   String _errorMessage = null;
@@ -48,11 +42,10 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
           // UI inspired by: https://medium.com/flutterpub/flutter-how-to-do-user-login-with-firebase-a6af760b14d5
           new Form(
             key: _formKey,
-           child: new Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+           child: new ListView(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0.0),
+                  padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
                     child: Image.asset('assets/Grassroots_Green_Logo_16x9.PNG')
                 ),
                 //Email input
@@ -75,7 +68,7 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
                 ),
                 //Password Input
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+                  padding: const EdgeInsets.fromLTRB(10.0, 15.0, 0.0, 20.0),
                   child: new TextFormField(
                     maxLines: 1,
                     obscureText: true,
@@ -92,7 +85,7 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
                   )
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                  padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                   child: new MaterialButton(
                     elevation: 5.0,
                     minWidth: 200.0,
@@ -104,7 +97,7 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
                   )
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                  padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 100.0),
                   child: new FlatButton(
                       child: _formMode == FormMode.LOGIN ? new Text('Create an account', style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300))
                           : new Text('Have an account? Sign in', style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),

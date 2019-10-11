@@ -140,10 +140,6 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text('Goal Progress'),
               onTap: () {
                 Navigator.pushNamed(context, Goals.routeName);
-                // Navigator.of(context).pop();
-                // Navigator.push(context, new MaterialPageRoute(
-                //   builder: (BuildContext context) => new GoalsPage())
-                // );
               },
             ),
             ListTile(

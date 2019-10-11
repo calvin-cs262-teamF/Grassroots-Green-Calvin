@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grassroots_green/settings.dart';
 import 'package:grassroots_green/login.dart';
+import 'package:grassroots_green/goals.dart';
 
 void main() => runApp(MyApp());
 
@@ -37,7 +38,8 @@ class MyApp extends StatelessWidget {
         // is not restarted..
         primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: 'Welcome to Grassroots Green!'),
+      // home: MyHomePage(title: 'Welcome to Grassroots Green!'),
+      home: MyHomePage(),
     );
   }
 }
@@ -79,7 +81,10 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        
+        // widget.title resulted in errors on compile for some reason, so
+        // title is hardcoded for now
+        title: Text('Grassroots Green'),
       ),
       drawer: Drawer(
         // Now we add children to populate the Drawer
@@ -123,10 +128,12 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title: Text('Item 3'),
+              title: Text('Goal Progress'),
               onTap: () {
-                // Update the state of the app.
-                // ...
+                Navigator.of(context).pop();
+                Navigator.push(context, new MaterialPageRoute(
+                  builder: (BuildContext context) => new GoalsPage())
+                );
               },
             ),
             ListTile(

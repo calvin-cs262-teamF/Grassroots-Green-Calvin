@@ -138,29 +138,75 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         )
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-          ],
+    body: Container(
+    // Center is a layout widget. It takes a single child and positions it
+    // in the middle of the parent.
+      padding: new EdgeInsets.all(0),
+      height:180,
+      child: Column(
+    // Column is also a layout widget. It takes a list of children and
+    // arranges them vertically. By default, it sizes itself to fit its
+    // children horizontally, and tries to be as tall as its parent.
+    //
+    // Invoke "debug painting" (press "p" in the console, choose the
+    // "Toggle Debug Paint" action from the Flutter Inspector in Android
+    // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+    // to see the wireframe for each widget.
+    //
+    // Column has various properties to control how it sizes itself and
+    // how it positions its children. Here we use mainAxisAlignment to
+    // center the children vertically; the main axis here is the vertical
+    // axis because Columns are vertical (the cross axis would be
+    // horizontal).
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+      new Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+        new FlatButton(
+        padding: const EdgeInsets.all(46),
+        textColor: Colors.white,
+        color: Colors.green,
+        onPressed: (){},
+        child: new Text("LEARN",
+        style: TextStyle(fontSize: 20)),
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        new FlatButton(
+        onPressed: () {},
+        textColor: Colors.white,
+        color: Colors.green,
+        padding: const EdgeInsets.all(46),
+        child: new Text(
+        "EAT",
+        //style: new TextStyle(fontSize: 15),
+        ),
+        ),
+        new FlatButton(
+        onPressed: () {},
+        textColor: Colors.white,
+        color: Colors.green,
+        padding: const EdgeInsets.all(46),
+        child:new Text("COMPETE"),
+    )
+    ],
+    ),
+
+    //This is the button to record a meal
+    new Row(
+    crossAxisAlignment: CrossAxisAlignment.end,
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+    new RaisedButton(onPressed: () {},
+    textColor: Colors.white,
+    color: Colors.green,
+    padding: const EdgeInsets.all(25),
+    child:new Text("RECORD MEAL"))
+    ],
+    )
+    ]
+    ),// This trailing comma makes auto-formatting nicer for build methods.
+    ));
   }
 }

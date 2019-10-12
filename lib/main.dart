@@ -197,13 +197,13 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[ Text('Record a Meal:', style: TextStyle(color: Colors.green, fontSize: 26, fontWeight: FontWeight.bold,)),
             Padding( padding: const EdgeInsets.all(10.0),
-            child: Row( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-              Radio( value: 0, groupValue: _radioValue1, onChanged: _handleRadioValueChange1),
-              Text('Vegetarian', style: TextStyle(fontSize: 16.0),),
-              Radio( value: 1, groupValue: _radioValue1, onChanged: _handleRadioValueChange1),
-              Text('Vegan', style: TextStyle(fontSize: 16.0),),
-              Radio( value: 2, groupValue: _radioValue1, onChanged: _handleRadioValueChange1),
-              Text('Neither', style: TextStyle(fontSize: 16.0),),
+              child: Row( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+                Radio( value: 0, groupValue: _radioValue1, onChanged: _handleRadioValueChange1),
+                Text('Vegetarian', style: TextStyle(fontSize: 16.0),),
+                Radio( value: 1, groupValue: _radioValue1, onChanged: _handleRadioValueChange1),
+                Text('Vegan', style: TextStyle(fontSize: 16.0),),
+                Radio( value: 2, groupValue: _radioValue1, onChanged: _handleRadioValueChange1),
+                Text('Neither', style: TextStyle(fontSize: 16.0),),
             ],)),
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

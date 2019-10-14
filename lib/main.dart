@@ -7,13 +7,11 @@ import 'package:grassroots_green/auth.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-
   final BaseAuth auth = new Auth();
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       //This declares all routes
       routes: <String, WidgetBuilder>{
@@ -51,7 +49,6 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-
   //Routename sed for Navigation
   //static const String routeName = "/";
 
@@ -79,7 +76,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void _handleRadioValueChange1(int value) {
     setState(() {
       _radioValue1 = value;
-    });}
+    });
+  }
+
   static double _iconSize = 24;
   static int _elevation = 16;
   static double _height = 2;
@@ -97,7 +96,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -106,54 +104,68 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
 
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        
-        // widget.title resulted in errors on compile for some reason, so
-        // title is hardcoded for now
-        title: Text('Grassroots Green'),
-      ),
-      drawer: Drawer(
-        // Now we add children to populate the Drawer
+        appBar: AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
 
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
-        child: ListView(
+          // widget.title resulted in errors on compile for some reason, so
+          // title is hardcoded for now
+          title: Text('Grassroots Green'),
+        ),
+        drawer: Drawer(
+            // Now we add children to populate the Drawer
+
+            // Add a ListView to the drawer. This ensures the user can scroll
+            // through the options in the drawer if there isn't enough vertical
+            // space to fit everything.
+            child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.green,
-              ),
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                ),
                 child: Container(
                     child: Column(
-                      children: <Widget>[
-                        Material(
-                          child: Image.asset('assets/Grassroots_Green_Logo_16x9.PNG')
-                        ),
-                        new FutureBuilder<String>(
-                          future: auth.getUserName(), // a Future<String> or null
-                          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                            switch (snapshot.connectionState) {
-                              case ConnectionState.none: return new Text('Press button to start');
-                              case ConnectionState.waiting: return new Text('Awaiting result...');
-                              default:
-                                if (snapshot.hasError)
-                                  return new Text('Error: ${snapshot.error}', style: TextStyle(color: Colors.white, fontSize: 30),);
-                                else if (snapshot.data == null || snapshot.data == "")
-                                  return new Text('User', style: TextStyle(color: Colors.white, fontSize: 30),);
-                                else
-                                  return new Text('${snapshot.data}', style: TextStyle(color: Colors.white, fontSize: 30),);
-                            }
-                          },
-
-                        ),
-                      ],
-                    )
-                )
-            ),
+                  children: <Widget>[
+                    Material(
+                        child: Image.asset(
+                            'assets/Grassroots_Green_Logo_16x9.PNG')),
+                    new FutureBuilder<String>(
+                      future: auth.getUserName(),
+                      // a Future<String> or null
+                      builder: (BuildContext context,
+                          AsyncSnapshot<String> snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return new Text('Press button to start');
+                          case ConnectionState.waiting:
+                            return new Text('Awaiting result...');
+                          default:
+                            if (snapshot.hasError)
+                              return new Text(
+                                'Error: ${snapshot.error}',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 30),
+                              );
+                            else if (snapshot.data == null ||
+                                snapshot.data == "")
+                              return new Text(
+                                'User',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 30),
+                              );
+                            else
+                              return new Text(
+                                '${snapshot.data}',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 30),
+                              );
+                        }
+                      },
+                    ),
+                  ],
+                ))),
             ListTile(
               title: Text('Login'),
               onTap: () {
@@ -174,75 +186,115 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
           ],
-        )
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[ Text('Record a Meal:', style: TextStyle(color: Colors.green, fontSize: 26, fontWeight: FontWeight.bold,)),
-            Padding( padding: const EdgeInsets.all(10.0),
-              child: Row( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-                Radio( value: 0, groupValue: _radioValue1, onChanged: _handleRadioValueChange1),
-                Text('Vegetarian', style: TextStyle(fontSize: 16.0),),
-                Radio( value: 1, groupValue: _radioValue1, onChanged: _handleRadioValueChange1),
-                Text('Vegan', style: TextStyle(fontSize: 16.0),),
-                Radio( value: 2, groupValue: _radioValue1, onChanged: _handleRadioValueChange1),
-                Text('Neither', style: TextStyle(fontSize: 16.0),),
-            ],)),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Location:', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold,)),
+        )),
+        body: Center(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  new Row(
+                    children: <Widget>[
+                      new FlatButton(
+                        padding: const EdgeInsets.all(20),
+                        textColor: Colors.white,
+                        color: Colors.green,
+                        onPressed: (){},
+                        child: new Text("  EAT  ",
+                            style: TextStyle(fontSize: 25)),
+                      ),
+                      new FlatButton(
+                        onPressed: () {},
+                        textColor: Colors.white,
+                        color: Colors.green,
+                        padding: const EdgeInsets.all(20),
+                        child: new Text(
+                            " LEARN   ",
+                            style: TextStyle(fontSize: 25)
+                        ),
+                      ),
+                      new FlatButton(
+                        onPressed: () {},
+                        textColor: Colors.white,
+                        color: Colors.green,
+                        padding: const EdgeInsets.all(20),
+                        child:new Text("COMPETE",
+                            style: TextStyle(fontSize:25 )),
+                      )
+                    ],
+                  ),
+              Text('Record a Meal:',
+                  style: TextStyle(
+                    color: Colors.green,
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                  )),
+              Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Radio(
+                          value: 0,
+                          groupValue: _radioValue1,
+                          onChanged: _handleRadioValueChange1),
+                      Text(
+                        'Vegetarian',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                      Radio(
+                          value: 1,
+                          groupValue: _radioValue1,
+                          onChanged: _handleRadioValueChange1),
+                      Text(
+                        'Vegan',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                      Radio(
+                          value: 2,
+                          groupValue: _radioValue1,
+                          onChanged: _handleRadioValueChange1),
+                      Text(
+                        'Neither',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                    ],
+                  )),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Text('Location:',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    )),
 
-                  //Dropdown for the location the meal has been eaten
-                  DropdownButton<String>(
-                    value: emptyDropDownValue,
-                    icon: Icon(Icons.arrow_downward),
-                    iconSize: _iconSize,
-                    elevation: _elevation,
-                    underline: Container(
-                      height: _height,
-                      color: Colors.green,
-                    ),
-                    onChanged: (String newValue){
-                      setState(() {
-                        emptyDropDownValue = newValue;
-                      });
-                    },
-                    items: <String>['Commons', 'Knollcrest', 'Other']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    })
-                        .toList(),
-                  )
-                ]
-            ),
-            RaisedButton(
-              onPressed: () { _SubmitForm(); },
-              child: Text('Submit'),
-            )
-          ]
-      )
-    )
-    );
-    }
+                //Dropdown for the location the meal has been eaten
+                DropdownButton<String>(
+                  value: emptyDropDownValue,
+                  icon: Icon(Icons.arrow_downward),
+                  iconSize: _iconSize,
+                  elevation: _elevation,
+                  underline: Container(
+                    height: _height,
+                    color: Colors.green,
+                  ),
+                  onChanged: (String newValue) {
+                    setState(() {
+                      emptyDropDownValue = newValue;
+                    });
+                  },
+                  items: <String>['Commons', 'Knollcrest', 'Other']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                )
+              ]),
+              RaisedButton(
+                onPressed: () {
+                  _SubmitForm();
+                },
+                child: Text('Submit'),
+              )
+            ])));
   }
+}

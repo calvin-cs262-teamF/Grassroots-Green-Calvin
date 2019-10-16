@@ -3,6 +3,8 @@ import 'package:grassroots_green/settings.dart';
 import 'package:grassroots_green/login.dart';
 import 'package:grassroots_green/goals.dart';
 import 'package:grassroots_green/auth.dart';
+import 'package:grassroots_green/learn.dart';
+import 'package:grassroots_green/eat.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,6 +21,8 @@ class MyApp extends StatelessWidget {
         Settings.routeName: (context) => Settings(),
         Goals.routeName: (context) => Goals(),
         Login.routeName: (context) => Login(auth: auth),
+        Learn.routeName: (context) => Learn(),
+        Eat.routeName: (context) => Eat()
       },
 
       //When a route is generated, return the route to page,
@@ -128,9 +132,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Container(
                     child: Column(
                   children: <Widget>[
-                    Material(
+                    FittedBox(
                         child: Image.asset(
-                            'assets/Grassroots_Green_Logo_16x9.PNG')),
+                            'assets/Grassroots_Green_Logo_16x9.PNG',
+                        )
+                    ),
                     new FutureBuilder<String>(
                       future: auth.getUserName(),
                       // a Future<String> or null
@@ -193,33 +199,45 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: <Widget>[
                   new Row(
                     children: <Widget>[
-                      new FlatButton(
+                      Expanded(
+                      child: FlatButton(
+
                         padding: const EdgeInsets.all(20),
                         textColor: Colors.white,
                         color: Colors.green,
-                        onPressed: (){},
-                        child: new Text("  EAT  ",
+                        onPressed: (){
+                          Navigator.pushNamed(context, Eat.routeName);
+                        },
+                        child: new Text("EAT",
                             style: TextStyle(fontSize: 25)),
-                      ),
-                      new FlatButton(
-                        onPressed: () {},
+                      )),
+                      Expanded(
+                      child: FlatButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, Learn.routeName);
+                        },
                         textColor: Colors.white,
                         color: Colors.green,
                         padding: const EdgeInsets.all(20),
                         child: new Text(
-                            " LEARN   ",
+                            "LEARN",
                             style: TextStyle(fontSize: 25)
                         ),
+                      )
                       ),
-                      new FlatButton(
-                        onPressed: () {},
+                      Expanded(
+                       child: FlatButton(
+                        onPressed: () {
+
+                          Navigator.pushNamed(context, Goals.routeName);
+                        },
                         textColor: Colors.white,
                         color: Colors.green,
                         padding: const EdgeInsets.all(20),
-                        child:new Text("COMPETE",
-                            style: TextStyle(fontSize:25 )),
+                        child:new Text("TRACK",
+                            style: TextStyle(fontSize:25)),
                       )
-                    ],
+                      ),],
                   ),
               Text('Record a Meal:',
                   style: TextStyle(

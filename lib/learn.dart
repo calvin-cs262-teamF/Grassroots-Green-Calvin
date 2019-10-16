@@ -26,10 +26,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-
+      body: Column(
+        children: <Widget>[
+      Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+      new Text(" Here you can find information about Vegan and Vegitaran \n Eating and its environmental impact. \nGrassroots Green Maintains this site."),
+  ],
       )
-    );
+    ]));
   }
 }
 

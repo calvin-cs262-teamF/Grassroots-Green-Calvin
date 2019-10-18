@@ -121,74 +121,74 @@ class _MyHomePageState extends State<MyHomePage> {
             // through the options in the drawer if there isn't enough vertical
             // space to fit everything.
             child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                ),
-                child: Container(
-                    child: Column(
-                      children: <Widget>[
-                    Material(
-                        child: Image.asset(
-                            'assets/Grassroots_Green_Logo_16x9.PNG')),
-                    new FutureBuilder<String>(
-                      future: auth.getUserName(),
-                      // a Future<String> or null
-                      builder: (BuildContext context,
-                          AsyncSnapshot<String> snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.none:
-                            return new Text('Press button to start');
-                          case ConnectionState.waiting:
-                            return new Text('Awaiting result...');
-                          default:
-                            if (snapshot.hasError)
-                              return new Text(
-                                'Error: ${snapshot.error}',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 30),
-                              );
-                            else if (snapshot.data == null ||
-                                snapshot.data == "")
-                              return new Text(
-                                'User',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 30),
-                              );
-                            else
-                              return new Text(
-                                '${snapshot.data}',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 30),
-                              );
-                        }
-                      },
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Colors.green,
                     ),
-                  ],
-                ))),
-            ListTile(
-              title: Text('Login'),
-              onTap: () {
-                Navigator.pushNamed(context, Login.routeName);
-              },
-            ),
-            ListTile(
-              title: Text('Goal Progress'),
-              onTap: () {
-                Navigator.pushNamed(context, Goals.routeName);
-              },
-            ),
-            ListTile(
-              title: Text('Settings'),
-              onTap: () {
-                //push the settings route to the Navigator
-                Navigator.pushNamed(context, Settings.routeName);
-              },
-            ),
-          ],
-        )),
+                    child: Container(
+                        child: Column(
+                          children: <Widget>[
+                            Material(
+                                child: Image.asset(
+                                    'assets/Grassroots_Green_Logo_16x9.PNG')),
+                            new FutureBuilder<String>(
+                              future: auth.getUserName(),
+                              // a Future<String> or null
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<String> snapshot) {
+                                switch (snapshot.connectionState) {
+                                  case ConnectionState.none:
+                                    return new Text('Press button to start');
+                                  case ConnectionState.waiting:
+                                    return new Text('Awaiting result...');
+                                  default:
+                                    if (snapshot.hasError)
+                                      return new Text(
+                                        'Error: ${snapshot.error}',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 30),
+                                      );
+                                    else if (snapshot.data == null ||
+                                        snapshot.data == "")
+                                      return new Text(
+                                        'User',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 30),
+                                      );
+                                    else
+                                      return new Text(
+                                        '${snapshot.data}',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 30),
+                                      );
+                                }
+                              },
+                            ),
+                          ],
+                        ))),
+                ListTile(
+                  title: Text('Login'),
+                  onTap: () {
+                    Navigator.pushNamed(context, Login.routeName);
+                  },
+                ),
+                ListTile(
+                  title: Text('Goal Progress'),
+                  onTap: () {
+                    Navigator.pushNamed(context, Goals.routeName);
+                  },
+                ),
+                ListTile(
+                  title: Text('Settings'),
+                  onTap: () {
+                    //push the settings route to the Navigator
+                    Navigator.pushNamed(context, Settings.routeName);
+                  },
+                ),
+              ],
+            )),
         body: Center(
             child: Column(
                 children: <Widget>[

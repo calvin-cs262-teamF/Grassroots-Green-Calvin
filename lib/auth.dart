@@ -16,6 +16,8 @@ class Auth implements BaseAuth {
 
   Future<String> signIn(String email, String password) async {
     FirebaseUser user = (await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password)).user;
+    // TODO: only save email if it hasn't been set before (although this does work correctly)
+    Firestore.instance.collection('users').document(user.uid).updateData({'email': email});
     return user.uid;
   }
 

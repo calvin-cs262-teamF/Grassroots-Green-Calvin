@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       //This declares all routes
       routes: <String, WidgetBuilder>{
         //Route declared for settings route
-        Settings.routeName: (context) => Settings(),
+        Settings.routeName: (context) => Settings(auth:auth),
         Goals.routeName: (context) => Goals(),
         Login.routeName: (context) => Login(auth: auth),
       },
@@ -72,11 +72,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _radioValue1 = "NULL";
+  String _mealType = "NULL"; // TODO: set to user's default
 
   void _handleRadioValueChange1(String value) {
     setState(() {
-      _radioValue1 = value;
+      _mealType = value;
     });
   }
 
@@ -85,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
   static double _height = 2;
 
   //Default values for Drop Downs
-  String _emptyDropDownValue = 'Commons';
+  String _mealLocation = 'Commons';
 
   //Default Home page option set to EAT
   String _mainMenuOptions;
@@ -135,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 Radio(
                     value: "Vegetarian",
-                    groupValue: _radioValue1,
+                    groupValue: _mealType,
                     onChanged: _handleRadioValueChange1),
                 Text(
                   'Vegetarian',
@@ -143,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Radio(
                     value: "Vegan",
-                    groupValue: _radioValue1,
+                    groupValue: _mealType,
                     onChanged: _handleRadioValueChange1),
                 Text(
                   'Vegan',
@@ -151,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Radio(
                     value: "Neither",
-                    groupValue: _radioValue1,
+                    groupValue: _mealType,
                     onChanged: _handleRadioValueChange1),
                 Text(
                   'Neither',
@@ -168,7 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
           //Dropdown for the location the meal has been eaten
           DropdownButton<String>(
-            value: _emptyDropDownValue,
+            value: _mealLocation,
             icon: Icon(Icons.arrow_downward),
             iconSize: _iconSize,
             elevation: _elevation,
@@ -178,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             onChanged: (String newValue) {
               setState(() {
-                _emptyDropDownValue = newValue;
+                _mealLocation = newValue;
               });
             },
             items: <String>['Commons', 'Knollcrest', 'Other']
@@ -192,7 +192,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ]),
         RaisedButton(
           onPressed: () {
-            _SubmitForm(_radioValue1, _emptyDropDownValue);
+            _SubmitForm(_mealType, _mealLocation);
           },
           child: Text('Submit'),
         )

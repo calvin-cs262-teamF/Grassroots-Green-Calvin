@@ -173,6 +173,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.pushNamed(context, Login.routeName);
               },
             ),
+            ListTile(
+              title: Text('Logout'),
+              onTap:() {
+                auth.signOut();
+                Navigator.pushNamed(context, Login.routeName);
+              },
+            ),
           ],
         )
       ),

@@ -302,6 +302,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ),
                 ListTile(
+                  title: Text('Logout'),
+                  onTap:() {
+                    auth.signOut();
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, Login.routeName);
+                  },
+                ),
+                ListTile(
                   title: Text('Goal Progress'),
                   onTap: () {
                     Navigator.pushNamed(context, Goals.routeName);

@@ -155,13 +155,13 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
         if (_formMode == FormMode.LOGIN) {
           userId = await widget.auth.signIn(_email, _password);
           print('Signed in: $userId');
-          Navigator.pop(context);
         } else {
           userId = await widget.auth.signUp(_email, _password);
           print('Signed up user: $userId');
         }
         if (userId.length > 0 && userId != null) {
           widget.onSignedIn();
+          Navigator.pop(context);
         }
       } catch (e) {
         print('Error: $e');

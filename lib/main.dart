@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        
+
         // widget.title resulted in errors on compile for some reason, so
         // title is hardcoded for now
         title: Text('Grassroots Green'),
@@ -177,6 +177,7 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text('Logout'),
               onTap:() {
                 auth.signOut();
+                Navigator.pop(context);
                 Navigator.pushNamed(context, Login.routeName);
               },
             ),

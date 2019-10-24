@@ -37,19 +37,23 @@ class MyStatefulWidget extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
+  // Default settings values
   String _location = "Other";
   String _mealType = "Vegan";
+  int _mealsPerDay = 3;
 
   //function to handle the radio value change
   void _handleLocationValueChange(String value) {
     setState(() {
       _location = value;
-    });}
+    });
+  }
 
-    void _handleMealTypeChange(String value) {
+  void _handleMealTypeChange(String value) {
     setState(() {
       _mealType = value;
-    });}
+    });
+  }
   // authentication parameter
   final BaseAuth auth;
 
@@ -58,14 +62,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static int _elevation = 16;
   static double _height = 2;
 
-  //Default values for Drop Downs
-  int _mealsPerDay = 3; // TODO: set to user's setting
-
   _MyStatefulWidgetState({this.auth}) {
-    DocumentSnapshot doc;
-    _getUserData().then( (data) { // TODO: make more error resistant
+    // set settings to stored data
+    _getUserData().then( (data) {
       setState(() {
-        doc = data;
+        // TODO: have alternative display if user has never saved these settings (check for existance)
         _location = data['defaultLocation'];
         _mealsPerDay = data['mealsPerDay'];
         _mealType = data['defaultMealType'];

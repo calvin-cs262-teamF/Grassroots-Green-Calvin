@@ -181,7 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 _mealLocation = newValue;
               });
             },
-            items: <String>['Commons', 'Knollcrest', 'Other']
+            items: <String>['Commons', 'Knollcrest', 'Home', 'Other']
                 .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
@@ -218,11 +218,24 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  _MyHomePageState({this.auth});
 
   final BaseAuth auth;
 
   final double _buttonMenuSize = 22;
+
+  _MyHomePageState({this.auth}) {
+    _getUserData().then( (data) { // TODO: make more error resistant
+      setState(() {
+        _mealLocation = data['defaultLocation'];
+        _mealType = data['defaultMealType'];
+      });
+    });
+  }
+
+  Future<DocumentSnapshot> _getUserData() async {
+    return Firestore.instance.collection('users').document(await auth.getCurrentUser()).get();
+  }
+
 
   @override
   Widget build(BuildContext context) {

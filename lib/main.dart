@@ -3,8 +3,7 @@ import 'package:grassroots_green/settings.dart';
 import 'package:grassroots_green/login.dart';
 import 'package:grassroots_green/goals.dart';
 import 'package:grassroots_green/auth.dart';
-import 'package:grassroots_green/learn.dart';
-import 'package:grassroots_green/eat.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() => runApp(MyApp());
 
@@ -21,8 +20,6 @@ class MyApp extends StatelessWidget {
         Settings.routeName: (context) => Settings(),
         Goals.routeName: (context) => Goals(),
         Login.routeName: (context) => Login(auth: auth),
-        Learn.routeName: (context) => Learn(),
-        Eat.routeName: (context) => Eat()
       },
 
       //When a route is generated, return the route to page,
@@ -75,11 +72,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _radioValue1 = -1;
+  String _mealType = "NULL"; // TODO: set to user's default
 
-  void _handleRadioValueChange1(int value) {
+  void _handleRadioValueChange1(String value) {
     setState(() {
-      _radioValue1 = value;
+      _mealType = value;
     });
   }
 
@@ -88,13 +85,13 @@ class _MyHomePageState extends State<MyHomePage> {
   static double _height = 2;
 
   //Default values for Drop Downs
-  String _emptyDropDownValue = 'Commons';
+  String _mealLocation = 'Commons';
 
   //Default Home page option set to EAT
   String _mainMenuOptions;
 
-  void _SubmitForm() {
-    //TODO: Add a submit here
+  void _SubmitForm(String type, String location) async {
+    Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').document().setData({'type': type, 'location': location, 'time': FieldValue.serverTimestamp()});
   }
 
   Column _testbuild() {
@@ -137,24 +134,24 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Radio(
-                    value: 0,
-                    groupValue: _radioValue1,
+                    value: "Vegetarian",
+                    groupValue: _mealType,
                     onChanged: _handleRadioValueChange1),
                 Text(
                   'Vegetarian',
                   style: TextStyle(fontSize: 16.0),
                 ),
                 Radio(
-                    value: 1,
-                    groupValue: _radioValue1,
+                    value: "Vegan",
+                    groupValue: _mealType,
                     onChanged: _handleRadioValueChange1),
                 Text(
                   'Vegan',
                   style: TextStyle(fontSize: 16.0),
                 ),
                 Radio(
-                    value: 2,
-                    groupValue: _radioValue1,
+                    value: "Neither",
+                    groupValue: _mealType,
                     onChanged: _handleRadioValueChange1),
                 Text(
                   'Neither',
@@ -171,7 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
           //Dropdown for the location the meal has been eaten
           DropdownButton<String>(
-            value: _emptyDropDownValue,
+            value: _mealLocation,
             icon: Icon(Icons.arrow_downward),
             iconSize: _iconSize,
             elevation: _elevation,
@@ -181,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             onChanged: (String newValue) {
               setState(() {
-                _emptyDropDownValue = newValue;
+                _mealLocation = newValue;
               });
             },
             items: <String>['Commons', 'Knollcrest', 'Other']
@@ -195,7 +192,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ]),
         RaisedButton(
           onPressed: () {
-            _SubmitForm();
+            _SubmitForm(_mealType, _mealLocation);
           },
           child: Text('Submit'),
         )
@@ -277,22 +274,22 @@ class _MyHomePageState extends State<MyHomePage> {
                                   default:
                                     if (snapshot.hasError)
                                       return new Text(
-                                        'Error: ${snapshot.error}',
+                                        'Not signed in.',
                                         style: TextStyle(
-                                            color: Colors.white, fontSize: 30),
+                                            color: Colors.white, fontSize: 20),
                                       );
                                     else if (snapshot.data == null ||
                                         snapshot.data == "")
                                       return new Text(
                                         'User',
                                         style: TextStyle(
-                                            color: Colors.white, fontSize: 30),
+                                            color: Colors.white, fontSize: 20),
                                       );
                                     else
                                       return new Text(
                                         '${snapshot.data}',
                                         style: TextStyle(
-                                            color: Colors.white, fontSize: 30),
+                                            color: Colors.white, fontSize: 20),
                                       );
                                 }
                               },
@@ -302,6 +299,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ListTile(
                   title: Text('Login'),
                   onTap: () {
+                    Navigator.pop(context); // close drawer
                     Navigator.pushNamed(context, Login.routeName);
                   },
                 ),
@@ -309,7 +307,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   title: Text('Logout'),
                   onTap:() {
                     auth.signOut();
-                    Navigator.pop(context);
+                    Navigator.pop(context); // close drawer
                     Navigator.pushNamed(context, Login.routeName);
                   },
                 ),
@@ -330,7 +328,6 @@ class _MyHomePageState extends State<MyHomePage> {
             )),
         body: Center(
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   new Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,

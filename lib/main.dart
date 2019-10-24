@@ -88,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _mealLocation = 'Commons';
 
   //Default Home page option set to EAT
-  String _mainMenuOptions;
+  String _mainMenuOptions = "EAT";
 
   void _SubmitForm(String type, String location) async {
     Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').document().setData({'type': type, 'location': location, 'time': FieldValue.serverTimestamp()});
@@ -349,7 +349,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: FlatButton(
                           padding: const EdgeInsets.all(18),
                           textColor: Colors.white,
-                          color: Colors.green,
+                          color: _mainMenuOptions == "EAT" ? Colors.green[800] : Colors.green,
                           onPressed: (){ _displayEat();},
                           child: new Text("EAT",
                               style: TextStyle(fontSize: _buttonMenuSize)),
@@ -359,7 +359,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: FlatButton(
                             padding: const EdgeInsets.all(18),
                             textColor: Colors.white,
-                            color: Colors.green,
+                            color:_mainMenuOptions == "LEARN" ? Colors.green[800] :  Colors.green,
                             onPressed: (){ _displayLearn();},
                             child: new Text("LEARN",
                                 style: TextStyle(fontSize: _buttonMenuSize)),
@@ -369,7 +369,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: FlatButton(
                             padding: const EdgeInsets.all(18),
                             textColor: Colors.white,
-                            color: Colors.green,
+                            color:_mainMenuOptions == "TRACK" ? Colors.green[800] :  Colors.green,
                             onPressed: (){ _displayTrack();},
                             child: new Text("TRACK",
                                 style: TextStyle(fontSize: _buttonMenuSize)),

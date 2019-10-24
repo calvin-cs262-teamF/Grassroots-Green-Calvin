@@ -2,6 +2,18 @@
 
 import 'package:flutter/material.dart';
 
+class Goals extends StatelessWidget {
+  static const String routeName = "/goals";
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Your Weekly Goal Progress')),
+      body: GoalsPage(),
+    );
+  }
+}
+
 class GoalsPage extends StatefulWidget {
   @override
   GoalsPageState createState() => GoalsPageState();
@@ -36,63 +48,59 @@ class GoalsPageState extends State<GoalsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Your Weekly Goal Progress'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.all(20.0),
-              alignment: Alignment(0.0, 0.0),
-              child: Text(_scope,
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.all(20.0),
+            alignment: Alignment(0.0, 0.0),
+            child: Text(_scope,
+              style: TextStyle(
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.green,
               ),
             ),
-            Container(
-              margin: EdgeInsets.all(10.0),
-              alignment: Alignment(0.0, 0.0),
-              child: Text('Progress Towards Goal',
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
+          ),
+          Container(
+            margin: EdgeInsets.all(10.0),
+            alignment: Alignment(0.0, 0.0),
+            child: Text('Progress Towards Goal',
+              style: TextStyle(
+                fontSize: 20.0,
               ),
             ),
-            Image.asset(_progressImage),
-            Container(
-              margin: EdgeInsets.all(10.0),
-              alignment: Alignment(0.0, 0.0),
-              child: Text('Meals by Day',
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
+          ),
+          Image.asset(_progressImage),
+          Container(
+            margin: EdgeInsets.all(10.0),
+            alignment: Alignment(0.0, 0.0),
+            child: Text('Meals by Day',
+              style: TextStyle(
+                fontSize: 20.0,
               ),
             ),
-            Image.asset(_chartImage),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                RaisedButton(
-                  onPressed: _setOverall,
-                  child: Text('Overall')
-                ),
-                RaisedButton(
-                  onPressed: _setVegetarian,
-                  child: Text('Vegetarian')
-                ),
-                RaisedButton(
-                  onPressed: _setVegan,
-                  child: Text('Vegan')
-                ),
-              ],
-            )
-          ],
-        ),
+          ),
+          Image.asset(_chartImage),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              RaisedButton(
+                onPressed: _setOverall,
+                child: Text('Overall')
+              ),
+              RaisedButton(
+                onPressed: _setVegetarian,
+                child: Text('Vegetarian')
+              ),
+              RaisedButton(
+                onPressed: _setVegan,
+                child: Text('Vegan')
+              ),
+            ],
+          )
+        ],
       ),
     );
   }

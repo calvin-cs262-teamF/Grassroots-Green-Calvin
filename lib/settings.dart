@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:grassroots_green/auth.dart';
 
 class Settings extends StatelessWidget {
+  Settings({this.auth});
+  final BaseAuth auth;
 
   //Routename used for Navigation
   static const String routeName = "/settings";
@@ -9,16 +13,18 @@ class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text('Settings')),
-        body: MyStatefulWidget(),
+        body: MyStatefulWidget(auth: auth),
     );
   }
 }
 
 class MyStatefulWidget extends StatefulWidget {
-  MyStatefulWidget({Key key}) : super(key: key);
+  final BaseAuth auth;
+
+  MyStatefulWidget({Key key, this.auth}) : super(key: key);
 
   @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+  _MyStatefulWidgetState createState() => _MyStatefulWidgetState(auth: auth);
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
@@ -36,6 +42,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     setState(() {
       _radioValue3 = value;
     });}
+  // authentication parameter
+  final BaseAuth auth;
 
   //Static parameters for Drop Downs
   static double _iconSize = 24;
@@ -43,7 +51,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static double _height = 2;
 
   //Default values for Drop Downs
-  String emptyDropDownValue = '3';
+  String _mealsPerDay = '3'; // TODO: set to user's setting
+
+  _MyStatefulWidgetState({this.auth});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +67,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   Text('Meals per Day:', style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold,)),
                   //Dropdown for how many meals per day
                   DropdownButton<String>(
-                    value: emptyDropDownValue,
+                    value: _mealsPerDay,
                     icon: Icon(Icons.arrow_downward),
                     iconSize: _iconSize,
                     elevation: _elevation,
@@ -67,7 +77,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     ),
                     onChanged: (String newValue){
                       setState(() {
-                        emptyDropDownValue = newValue;
+                        _mealsPerDay = newValue;
                       });
                     },
                     items: <String>['1', '2', '3', '4', '5', '6']
@@ -108,6 +118,23 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             ],))
           ]
             ),
+            Row(
+              children: [
+                RaisedButton(
+                  child: new Text("Save"),
+                  onPressed: () { _saveSettings(); },
+                ),
+              ]
+            ),
+          ],
+        ),
     );
+  }
+
+  void _saveSettings() async {
+    // save meals per day
+    Firestore.instance.collection('users').document(await auth.getCurrentUser()).updateData({'mealsPerDay': _mealsPerDay});
+
+    // TODO: save other settings in the same command
   }
 }

@@ -23,6 +23,20 @@ class MyStatefulWidget extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
+  int _radioValue2 = -1;
+  int _radioValue3 = -1;
+
+  //function to handle the radio value change
+  void _handleRadioValueChange2(int value) {
+    setState(() {
+      _radioValue2 = value;
+    });}
+
+    void _handleRadioValueChange3(int value) {
+    setState(() {
+      _radioValue3 = value;
+    });}
+
   //Static parameters for Drop Downs
   static double _iconSize = 24;
   static int _elevation = 16;
@@ -40,9 +54,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                      'Meals per Day:'
-                  ),
+                  Text('Meals per Day:', style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold,)),
                   //Dropdown for how many meals per day
                   DropdownButton<String>(
                     value: emptyDropDownValue,
@@ -66,11 +78,36 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       );
                     })
                         .toList(),
-                  )
+                  ),
                 ]
             ),
-          ],
-        ),
+            Text('Default Location:', style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold,)),
+            Padding( padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 1.0,),
+                child: Row( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+                    Radio( value: 0, groupValue: _radioValue2, onChanged: _handleRadioValueChange2),
+                    Text('Commons', style: TextStyle(fontSize: 16.0),),
+                    Radio( value: 1, groupValue: _radioValue2, onChanged: _handleRadioValueChange2),
+                    Text('Knollcrest', style: TextStyle(fontSize: 16.0),),
+                    ],),),
+            Padding( padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 1.0,),
+                child: Row( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+                    Radio( value: 2, groupValue: _radioValue2, onChanged: _handleRadioValueChange2),
+                    Text('Home', style: TextStyle(fontSize: 16.0),),
+                    Radio( value: 3, groupValue: _radioValue2, onChanged: _handleRadioValueChange2),
+                    Text('Elsewhere', style: TextStyle(fontSize: 16.0),),
+                ],)),
+            Text('Default Meal Type', style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold,)),
+            Padding( padding: const EdgeInsets.all(10.0),
+            child: Row( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              Radio( value: 0, groupValue: _radioValue3, onChanged: _handleRadioValueChange3),
+              Text('Vegetarian', style: TextStyle(fontSize: 16.0),),
+              Radio( value: 1, groupValue: _radioValue3, onChanged: _handleRadioValueChange3),
+              Text('Vegan', style: TextStyle(fontSize: 16.0),),
+              Radio( value: 2, groupValue: _radioValue3, onChanged: _handleRadioValueChange3),
+              Text('Neither', style: TextStyle(fontSize: 16.0),),
+            ],))
+          ]
+            ),
     );
   }
 }

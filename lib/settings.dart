@@ -61,7 +61,21 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   //Default values for Drop Downs
   int _mealsPerDay = 3; // TODO: set to user's setting
 
-  _MyStatefulWidgetState({this.auth});
+  _MyStatefulWidgetState({this.auth}) {
+    DocumentSnapshot doc;
+    _getUserData().then( (data) { // TODO: make more error resistant
+      setState(() {
+        doc = data;
+        _location = data['defaultLocation'];
+        _mealsPerDay = data['mealsPerDay'];
+        _mealType = data['defaultMealType'];
+      });
+    });
+  }
+
+  Future<DocumentSnapshot> _getUserData() async {
+    return Firestore.instance.collection('users').document(await auth.getCurrentUser()).get();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,29 +116,31 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             ),
             Text('Default Location:', style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold,)),
             Padding( padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 1.0,),
-                child: Row( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-                    Radio( value: "Commons", groupValue: _location, onChanged: _handleLocationValueChange),
-                    Text('Commons', style: TextStyle(fontSize: 16.0),),
-                    Radio( value: "Knollcrest", groupValue: _location, onChanged: _handleLocationValueChange),
-                    Text('Knollcrest', style: TextStyle(fontSize: 16.0),),
-                    ],),),
+              child: Row( mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Radio( value: "Commons", groupValue: _location, onChanged: _handleLocationValueChange),
+                  Text('Commons', style: TextStyle(fontSize: 16.0),),
+                  Radio( value: "Knollcrest", groupValue: _location, onChanged: _handleLocationValueChange),
+                  Text('Knollcrest', style: TextStyle(fontSize: 16.0),),
+                ],),),
             Padding( padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 1.0,),
                 child: Row( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-                    Radio( value: "Home", groupValue: _location, onChanged: _handleLocationValueChange),
-                    Text('Home', style: TextStyle(fontSize: 16.0),),
-                    Radio( value: "Other", groupValue: _location, onChanged: _handleLocationValueChange),
-                    Text('Elsewhere', style: TextStyle(fontSize: 16.0),),
+                  Radio( value: "Home", groupValue: _location, onChanged: _handleLocationValueChange),
+                  Text('Home', style: TextStyle(fontSize: 16.0),),
+                  Radio( value: "Other", groupValue: _location, onChanged: _handleLocationValueChange),
+                  Text('Elsewhere', style: TextStyle(fontSize: 16.0),),
                 ],)),
             Text('Default Meal Type', style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold,)),
             Padding( padding: const EdgeInsets.all(10.0),
-            child: Row( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-              Radio( value: "Vegetarian", groupValue: _mealType, onChanged: _handleMealTypeChange),
-              Text('Vegetarian', style: TextStyle(fontSize: 16.0),),
-              Radio( value: "Vegan", groupValue: _mealType, onChanged: _handleMealTypeChange),
-              Text('Vegan', style: TextStyle(fontSize: 16.0),),
-              Radio( value: "Neither", groupValue: _mealType, onChanged: _handleMealTypeChange),
-              Text('Neither', style: TextStyle(fontSize: 16.0),),
-            ],)),
+                child: Row( mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Radio( value: "Vegetarian", groupValue: _mealType, onChanged: _handleMealTypeChange),
+                    Text('Vegetarian', style: TextStyle(fontSize: 16.0),),
+                    Radio( value: "Vegan", groupValue: _mealType, onChanged: _handleMealTypeChange),
+                    Text('Vegan', style: TextStyle(fontSize: 16.0),),
+                    Radio( value: "Neither", groupValue: _mealType, onChanged: _handleMealTypeChange),
+                    Text('Neither', style: TextStyle(fontSize: 16.0),),
+                  ],)),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -141,7 +157,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 
   void _saveSettings() async {
-    // save meals per day
-    Firestore.instance.collection('users').document(await auth.getCurrentUser()).updateData({'mealsPerDay': _mealsPerDay, 'defaultLocation': _location, 'defaultMealType': _mealType});
+    // save meals per day, default location, and default meal type
+    Firestore.instance.collection('users').document(await auth.getCurrentUser()).updateData({
+      'mealsPerDay': _mealsPerDay,
+      'defaultLocation': _location,
+      'defaultMealType': _mealType});
   }
 }

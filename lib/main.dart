@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         // Try running your application with "flutter run". You'll see the
         // application has a blue toolbar. Then, without quitting the app, try
         // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
+        // "hot reload" (press "r" in the consoleEw where you ran "flutter run",
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted..
@@ -88,15 +88,144 @@ class _MyHomePageState extends State<MyHomePage> {
   static double _height = 2;
 
   //Default values for Drop Downs
-  String emptyDropDownValue = 'Commons';
+  String _emptyDropDownValue = 'Commons';
+
+  //Default Home page option set to EAT
+  String _mainMenuOptions;
 
   void _SubmitForm() {
     //TODO: Add a submit here
   }
 
+  Column _testbuild() {
+    switch (_mainMenuOptions) {
+      case 'EAT':{
+          return recordMeal();
+        }
+      case 'LEARN':{
+          return Column(
+            children: <Widget>[
+              Text('LEARN')
+            ],
+          );
+        }
+      case 'TRACK':{
+          return Column(
+            children: <Widget>[
+              Text('TRACK')
+            ],
+          );
+        }
+      default:{
+          return recordMeal();
+        }
+    }
+  }
+
+  Column recordMeal() {
+    return Column(
+      children: <Widget>[
+        Text('Record a Meal:',
+            style: TextStyle(
+              color: Colors.green,
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
+            )),
+        Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Radio(
+                    value: 0,
+                    groupValue: _radioValue1,
+                    onChanged: _handleRadioValueChange1),
+                Text(
+                  'Vegetarian',
+                  style: TextStyle(fontSize: 16.0),
+                ),
+                Radio(
+                    value: 1,
+                    groupValue: _radioValue1,
+                    onChanged: _handleRadioValueChange1),
+                Text(
+                  'Vegan',
+                  style: TextStyle(fontSize: 16.0),
+                ),
+                Radio(
+                    value: 2,
+                    groupValue: _radioValue1,
+                    onChanged: _handleRadioValueChange1),
+                Text(
+                  'Neither',
+                  style: TextStyle(fontSize: 16.0),
+                ),
+              ],
+            )),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Text('Location:',
+              style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+              )),
+
+          //Dropdown for the location the meal has been eaten
+          DropdownButton<String>(
+            value: _emptyDropDownValue,
+            icon: Icon(Icons.arrow_downward),
+            iconSize: _iconSize,
+            elevation: _elevation,
+            underline: Container(
+              height: _height,
+              color: Colors.green,
+            ),
+            onChanged: (String newValue) {
+              setState(() {
+                _emptyDropDownValue = newValue;
+              });
+            },
+            items: <String>['Commons', 'Knollcrest', 'Other']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          )
+        ]),
+        RaisedButton(
+          onPressed: () {
+            _SubmitForm();
+          },
+          child: Text('Submit'),
+        )
+      ],
+    );
+  }
+
+  void _displayEat() {
+    setState(() {
+      _mainMenuOptions = "EAT";
+    });
+  }
+
+  void _displayLearn() {
+    setState(() {
+      _mainMenuOptions = "LEARN";
+    });
+  }
+
+  void _displayTrack() {
+    setState(() {
+      _mainMenuOptions = "TRACK";
+    });
+  }
+
   _MyHomePageState({this.auth});
 
   final BaseAuth auth;
+
+  final double _buttonMenuSize = 22;
 
   @override
   Widget build(BuildContext context) {
@@ -123,196 +252,123 @@ class _MyHomePageState extends State<MyHomePage> {
             // through the options in the drawer if there isn't enough vertical
             // space to fit everything.
             child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.green,
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                    ),
+                    child: Container(
+                        child: Column(
+                          children: <Widget>[
+                            Material(
+                                child: Image.asset(
+                                    'assets/Grassroots_Green_Logo_16x9.PNG')),
+                            new FutureBuilder<String>(
+                              future: auth.getUserName(),
+                              // a Future<String> or null
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<String> snapshot) {
+                                switch (snapshot.connectionState) {
+                                  case ConnectionState.none:
+                                    return new Text('Press button to start');
+                                  case ConnectionState.waiting:
+                                    return new Text('Awaiting result...');
+                                  default:
+                                    if (snapshot.hasError)
+                                      return new Text(
+                                        'Error: ${snapshot.error}',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 30),
+                                      );
+                                    else if (snapshot.data == null ||
+                                        snapshot.data == "")
+                                      return new Text(
+                                        'User',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 30),
+                                      );
+                                    else
+                                      return new Text(
+                                        '${snapshot.data}',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 30),
+                                      );
+                                }
+                              },
+                            ),
+                          ],
+                        ))),
+                ListTile(
+                  title: Text('Login'),
+                  onTap: () {
+                    Navigator.pushNamed(context, Login.routeName);
+                  },
                 ),
-                child: Container(
-                    child: Column(
-                  children: <Widget>[
-                    FittedBox(
-                        child: Image.asset(
-                            'assets/Grassroots_Green_Logo_16x9.PNG',
-                        )
-                    ),
-                    new FutureBuilder<String>(
-                      future: auth.getUserName(),
-                      // a Future<String> or null
-                      builder: (BuildContext context,
-                          AsyncSnapshot<String> snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.none:
-                            return new Text('Press button to start');
-                          case ConnectionState.waiting:
-                            return new Text('Awaiting result...');
-                          default:
-                            if (snapshot.hasError)
-                              return new Text(
-                                'Error: ${snapshot.error}',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 30),
-                              );
-                            else if (snapshot.data == null ||
-                                snapshot.data == "")
-                              return new Text(
-                                'User',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 30),
-                              );
-                            else
-                              return new Text(
-                                '${snapshot.data}',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 30),
-                              );
-                        }
-                      },
-                    ),
-                  ],
-                ))),
-            ListTile(
-              title: Text('Login'),
-              onTap: () {
-                Navigator.pushNamed(context, Login.routeName);
-              },
-            ),
-            ListTile(
-              title: Text('Goal Progress'),
-              onTap: () {
-                Navigator.pushNamed(context, Goals.routeName);
-              },
-            ),
-            ListTile(
-              title: Text('Settings'),
-              onTap: () {
-                //push the settings route to the Navigator
-                Navigator.pushNamed(context, Settings.routeName);
-              },
-            ),
-          ],
-        )),
+                ListTile(
+                  title: Text('Logout'),
+                  onTap:() {
+                    auth.signOut();
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, Login.routeName);
+                  },
+                ),
+                ListTile(
+                  title: Text('Goal Progress'),
+                  onTap: () {
+                    Navigator.pushNamed(context, Goals.routeName);
+                  },
+                ),
+                ListTile(
+                  title: Text('Settings'),
+                  onTap: () {
+                    //push the settings route to the Navigator
+                    Navigator.pushNamed(context, Settings.routeName);
+                  },
+                ),
+              ],
+            )),
         body: Center(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Expanded(
-                      child: FlatButton(
-
-                        padding: const EdgeInsets.all(20),
-                        textColor: Colors.white,
-                        color: Colors.green,
-                        onPressed: (){
-                          Navigator.pushNamed(context, Eat.routeName);
-                        },
-                        child: new Text("EAT",
-                            style: TextStyle(fontSize: 25)),
-                      )),
-                      Expanded(
-                      child: FlatButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, Learn.routeName);
-                        },
-                        textColor: Colors.white,
-                        color: Colors.green,
-                        padding: const EdgeInsets.all(20),
-                        child: new Text(
-                            "LEARN",
-                            style: TextStyle(fontSize: 25)
-                        ),
-                      )
+                        child: FlatButton(
+                          padding: const EdgeInsets.all(18),
+                          textColor: Colors.white,
+                          color: Colors.green,
+                          onPressed: (){ _displayEat();},
+                          child: new Text("EAT",
+                              style: TextStyle(fontSize: _buttonMenuSize)),
+                        )
                       ),
                       Expanded(
-                       child: FlatButton(
-                        onPressed: () {
-
-                          Navigator.pushNamed(context, Goals.routeName);
-                        },
-                        textColor: Colors.white,
-                        color: Colors.green,
-                        padding: const EdgeInsets.all(20),
-                        child:new Text("TRACK",
-                            style: TextStyle(fontSize:25)),
-                      )
-                      ),],
-                  ),
-              Text('Record a Meal:',
-                  style: TextStyle(
-                    color: Colors.green,
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                  )),
-              Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Radio(
-                          value: 0,
-                          groupValue: _radioValue1,
-                          onChanged: _handleRadioValueChange1),
-                      Text(
-                        'Vegetarian',
-                        style: TextStyle(fontSize: 16.0),
+                          child: FlatButton(
+                            padding: const EdgeInsets.all(18),
+                            textColor: Colors.white,
+                            color: Colors.green,
+                            onPressed: (){ _displayLearn();},
+                            child: new Text("LEARN",
+                                style: TextStyle(fontSize: _buttonMenuSize)),
+                          )
                       ),
-                      Radio(
-                          value: 1,
-                          groupValue: _radioValue1,
-                          onChanged: _handleRadioValueChange1),
-                      Text(
-                        'Vegan',
-                        style: TextStyle(fontSize: 16.0),
-                      ),
-                      Radio(
-                          value: 2,
-                          groupValue: _radioValue1,
-                          onChanged: _handleRadioValueChange1),
-                      Text(
-                        'Neither',
-                        style: TextStyle(fontSize: 16.0),
+                      Expanded(
+                          child: FlatButton(
+                            padding: const EdgeInsets.all(18),
+                            textColor: Colors.white,
+                            color: Colors.green,
+                            onPressed: (){ _displayTrack();},
+                            child: new Text("TRACK",
+                                style: TextStyle(fontSize: _buttonMenuSize)),
+                          )
                       ),
                     ],
-                  )),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Text('Location:',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                    )),
-
-                //Dropdown for the location the meal has been eaten
-                DropdownButton<String>(
-                  value: emptyDropDownValue,
-                  icon: Icon(Icons.arrow_downward),
-                  iconSize: _iconSize,
-                  elevation: _elevation,
-                  underline: Container(
-                    height: _height,
-                    color: Colors.green,
                   ),
-                  onChanged: (String newValue) {
-                    setState(() {
-                      emptyDropDownValue = newValue;
-                    });
-                  },
-                  items: <String>['Commons', 'Knollcrest', 'Other']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                )
-              ]),
-              RaisedButton(
-                onPressed: () {
-                  _SubmitForm();
-                },
-                child: Text('Submit'),
-              )
-            ])));
+                  new Container(child: _testbuild(),)
+                ]
+            )));
   }
 }

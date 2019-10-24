@@ -115,9 +115,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               Text('Vegan', style: TextStyle(fontSize: 16.0),),
               Radio( value: 2, groupValue: _radioValue3, onChanged: _handleRadioValueChange3),
               Text('Neither', style: TextStyle(fontSize: 16.0),),
-            ],))
-          ]
-            ),
+            ],)),
             Row(
               children: [
                 RaisedButton(

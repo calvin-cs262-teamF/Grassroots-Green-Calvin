@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grassroots_green/auth.dart';
 
+enum location {
+  commons, knollcrest, home, other
+}
+
+enum mealType {
+  vegetarian, vegan, neither
+}
+
 class Settings extends StatelessWidget {
   Settings({this.auth});
   final BaseAuth auth;
@@ -29,18 +37,18 @@ class MyStatefulWidget extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
-  int _radioValue2 = -1;
-  int _radioValue3 = -1;
+  String _location = "Other";
+  String _mealType = "Vegan";
 
   //function to handle the radio value change
-  void _handleRadioValueChange2(int value) {
+  void _handleLocationValueChange(String value) {
     setState(() {
-      _radioValue2 = value;
+      _location = value;
     });}
 
-    void _handleRadioValueChange3(int value) {
+    void _handleMealTypeChange(String value) {
     setState(() {
-      _radioValue3 = value;
+      _mealType = value;
     });}
   // authentication parameter
   final BaseAuth auth;
@@ -51,7 +59,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static double _height = 2;
 
   //Default values for Drop Downs
-  String _mealsPerDay = '3'; // TODO: set to user's setting
+  int _mealsPerDay = 3; // TODO: set to user's setting
 
   _MyStatefulWidgetState({this.auth});
 
@@ -62,12 +70,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           children: <Widget>[
             //Meals a Day
             Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text('Meals per Day:', style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold,)),
+                  Padding(padding: const EdgeInsets.symmetric(horizontal: 10.0)),
                   //Dropdown for how many meals per day
                   DropdownButton<String>(
-                    value: _mealsPerDay,
+                    value: _mealsPerDay.toString(),
                     icon: Icon(Icons.arrow_downward),
                     iconSize: _iconSize,
                     elevation: _elevation,
@@ -77,7 +86,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     ),
                     onChanged: (String newValue){
                       setState(() {
-                        _mealsPerDay = newValue;
+                        _mealsPerDay = int.parse(newValue);
                       });
                     },
                     items: <String>['1', '2', '3', '4', '5', '6']
@@ -94,33 +103,35 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             Text('Default Location:', style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold,)),
             Padding( padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 1.0,),
                 child: Row( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-                    Radio( value: 0, groupValue: _radioValue2, onChanged: _handleRadioValueChange2),
+                    Radio( value: "Commons", groupValue: _location, onChanged: _handleLocationValueChange),
                     Text('Commons', style: TextStyle(fontSize: 16.0),),
-                    Radio( value: 1, groupValue: _radioValue2, onChanged: _handleRadioValueChange2),
+                    Radio( value: "Knollcrest", groupValue: _location, onChanged: _handleLocationValueChange),
                     Text('Knollcrest', style: TextStyle(fontSize: 16.0),),
                     ],),),
             Padding( padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 1.0,),
                 child: Row( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-                    Radio( value: 2, groupValue: _radioValue2, onChanged: _handleRadioValueChange2),
+                    Radio( value: "Home", groupValue: _location, onChanged: _handleLocationValueChange),
                     Text('Home', style: TextStyle(fontSize: 16.0),),
-                    Radio( value: 3, groupValue: _radioValue2, onChanged: _handleRadioValueChange2),
+                    Radio( value: "Other", groupValue: _location, onChanged: _handleLocationValueChange),
                     Text('Elsewhere', style: TextStyle(fontSize: 16.0),),
                 ],)),
             Text('Default Meal Type', style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold,)),
             Padding( padding: const EdgeInsets.all(10.0),
             child: Row( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-              Radio( value: 0, groupValue: _radioValue3, onChanged: _handleRadioValueChange3),
+              Radio( value: "Vegetarian", groupValue: _mealType, onChanged: _handleMealTypeChange),
               Text('Vegetarian', style: TextStyle(fontSize: 16.0),),
-              Radio( value: 1, groupValue: _radioValue3, onChanged: _handleRadioValueChange3),
+              Radio( value: "Vegan", groupValue: _mealType, onChanged: _handleMealTypeChange),
               Text('Vegan', style: TextStyle(fontSize: 16.0),),
-              Radio( value: 2, groupValue: _radioValue3, onChanged: _handleRadioValueChange3),
+              Radio( value: "Neither", groupValue: _mealType, onChanged: _handleMealTypeChange),
               Text('Neither', style: TextStyle(fontSize: 16.0),),
             ],)),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 RaisedButton(
-                  child: new Text("Save"),
+                  child: new Text("Save Changes", style:TextStyle( color: Colors.green, fontWeight: FontWeight.bold,)),
                   onPressed: () { _saveSettings(); },
+                  color: Colors.white,
                 ),
               ]
             ),
@@ -131,8 +142,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   void _saveSettings() async {
     // save meals per day
-    Firestore.instance.collection('users').document(await auth.getCurrentUser()).updateData({'mealsPerDay': _mealsPerDay});
-
-    // TODO: save other settings in the same command
+    Firestore.instance.collection('users').document(await auth.getCurrentUser()).updateData({'mealsPerDay': _mealsPerDay, 'defaultLocation': _location, 'defaultMealType': _mealType});
   }
 }

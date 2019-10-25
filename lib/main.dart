@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:grassroots_green/compete.dart';
 import 'package:grassroots_green/settings.dart';
 import 'package:grassroots_green/login.dart';
-import 'package:grassroots_green/goals.dart';
 import 'package:grassroots_green/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -18,8 +18,8 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         //Route declared for settings route
         Settings.routeName: (context) => Settings(auth:auth),
-        Goals.routeName: (context) => Goals(),
         Login.routeName: (context) => Login(auth: auth),
+        Compete.routeName: (context) => Compete(auth: auth),
       },
 
       //When a route is generated, return the route to page,
@@ -80,6 +80,32 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  String _progressImage = 'assets/goal_progress/overall_prog.png';
+  String _chartImage = 'assets/goal_progress/overall_chart.png';
+  String _scope = 'Overall';
+
+  void _setOverall() {
+    setState(() {
+      _progressImage = 'assets/goal_progress/overall_prog.png';
+      _chartImage = 'assets/goal_progress/overall_chart.png';
+      _scope = 'Overall';
+    });
+  }
+  void _setVegetarian() {
+    setState(() {
+      _progressImage = 'assets/goal_progress/vegetarian_prog.png';
+      _chartImage = 'assets/goal_progress/vegetarian_chart.png';
+      _scope = 'Vegetarian';
+    });
+  }
+  void _setVegan() {
+    setState(() {
+      _progressImage = 'assets/goal_progress/vegan_prog.png';
+      _chartImage = 'assets/goal_progress/vegan_chart.png';
+      _scope = 'Vegan';
+    });
+  }
+
   static double _iconSize = 24;
   static int _elevation = 16;
   static double _height = 2;
@@ -97,29 +123,21 @@ class _MyHomePageState extends State<MyHomePage> {
   Column _testbuild() {
     switch (_mainMenuOptions) {
       case 'EAT':{
-          return recordMeal();
+          return displayEAT();
         }
       case 'LEARN':{
-          return Column(
-            children: <Widget>[
-              Text('LEARN')
-            ],
-          );
+          return displayLEARN();
         }
       case 'TRACK':{
-          return Column(
-            children: <Widget>[
-              Text('TRACK')
-            ],
-          );
+            return displayTRACK();
         }
       default:{
-          return recordMeal();
+          return displayEAT();
         }
     }
   }
 
-  Column recordMeal() {
+  Column displayEAT() {
     return Column(
       children: <Widget>[
         Text('Record a Meal:',
@@ -195,6 +213,70 @@ class _MyHomePageState extends State<MyHomePage> {
             _SubmitForm(_mealType, _mealLocation);
           },
           child: Text('Submit'),
+        )
+      ],
+    );
+  }
+
+  Column displayLEARN() {
+    return Column(
+      children: <Widget>[
+        Text('LEARN')
+      ],
+    );
+  }
+
+  Column displayTRACK() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.all(20.0),
+          alignment: Alignment(0.0, 0.0),
+          child: Text(_scope,
+            style: TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.green,
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.all(10.0),
+          alignment: Alignment(0.0, 0.0),
+          child: Text('Progress Towards Goal',
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
+          ),
+        ),
+        Image.asset(_progressImage),
+        Container(
+          margin: EdgeInsets.all(10.0),
+          alignment: Alignment(0.0, 0.0),
+          child: Text('Meals by Day',
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
+          ),
+        ),
+        Image.asset(_chartImage),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            RaisedButton(
+                onPressed: _setOverall,
+                child: Text('Overall')
+            ),
+            RaisedButton(
+                onPressed: _setVegetarian,
+                child: Text('Vegetarian')
+            ),
+            RaisedButton(
+                onPressed: _setVegan,
+                child: Text('Vegan')
+            ),
+          ],
         )
       ],
     );
@@ -325,9 +407,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ),
                 ListTile(
-                  title: Text('Goal Progress'),
+                  title: Text('Compete'),
                   onTap: () {
-                    Navigator.pushNamed(context, Goals.routeName);
+                    Navigator.pushNamed(context, Compete.routeName);
                   },
                 ),
                 ListTile(

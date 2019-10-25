@@ -284,6 +284,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _displayEat() {
     setState(() {
+      _loadSettings(); // TODO: change to update as soon as settings are saved
       _mainMenuOptions = "EAT";
     });
   }
@@ -306,6 +307,10 @@ class _MyHomePageState extends State<MyHomePage> {
   final double _buttonMenuSize = 22;
 
   _MyHomePageState({this.auth}) {
+    _loadSettings();
+  }
+
+  void _loadSettings() {
     _getUserData().then( (data) {
       setState(() {
         if(data.exists) {
@@ -421,6 +426,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ListTile(
                   title: Text('Settings'),
                   onTap: () {
+                    Navigator.pop(context); // close drawer
                     //push the settings route to the Navigator
                     Navigator.pushNamed(context, Settings.routeName);
                   },

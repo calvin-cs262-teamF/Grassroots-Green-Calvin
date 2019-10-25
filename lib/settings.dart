@@ -2,14 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grassroots_green/auth.dart';
 
-enum location {
-  commons, knollcrest, home, other
-}
-
-enum mealType {
-  vegetarian, vegan, neither
-}
-
 class Settings extends StatelessWidget {
   Settings({this.auth});
   final BaseAuth auth;
@@ -66,10 +58,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     // set settings to stored data
     _getUserData().then( (data) {
       setState(() {
-        // TODO: have alternative display if user has never saved these settings (check for existance)
-        _location = data['defaultLocation'];
-        _mealsPerDay = data['mealsPerDay'];
-        _mealType = data['defaultMealType'];
+        if (data.exists) {
+          if (data['defaultLocation'] != null) {
+            _location = data['defaultLocation'];
+          }
+          if (data['mealsPerDay'] != null) {
+            _mealsPerDay = data['mealsPerDay'];
+          }
+          if (data['defaultMealType'] != null) {
+            _mealType = data['defaultMealType'];
+          }
+        }
       });
     });
   }

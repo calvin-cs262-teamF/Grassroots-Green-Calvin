@@ -116,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
   //Default Home page option set to EAT
   String _mainMenuOptions = "EAT";
 
-  void _SubmitForm(String type, String location) async {
+  void _submitForm(String type, String location) async {
     Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').document().setData({'type': type, 'location': location, 'time': FieldValue.serverTimestamp()});
   }
 
@@ -210,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ]),
         RaisedButton(
           onPressed: () {
-            _SubmitForm(_mealType, _mealLocation);
+            _submitForm(_mealType, _mealLocation);
           },
           child: Text('Submit'),
         )
@@ -306,10 +306,16 @@ class _MyHomePageState extends State<MyHomePage> {
   final double _buttonMenuSize = 22;
 
   _MyHomePageState({this.auth}) {
-    _getUserData().then( (data) { // TODO: make more error resistant
+    _getUserData().then( (data) {
       setState(() {
-        _mealLocation = data['defaultLocation'];
-        _mealType = data['defaultMealType'];
+        if(data.exists) {
+          if(data['defaultLocation'] != null) {
+            _mealLocation = data['defaultLocation'];
+          }
+          if(data['defaultMealType'] != null) {
+            _mealType = data['defaultMealType'];
+          }
+        }
       });
     });
   }

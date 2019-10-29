@@ -45,11 +45,23 @@ class MyApp extends StatelessWidget {
         textTheme: TextTheme(
 
           //for some reason if I call Theme.of(context).accentColor for the text, it renders the 'EAT', 'LEARN', 'TRACK' text as gray
+          //This style is for buttons on the homepage
           button: new TextStyle(fontSize: 22, color: Colors.white),
+
           //for some reason if I call Theme.of(context).primaryColor for the title, it renders the 'Record a Meal' text as blue
           title: new TextStyle(fontSize: 26, color: Colors.green, fontWeight: FontWeight.bold),
+
           //this style is used for login text with firestore in the drawer
           caption: new TextStyle(fontSize: 20, color: Colors.white),
+
+          //this style is used for regular bold text
+          display1: new TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+
+          //this style is used for regular text
+          display2: new TextStyle(fontSize: 16, color: Colors.black),
+
+          //this style is used for Drawer items
+          display3: new TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold)
 
           //All available theme values are listed below:
           //display4
@@ -176,7 +188,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     onChanged: _handleRadioValueChange1),
                 Text(
                   'Vegetarian',
-                  style: TextStyle(fontSize: 16.0),
+                  style: Theme.of(context).textTheme.display2
                 ),
                 Radio(
                     value: "Vegan",
@@ -184,7 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     onChanged: _handleRadioValueChange1),
                 Text(
                   'Vegan',
-                  style: TextStyle(fontSize: 16.0),
+                    style: Theme.of(context).textTheme.display2
                 ),
                 Radio(
                     value: "Neither",
@@ -192,16 +204,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     onChanged: _handleRadioValueChange1),
                 Text(
                   'Neither',
-                  style: TextStyle(fontSize: 16.0),
+                    style: Theme.of(context).textTheme.display2
                 ),
               ],
             )),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text('Location:',
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-              )),
+              style: Theme.of(context).textTheme.display1),
 
           //Dropdown for the location the meal has been eaten
           DropdownButton<String>(
@@ -211,7 +220,7 @@ class _MyHomePageState extends State<MyHomePage> {
             elevation: _elevation,
             underline: Container(
               height: _height,
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).accentColor,
             ),
             onChanged: (String newValue) {
               setState(() {
@@ -222,7 +231,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
-                child: Text(value),
+                child: Text(value,
+                    style: Theme.of(context).textTheme.display2
+                ),
               );
             }).toList(),
           )
@@ -423,14 +434,20 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                         ))),
                 ListTile(
-                  title: Text('Login'),
+                  title: Text(
+                      'Login',
+                      style: Theme.of(context).textTheme.display3
+                  ),
                   onTap: () {
                     Navigator.pop(context); // close drawer
                     Navigator.pushNamed(context, Login.routeName);
                   },
                 ),
                 ListTile(
-                  title: Text('Logout'),
+                  title: Text(
+                      'Logout',
+                      style: Theme.of(context).textTheme.display3
+                  ),
                   onTap:() {
                     auth.signOut();
                     Navigator.pop(context); // close drawer
@@ -438,13 +455,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ),
                 ListTile(
-                  title: Text('Compete'),
+                  title: Text(
+                      'Compete',
+                      style: Theme.of(context).textTheme.display3
+                  ),
                   onTap: () {
                     Navigator.pushNamed(context, Compete.routeName);
                   },
                 ),
                 ListTile(
-                  title: Text('Settings'),
+                  title: Text(
+                      'Settings',
+                      style: Theme.of(context).textTheme.display3
+                  ),
                   onTap: () {
                     //push the settings route to the Navigator
                     Navigator.pushNamed(context, Settings.routeName);

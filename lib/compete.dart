@@ -11,7 +11,7 @@ class Compete extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Compete')),
+      appBar: AppBar(title: Text('Compete', style: TextStyle(color: Theme.of(context).primaryColor,),), backgroundColor: Theme.of(context).accentColor,),
       body: CompetePage(auth: auth),
     );
   }

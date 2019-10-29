@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
           display2: new TextStyle(fontSize: 16, color: Colors.black),
 
           //this style is used for Drawer items
-          display3: new TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+          display3: new TextStyle(fontSize: 16, color: Colors.black,),
 
           //this style is used for buttons in TRACK
           display4: new TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),

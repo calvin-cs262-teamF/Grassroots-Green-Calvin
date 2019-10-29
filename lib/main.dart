@@ -5,12 +5,16 @@ import 'package:grassroots_green/login.dart';
 import 'package:grassroots_green/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// Runs the app.
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  /// Widget that manages app information.
+
+  /// Authenticator with information about authenticated user.
   final BaseAuth auth = new Auth();
 
-  // This widget is the root of your application.
+  /// Returns widget for root of the app.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -88,21 +92,17 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  //Routename sed for Navigation
-  //static const String routeName = "/";
+  /// Homepage Widget
+  ///
+  /// This widget is the homepage of the app, including the "EAT", "LEARN", and "TRACK" sub-pages
+  /// the user can access the other pages from this page.
 
   MyHomePage({Key key, this.title, this.auth}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
+  /// Title displayed in header bar
   final String title;
+
+  /// Information about authenticated user.
   final BaseAuth auth;
 
   @override
@@ -110,18 +110,49 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _mealType = "NULL"; // TODO: set to user's default
+  /// Homepage State
+  ///
+  /// This state contains information about the state of the app,
+  /// including images and interactive features.
 
-  void _handleRadioValueChange1(String value) {
+  /// Authenticator with user information.
+  final BaseAuth auth;
+
+
+  /// Type of meal selected with radio button for meal submission.
+  String _mealType = "NULL";
+  /// Location of meal submitted by user.
+  String _mealLocation = 'Commons';
+  /// Home page sub-page selection. Defaults to EAT
+  String _mainMenuOptions = "EAT";
+
+  /// Size of icons on page
+  static double _iconSize = 24;
+  /// Elevation for dropdown buttons
+  static int _elevation = 16;
+  /// Height of buttons.
+  static double _height = 2;
+
+  /// Creates a new _MyHomePageState object.
+  _MyHomePageState({this.auth}) {
+    _loadSettings();
+  }
+
+  /// Modifies the meal type when value is changed by user.
+  void _handleMealTypeChange(String value) {
     setState(() {
       _mealType = value;
     });
   }
 
+  /// Location of goal progress image. (Temporary)
   String _progressImage = 'assets/goal_progress/overall_prog.png';
+  /// Location of goal progress chart image. (Temporary)
   String _chartImage = 'assets/goal_progress/overall_chart.png';
+  /// Type of goal charts being displayed.
   String _scope = 'Overall';
 
+  /// Sets goal scope to show all meals.
   void _setOverall() {
     setState(() {
       _progressImage = 'assets/goal_progress/overall_prog.png';
@@ -129,6 +160,8 @@ class _MyHomePageState extends State<MyHomePage> {
       _scope = 'Overall';
     });
   }
+
+  /// Sets goal scope to show only vegetarian meals.
   void _setVegetarian() {
     setState(() {
       _progressImage = 'assets/goal_progress/vegetarian_prog.png';
@@ -136,6 +169,8 @@ class _MyHomePageState extends State<MyHomePage> {
       _scope = 'Vegetarian';
     });
   }
+
+  /// Sets goal scope to show only vegan meals.
   void _setVegan() {
     setState(() {
       _progressImage = 'assets/goal_progress/vegan_prog.png';
@@ -144,21 +179,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  static double _iconSize = 24;
-  static int _elevation = 16;
-  static double _height = 2;
-
-  //Default values for Drop Downs
-  String _mealLocation = 'Commons';
-
-  //Default Home page option set to EAT
-  String _mainMenuOptions = "EAT";
-
+  /// Submit form and save to database.
   void _submitForm(String type, String location) async {
     Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').document().setData({'type': type, 'location': location, 'time': FieldValue.serverTimestamp()});
   }
 
-  Column _testbuild() {
+  /// Returns selected sub-page for display.
+  Column _getSubPage() {
     switch (_mainMenuOptions) {
       case 'EAT':{
           return displayEAT();
@@ -175,6 +202,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  /// Returns the EAT column.
   Column displayEAT() {
     return Column(
       children: <Widget>[
@@ -188,7 +216,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Radio(
                     value: "Vegetarian",
                     groupValue: _mealType,
-                    onChanged: _handleRadioValueChange1),
+                    onChanged: _handleMealTypeChange),
                 Text(
                   'Vegetarian',
                   style: Theme.of(context).textTheme.display2
@@ -196,7 +224,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Radio(
                     value: "Vegan",
                     groupValue: _mealType,
-                    onChanged: _handleRadioValueChange1),
+                    onChanged: _handleMealTypeChange),
                 Text(
                   'Vegan',
                     style: Theme.of(context).textTheme.display2
@@ -204,7 +232,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Radio(
                     value: "Neither",
                     groupValue: _mealType,
-                    onChanged: _handleRadioValueChange1),
+                    onChanged: _handleMealTypeChange),
                 Text(
                   'Neither',
                     style: Theme.of(context).textTheme.display2
@@ -256,6 +284,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  /// Returns the LEARN Column.
   Column displayLEARN() {
     return Column(
       children: <Widget>[
@@ -264,6 +293,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  /// Returns the TRACK Column.
   Column displayTRACK() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -330,6 +360,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  /// Selects the EAT page for display.
   void _displayEat() {
     setState(() {
       _loadSettings(); // TODO: change to update as soon as settings are saved
@@ -337,25 +368,21 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  /// Selects the LEARN page for display.
   void _displayLearn() {
     setState(() {
       _mainMenuOptions = "LEARN";
     });
   }
 
+  /// Selects the TRACK page for display.
   void _displayTrack() {
     setState(() {
       _mainMenuOptions = "TRACK";
     });
   }
 
-
-  final BaseAuth auth;
-
-  _MyHomePageState({this.auth}) {
-    _loadSettings();
-  }
-
+  /// Loads default values from settings for EAT page.
   void _loadSettings() {
     _getUserData().then( (data) {
       setState(() {
@@ -371,11 +398,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  /// Gets user data from Firestore.
   Future<DocumentSnapshot> _getUserData() async {
     return Firestore.instance.collection('users').document(await auth.getCurrentUser()).get();
   }
 
 
+  /// Builds the main page.
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -387,11 +416,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
         appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-
-          // widget.title resulted in errors on compile for some reason, so
-          // title is hardcoded for now
           backgroundColor: Theme.of(context).accentColor,
           title: Text(
               'Grassroots Green',
@@ -535,7 +559,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ],
                   ),
-                  new Container(child: _testbuild(),)
+                  new Container(child: _getSubPage(),)
                 ]
             )));
   }

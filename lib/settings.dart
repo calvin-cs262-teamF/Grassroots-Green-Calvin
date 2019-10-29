@@ -3,58 +3,63 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grassroots_green/auth.dart';
 
 class Settings extends StatelessWidget {
-  Settings({this.auth});
+  /// Settings page of the app.
+
+  /// Authenticator with user information.
   final BaseAuth auth;
 
-  //Routename used for Navigation
+  /// Constructor for Settings.
+  Settings({this.auth});
+
+  /// Route name for navigation to settings page
   static const String routeName = "/settings";
 
+  /// Builds the Settings page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text('Settings', style: TextStyle(color: Theme.of(context).primaryColor,),), backgroundColor: Theme.of(context).accentColor,),
-        body: MyStatefulWidget(auth: auth),
+        body: SettingsStatefulWidget(auth: auth),
     );
   }
 }
 
-class MyStatefulWidget extends StatefulWidget {
+class SettingsStatefulWidget extends StatefulWidget {
+  /// StatefulWidget of the Settings page
+
+  /// Authenticator with user information
   final BaseAuth auth;
 
-  MyStatefulWidget({Key key, this.auth}) : super(key: key);
+  /// Constructor for settings StatefulWidget.
+  SettingsStatefulWidget({Key key, this.auth}) : super(key: key);
 
+  /// Creates the state for Settings.
   @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState(auth: auth);
+  _SettingsStatefulWidgetState createState() => _SettingsStatefulWidgetState(auth: auth);
 }
 
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
+  /// State of the Settings page.
 
-  // Default settings values
-  String _location = "Other";
-  String _mealType = "Vegan";
-  int _mealsPerDay = 3;
-
-  //function to handle the radio value change
-  void _handleLocationValueChange(String value) {
-    setState(() {
-      _location = value;
-    });
-  }
-
-  void _handleMealTypeChange(String value) {
-    setState(() {
-      _mealType = value;
-    });
-  }
-  // authentication parameter
+  /// Authenticator with user information.
   final BaseAuth auth;
 
-  //Static parameters for Drop Downs
+  /// Location selected for default setting.
+  String _location = "Other";
+  /// Meal type selected for default setting.
+  String _mealType = "Vegan";
+  /// Meals per day selected for default setting.
+  int _mealsPerDay = 3;
+
+  /// Icon size for drop down menus.
   static double _iconSize = 24;
+  /// Elevation for drop down menus.
   static int _elevation = 16;
+  /// Height for drop down menus.
   static double _height = 2;
 
-  _MyStatefulWidgetState({this.auth}) {
+  /// Constructor for Setting's state.
+  _SettingsStatefulWidgetState({this.auth}) {
     // set settings to stored data
     _getUserDocument().then( (data) {
       setState(() {
@@ -73,6 +78,21 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     });
   }
 
+  /// Handles change in _location.
+  void _handleLocationValueChange(String value) {
+    setState(() {
+      _location = value;
+    });
+  }
+
+  /// Handles change in _mealType
+  void _handleMealTypeChange(String value) {
+    setState(() {
+      _mealType = value;
+    });
+  }
+
+  /// gets DocumentSnapshot with the data belonging to the logged in user.
   Future<DocumentSnapshot> _getUserDocument() async {
     DocumentSnapshot doc = await auth.getUserData();
     if(doc == null) {
@@ -81,6 +101,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     return (await auth.getUserData());
   }
 
+  /// Builds the Settings page Scaffold for display.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -160,8 +181,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     );
   }
 
+  /// Saves the settings to Firestore.
   void _saveSettings() async {
-    // save meals per day, default location, and default meal type
     Firestore.instance.collection('users').document(await auth.getCurrentUser()).updateData({
       'mealsPerDay': _mealsPerDay,
       'defaultLocation': _location,

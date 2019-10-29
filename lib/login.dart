@@ -3,11 +3,17 @@ import 'package:grassroots_green/auth.dart';
 import 'package:email_validator/email_validator.dart';
 
 class Login extends StatelessWidget {
+  /// Login page of the app.
+
+  /// Constructor for the login page.
   Login({this.auth});
 
+  /// Route name for navigation to the login page.
   static const String routeName = "/login";
+  /// Authenticator with user data.
   final BaseAuth auth;
 
+  /// Builds the Scaffold for the login page.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,32 +24,45 @@ class Login extends StatelessWidget {
 }
 
 class LoginStatefulWidget extends StatefulWidget {
+  /// Login page's Stateful Widget.
+
+  /// Constructor for the LoginStatefulWidget
   LoginStatefulWidget({Key key, this.auth}) : super(key: key);
 
+  /// Authenticator with user data.
   final BaseAuth auth;
 
+  /// Creates the state of the login page.
   @override
   _LoginStatefulWidgetState createState() => _LoginStatefulWidgetState();
 
-  void onSignedIn() {
-    // TODO: define. Specifically, make it go back to home
+  /// Post-sign in action.
+  void onSignedIn(BuildContext context) {
+    Navigator.pop(context);
   }
 }
 
+/// Enum for login or create account mode
 enum FormMode { LOGIN, SIGNUP }
 
 class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
+  /// State for Login page.
 
-  //Default values for Drop Downs
+  /// Key for login form.
   final _formKey = GlobalKey<FormState>();
+  /// Error message on login.
   String _errorMessage = "";
+  /// Mode of login form, either LOGIN or SIGNUP.
   FormMode _formMode = FormMode.LOGIN;
-  bool _isLoading = true;
+  /// If app is running on iOS.
   bool _isIos;
+  /// Email for user entry.
   String _email = "";
+  /// Password for user entry.
   String _password = "";
 
 
+  /// Builds the Scaffold of the login page.
   @override
   Widget build(BuildContext context) {
 
@@ -128,6 +147,7 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
     );
   }
 
+  /// Toggles form to be the sign up form.
   void _changeFormToSignUp() {
     _formKey.currentState.reset();
     _errorMessage = "";
@@ -136,6 +156,7 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
     });
   }
 
+  /// Toggles form to be the login form.
   void _changeFormToLogin() {
     _formKey.currentState.reset();
     _errorMessage = "";
@@ -144,10 +165,13 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
     });
   }
 
+  /// Validates and submits the login form
+  ///
+  /// If currently in LOGIN state, will attempt to log the user in.
+  /// If currently in SIGNUP state, will attempt to create a new user account.
   _validateAndSubmit() async {
     setState(() {
       _errorMessage = "";
-      _isLoading = true;
     });
     if (_validateAndSave()) {
       String userId = "";
@@ -163,13 +187,11 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
           print('Signed up user: $userId');
         }
         if (userId.length > 0 && userId != null) {
-          widget.onSignedIn();
-          Navigator.pop(context);
+          widget.onSignedIn(context);
         }
       } catch (e) {
         print('Error: $e');
         setState(() {
-          _isLoading = false;
           if (_isIos) {
             _errorMessage = e.details;
           } else
@@ -179,7 +201,9 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
     }
   }
 
-  // Check if form is valid before perform login or signup
+  /// Checks if form is valid before perform login or signup.
+  ///
+  /// Confirms that email is a valid email address.
   bool _validateAndSave() {
     final form = _formKey.currentState;
     if (form.validate()) {
@@ -189,6 +213,9 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
     return false;
   }
 
+  /// Displays an error messages from user login.
+  ///
+  /// Displays errors regarding account existence or invalid credentials.
   Widget _showErrorMessage() {
     if (_errorMessage.length > 0 && _errorMessage != null) {
       return new Text(

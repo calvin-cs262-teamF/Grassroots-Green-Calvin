@@ -61,7 +61,10 @@ class MyApp extends StatelessWidget {
           display2: new TextStyle(fontSize: 16, color: Colors.black),
 
           //this style is used for Drawer items
-          display3: new TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold)
+          display3: new TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+
+          //this style is used for buttons in TRACK
+          display4: new TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
 
           //All available theme values are listed below:
           //display4
@@ -279,20 +282,18 @@ class _MyHomePageState extends State<MyHomePage> {
         Container(
           margin: EdgeInsets.all(10.0),
           alignment: Alignment(0.0, 0.0),
-          child: Text('Progress Towards Goal',
-            style: TextStyle(
-              fontSize: 20.0,
-            ),
+          child: Text(
+            'Progress Towards Goal',
+            style: Theme.of(context).textTheme.display1,
           ),
         ),
         Image.asset(_progressImage),
         Container(
           margin: EdgeInsets.all(10.0),
           alignment: Alignment(0.0, 0.0),
-          child: Text('Meals by Day',
-            style: TextStyle(
-              fontSize: 20.0,
-            ),
+          child: Text(
+            'Meals by Day',
+            style: Theme.of(context).textTheme.display1,
           ),
         ),
         Image.asset(_chartImage),
@@ -300,16 +301,28 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             RaisedButton(
+                color: Theme.of(context).accentColor,
                 onPressed: _setOverall,
-                child: Text('Overall')
+                child: Text(
+                    'Overall',
+                    style: Theme.of(context).textTheme.display4,
+                )
             ),
             RaisedButton(
+                color: Theme.of(context).accentColor,
                 onPressed: _setVegetarian,
-                child: Text('Vegetarian')
+                child: Text(
+                    'Vegetarian',
+                    style: Theme.of(context).textTheme.display4,
+                )
             ),
             RaisedButton(
+                color: Theme.of(context).accentColor,
                 onPressed: _setVegan,
-                child: Text('Vegan')
+                child: Text(
+                    'Vegan',
+                    style: Theme.of(context).textTheme.display4,
+                )
             ),
           ],
         )

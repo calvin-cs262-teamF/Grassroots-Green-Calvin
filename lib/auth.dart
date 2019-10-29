@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 
 abstract class BaseAuth {
   Future<String> signIn(String email, String password);
@@ -8,6 +9,7 @@ abstract class BaseAuth {
   Future<String> getCurrentUser();
   Future<String> getUserName();
   Future<void> signOut();
+  Future<DocumentSnapshot> getUserData();
 }
 
 class Auth implements BaseAuth {
@@ -20,6 +22,14 @@ class Auth implements BaseAuth {
     return user.uid;
   }
 
+  Future<DocumentSnapshot> getUserData() async { // TODO: debug?? may need try {} and catch {}
+    if(await getCurrentUser() == null) {
+      return null;
+    } else {
+      return Firestore.instance.collection('users').document(await getCurrentUser()).get();
+    }
+  }
+
   Future<String> signUp(String email, String password) async {
     FirebaseUser user = (await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password)).user;
     Firestore.instance.collection('users').document(user.uid).setData({'email': email});
@@ -28,12 +38,20 @@ class Auth implements BaseAuth {
 
   Future<String> getCurrentUser() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
-    return user.uid;
+    if(user == null) {
+      return null;
+    } else {
+      return user.uid;
+    }
   }
 
   Future<String> getUserName() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
-    return user.email;
+    if(user == null) {
+      return null;
+    } else {
+      return user.email;
+    }
   }
 
   Future<void> signOut() async {

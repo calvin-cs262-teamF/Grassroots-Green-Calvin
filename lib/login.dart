@@ -154,6 +154,9 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
       try {
         if (_formMode == FormMode.LOGIN) {
           userId = await widget.auth.signIn(_email, _password);
+          if (userId == null) {
+            return;
+          }
           print('Signed in: $userId');
         } else {
           userId = await widget.auth.signUp(_email, _password);

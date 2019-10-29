@@ -154,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
   //Default Home page option set to EAT
   String _mainMenuOptions = "EAT";
 
-  void _SubmitForm(String type, String location) async {
+  void _submitForm(String type, String location) async {
     Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').document().setData({'type': type, 'location': location, 'time': FieldValue.serverTimestamp()});
   }
 
@@ -244,7 +244,7 @@ class _MyHomePageState extends State<MyHomePage> {
         RaisedButton(
           color: Theme.of(context).accentColor,
           onPressed: () {
-            _SubmitForm(_mealType, _mealLocation);
+            _submitForm(_mealType, _mealLocation);
           },
           child: Text('Submit',
             style: TextStyle(
@@ -332,6 +332,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _displayEat() {
     setState(() {
+      _loadSettings(); // TODO: change to update as soon as settings are saved
       _mainMenuOptions = "EAT";
     });
   }
@@ -352,10 +353,20 @@ class _MyHomePageState extends State<MyHomePage> {
   final BaseAuth auth;
 
   _MyHomePageState({this.auth}) {
-    _getUserData().then( (data) { // TODO: make more error resistant
+    _loadSettings();
+  }
+
+  void _loadSettings() {
+    _getUserData().then( (data) {
       setState(() {
-        _mealLocation = data['defaultLocation'];
-        _mealType = data['defaultMealType'];
+        if(data.exists) {
+          if(data['defaultLocation'] != null) {
+            _mealLocation = data['defaultLocation'];
+          }
+          if(data['defaultMealType'] != null) {
+            _mealType = data['defaultMealType'];
+          }
+        }
       });
     });
   }
@@ -482,6 +493,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       style: Theme.of(context).textTheme.display3
                   ),
                   onTap: () {
+                    Navigator.pop(context); // close drawer
                     //push the settings route to the Navigator
                     Navigator.pushNamed(context, Settings.routeName);
                   },

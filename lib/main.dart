@@ -35,21 +35,21 @@ class MyApp extends StatelessWidget {
       //All theme data will be stored here
       theme: ThemeData(
         // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the consoleEw where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted..
 
-        primaryColor: Colors.green,
-        accentColor: Colors.green[800],
+        primaryColor: Colors.white,
+        accentColor: Colors.green,
+        buttonColor: Colors.green[800],
+
         fontFamily: 'Roboto',
 
         textTheme: TextTheme(
+
+          //for some reason if I call Theme.of(context).accentColor for the text, it renders the 'EAT', 'LEARN', 'TRACK' text as gray
           button: new TextStyle(fontSize: 22, color: Colors.white),
+          //for some reason if I call Theme.of(context).primaryColor for the title, it renders the 'Record a Meal' text as blue
+          title: new TextStyle(fontSize: 26, color: Colors.green, fontWeight: FontWeight.bold),
+          //this style is used for login text with firestore in the drawer
+          caption: new TextStyle(fontSize: 20, color: Colors.white),
 
           //All available theme values are listed below:
           //display4
@@ -63,6 +63,7 @@ class MyApp extends StatelessWidget {
           //body1
           //caption
           //button
+
         ),
       ),
       // home: MyHomePage(title: 'Welcome to Grassroots Green!'),
@@ -163,11 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Column(
       children: <Widget>[
         Text('Record a Meal:',
-            style: TextStyle(
-              color: Colors.green,
-              fontSize: 26,
-              fontWeight: FontWeight.bold,
-            )),
+            style: Theme.of(context).textTheme.title),
         Padding(
             padding: const EdgeInsets.all(10.0),
             child: Row(
@@ -214,7 +211,7 @@ class _MyHomePageState extends State<MyHomePage> {
             elevation: _elevation,
             underline: Container(
               height: _height,
-              color: Colors.green,
+              color: Theme.of(context).primaryColor,
             ),
             onChanged: (String newValue) {
               setState(() {
@@ -231,10 +228,15 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ]),
         RaisedButton(
+          color: Theme.of(context).accentColor,
           onPressed: () {
             _SubmitForm(_mealType, _mealLocation);
           },
-          child: Text('Submit'),
+          child: Text('Submit',
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+            ),
+          )
         )
       ],
     );
@@ -355,7 +357,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
           // widget.title resulted in errors on compile for some reason, so
           // title is hardcoded for now
-          title: Text('Grassroots Green'),
+          backgroundColor: Theme.of(context).accentColor,
+          title: Text(
+              'Grassroots Green',
+               style: TextStyle(
+                   color: Theme.of(context).primaryColor,
+              ),
+          ),
         ),
         drawer: Drawer(
             // Now we add children to populate the Drawer
@@ -368,7 +376,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 DrawerHeader(
                     decoration: BoxDecoration(
-                      color: Colors.green,
+                      color: Theme.of(context).accentColor,
                     ),
                     child: Container(
                         child: Column(
@@ -383,28 +391,31 @@ class _MyHomePageState extends State<MyHomePage> {
                                   AsyncSnapshot<String> snapshot) {
                                 switch (snapshot.connectionState) {
                                   case ConnectionState.none:
-                                    return new Text('Press button to start');
+                                    return new Text(
+                                        'Press button to start',
+                                        style: Theme.of(context).textTheme.caption
+                                    );
                                   case ConnectionState.waiting:
-                                    return new Text('Awaiting result...');
+                                    return new Text(
+                                        'Awaiting result...',
+                                        style: Theme.of(context).textTheme.caption
+                                    );
                                   default:
                                     if (snapshot.hasError)
                                       return new Text(
                                         'Not signed in.',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 20),
+                                        style: Theme.of(context).textTheme.caption
                                       );
                                     else if (snapshot.data == null ||
                                         snapshot.data == "")
                                       return new Text(
                                         'User',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 20),
+                                        style: Theme.of(context).textTheme.caption
                                       );
                                     else
                                       return new Text(
                                         '${snapshot.data}',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 20),
+                                          style: Theme.of(context).textTheme.caption
                                       );
                                 }
                               },
@@ -450,7 +461,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Expanded(
                         child: FlatButton(
                           padding: const EdgeInsets.all(18),
-                          color: _mainMenuOptions == "EAT" ? Theme.of(context).accentColor :Theme.of(context).primaryColor,
+                          color: _mainMenuOptions == "EAT" ? Theme.of(context).buttonColor :Theme.of(context).accentColor,
                           onPressed: (){ _displayEat();},
                           child: new Text("EAT",
                               style: Theme.of(context).textTheme.button),
@@ -459,7 +470,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Expanded(
                           child: FlatButton(
                             padding: const EdgeInsets.all(18),
-                            color:_mainMenuOptions == "LEARN" ? Theme.of(context).accentColor :Theme.of(context).primaryColor,
+                            color:_mainMenuOptions == "LEARN" ? Theme.of(context).buttonColor :Theme.of(context).accentColor,
                             onPressed: (){ _displayLearn();},
                             child: new Text("LEARN",
                                 style: Theme.of(context).textTheme.button),
@@ -468,7 +479,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Expanded(
                           child: FlatButton(
                             padding: const EdgeInsets.all(18),
-                            color:_mainMenuOptions == "TRACK" ? Theme.of(context).accentColor :Theme.of(context).primaryColor,
+                            color:_mainMenuOptions == "TRACK" ? Theme.of(context).buttonColor :Theme.of(context).accentColor,
                             onPressed: (){ _displayTrack();},
                             child: new Text("TRACK",
                                 style: Theme.of(context).textTheme.button),

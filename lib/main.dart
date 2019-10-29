@@ -31,6 +31,8 @@ class MyApp extends StatelessWidget {
       },
 
       title: 'Grassroots Green',
+
+      //All theme data will be stored here
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -41,7 +43,27 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted..
-        primarySwatch: Colors.green,
+
+        primaryColor: Colors.green,
+        accentColor: Colors.green[800],
+        fontFamily: 'Roboto',
+
+        textTheme: TextTheme(
+          button: new TextStyle(fontSize: 22, color: Colors.white),
+
+          //All available theme values are listed below:
+          //display4
+          //display3
+          //display2
+          //display1
+          //headline
+          //title
+          //subhead
+          //body2
+          //body1
+          //caption
+          //button
+        ),
       ),
       // home: MyHomePage(title: 'Welcome to Grassroots Green!'),
       home: MyHomePage(auth: auth),
@@ -303,8 +325,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final BaseAuth auth;
 
-  final double _buttonMenuSize = 22;
-
   _MyHomePageState({this.auth}) {
     _getUserData().then( (data) { // TODO: make more error resistant
       setState(() {
@@ -430,31 +450,28 @@ class _MyHomePageState extends State<MyHomePage> {
                       Expanded(
                         child: FlatButton(
                           padding: const EdgeInsets.all(18),
-                          textColor: Colors.white,
-                          color: _mainMenuOptions == "EAT" ? Colors.green[800] : Colors.green,
+                          color: _mainMenuOptions == "EAT" ? Theme.of(context).accentColor :Theme.of(context).primaryColor,
                           onPressed: (){ _displayEat();},
                           child: new Text("EAT",
-                              style: TextStyle(fontSize: _buttonMenuSize)),
+                              style: Theme.of(context).textTheme.button),
                         )
                       ),
                       Expanded(
                           child: FlatButton(
                             padding: const EdgeInsets.all(18),
-                            textColor: Colors.white,
-                            color:_mainMenuOptions == "LEARN" ? Colors.green[800] :  Colors.green,
+                            color:_mainMenuOptions == "LEARN" ? Theme.of(context).accentColor :Theme.of(context).primaryColor,
                             onPressed: (){ _displayLearn();},
                             child: new Text("LEARN",
-                                style: TextStyle(fontSize: _buttonMenuSize)),
+                                style: Theme.of(context).textTheme.button),
                           )
                       ),
                       Expanded(
                           child: FlatButton(
                             padding: const EdgeInsets.all(18),
-                            textColor: Colors.white,
-                            color:_mainMenuOptions == "TRACK" ? Colors.green[800] :  Colors.green,
+                            color:_mainMenuOptions == "TRACK" ? Theme.of(context).accentColor :Theme.of(context).primaryColor,
                             onPressed: (){ _displayTrack();},
                             child: new Text("TRACK",
-                                style: TextStyle(fontSize: _buttonMenuSize)),
+                                style: Theme.of(context).textTheme.button),
                           )
                       ),
                     ],

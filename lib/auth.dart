@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
 abstract class BaseAuth {
+  /// Base class for an authentication method.
   Future<String> signIn(String email, String password);
   Future<String> signUp(String email, String password);
   Future<String> getCurrentUser();
@@ -13,8 +14,12 @@ abstract class BaseAuth {
 }
 
 class Auth implements BaseAuth {
+  /// Authenticator for email sign-in.
+
+  /// Access to the Firebase authenticator.
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
+  /// Signs the user in using Firebase.
   Future<String> signIn(String email, String password) async {
     FirebaseUser user = (await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password)).user;
     // TODO: only save email if it hasn't been set before (although this does work correctly)
@@ -22,7 +27,8 @@ class Auth implements BaseAuth {
     return user.uid;
   }
 
-  Future<DocumentSnapshot> getUserData() async { // TODO: debug?? may need try {} and catch {}
+  /// Gets data for the Firebase authenticated user.
+  Future<DocumentSnapshot> getUserData() async {
     if(await getCurrentUser() == null) {
       return null;
     } else {
@@ -30,12 +36,14 @@ class Auth implements BaseAuth {
     }
   }
 
+  /// signs a new user up using Firebase.
   Future<String> signUp(String email, String password) async {
     FirebaseUser user = (await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password)).user;
     Firestore.instance.collection('users').document(user.uid).setData({'email': email});
     return user.uid;
   }
 
+  /// Gets the current user's code for Firebase user data access.
   Future<String> getCurrentUser() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     if(user == null) {
@@ -45,6 +53,9 @@ class Auth implements BaseAuth {
     }
   }
 
+  /// Gets the display name for the user.
+  ///
+  /// The user's name is currently displayed as their email address.
   Future<String> getUserName() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     if(user == null) {
@@ -54,6 +65,7 @@ class Auth implements BaseAuth {
     }
   }
 
+  /// Signs the current user out from Firebase authentication.
   Future<void> signOut() async {
     return _firebaseAuth.signOut();
   }

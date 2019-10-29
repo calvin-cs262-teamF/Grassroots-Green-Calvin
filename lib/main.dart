@@ -4,6 +4,7 @@ import 'package:grassroots_green/settings.dart';
 import 'package:grassroots_green/login.dart';
 import 'package:grassroots_green/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:grassroots_green/drawer.dart';
 
 /// Runs the app.
 void main() => runApp(MyApp());
@@ -13,6 +14,21 @@ class MyApp extends StatelessWidget {
 
   /// Authenticator with information about authenticated user.
   final BaseAuth auth = new Auth();
+
+  /// Gets the name of the Login route.
+  static String getLoginRouteName() {
+    return Login.routeName;
+  }
+
+  /// Gets the name of the Settings route.
+  static String getSettingsRouteName() {
+    return Settings.routeName;
+  }
+
+  /// Gets the name of the Compete route.
+  static String getCompeteRouteName() {
+    return Compete.routeName;
+  }
 
   /// Returns widget for root of the app.
   @override
@@ -424,106 +440,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
           ),
         ),
-        drawer: Drawer(
-            // Now we add children to populate the Drawer
-
-            // Add a ListView to the drawer. This ensures the user can scroll
-            // through the options in the drawer if there isn't enough vertical
-            // space to fit everything.
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor,
-                    ),
-                    child: Container(
-                        child: Column(
-                          children: <Widget>[
-                            Material(
-                                child: Image.asset(
-                                    'assets/Grassroots_Green_Logo_16x9.PNG')),
-                            new FutureBuilder<String>(
-                              future: auth.getUserName(),
-                              // a Future<String> or null
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<String> snapshot) {
-                                switch (snapshot.connectionState) {
-                                  case ConnectionState.none:
-                                    return new Text(
-                                        'Press button to start',
-                                        style: Theme.of(context).textTheme.caption
-                                    );
-                                  case ConnectionState.waiting:
-                                    return new Text(
-                                        'Awaiting result...',
-                                        style: Theme.of(context).textTheme.caption
-                                    );
-                                  default:
-                                    if (snapshot.hasError)
-                                      return new Text(
-                                        'Not signed in.',
-                                        style: Theme.of(context).textTheme.caption
-                                      );
-                                    else if (snapshot.data == null ||
-                                        snapshot.data == "")
-                                      return new Text(
-                                        'User',
-                                        style: Theme.of(context).textTheme.caption
-                                      );
-                                    else
-                                      return new Text(
-                                        '${snapshot.data}',
-                                          style: Theme.of(context).textTheme.caption
-                                      );
-                                }
-                              },
-                            ),
-                          ],
-                        ))),
-                ListTile(
-                  title: Text(
-                      'Login',
-                      style: Theme.of(context).textTheme.display3
-                  ),
-                  onTap: () {
-                    Navigator.pop(context); // close drawer
-                    Navigator.pushNamed(context, Login.routeName);
-                  },
-                ),
-                ListTile(
-                  title: Text(
-                      'Logout',
-                      style: Theme.of(context).textTheme.display3
-                  ),
-                  onTap:() {
-                    auth.signOut();
-                    Navigator.pop(context); // close drawer
-                    Navigator.pushNamed(context, Login.routeName);
-                  },
-                ),
-                ListTile(
-                  title: Text(
-                      'Compete',
-                      style: Theme.of(context).textTheme.display3
-                  ),
-                  onTap: () {
-                    Navigator.pushNamed(context, Compete.routeName);
-                  },
-                ),
-                ListTile(
-                  title: Text(
-                      'Settings',
-                      style: Theme.of(context).textTheme.display3
-                  ),
-                  onTap: () {
-                    Navigator.pop(context); // close drawer
-                    //push the settings route to the Navigator
-                    Navigator.pushNamed(context, Settings.routeName);
-                  },
-                ),
-              ],
-            )),
+        drawer: GGDrawer.getDrawer(context, auth),
         body: Center(
             child: Column(
                 children: <Widget>[

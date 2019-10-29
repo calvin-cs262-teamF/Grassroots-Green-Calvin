@@ -56,9 +56,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   _MyStatefulWidgetState({this.auth}) {
     // set settings to stored data
-    _getUserData().then( (data) {
+    _getUserDocument().then( (data) {
       setState(() {
-        if (data.exists) {
+        if (data != null && data.exists) {
           if (data['defaultLocation'] != null) {
             _location = data['defaultLocation'];
           }
@@ -73,8 +73,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     });
   }
 
-  Future<DocumentSnapshot> _getUserData() async {
-    return Firestore.instance.collection('users').document(await auth.getCurrentUser()).get();
+  Future<DocumentSnapshot> _getUserDocument() async {
+    DocumentSnapshot doc = await auth.getUserData();
+    if(doc == null) {
+      return null;
+    }
+    return (await auth.getUserData());
   }
 
   @override

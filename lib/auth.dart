@@ -9,6 +9,7 @@ abstract class BaseAuth {
   Future<String> getCurrentUser();
   Future<String> getUserName();
   Future<void> signOut();
+  Future<DocumentSnapshot> getUserData();
 }
 
 class Auth implements BaseAuth {
@@ -19,6 +20,14 @@ class Auth implements BaseAuth {
     // TODO: only save email if it hasn't been set before (although this does work correctly)
     Firestore.instance.collection('users').document(user.uid).updateData({'email': email});
     return user.uid;
+  }
+
+  Future<DocumentSnapshot> getUserData() async { // TODO: debug?? may need try {} and catch {}
+    if(await getCurrentUser() == null) {
+      return null;
+    } else {
+      return Firestore.instance.collection('users').document(await getCurrentUser()).get();
+    }
   }
 
   Future<String> signUp(String email, String password) async {

@@ -12,7 +12,7 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Settings')),
+        appBar: AppBar(title: Text('Settings', style: TextStyle(color: Theme.of(context).primaryColor,),), backgroundColor: Theme.of(context).accentColor,),
         body: MyStatefulWidget(auth: auth),
     );
   }
@@ -86,7 +86,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Meals per Day:', style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold,)),
+                  Text('Meals per Day:', style: Theme.of(context).textTheme.display1),
                   Padding(padding: const EdgeInsets.symmetric(horizontal: 10.0)),
                   //Dropdown for how many meals per day
                   DropdownButton<String>(
@@ -96,7 +96,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     elevation: _elevation,
                     underline: Container(
                       height: _height,
-                      color: Colors.green,
+                      color: Theme.of(context).accentColor,
                     ),
                     onChanged: (String newValue){
                       setState(() {
@@ -114,40 +114,40 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   ),
                 ]
             ),
-            Text('Default Location:', style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold,)),
+            Text('Default Location:', style: Theme.of(context).textTheme.display1),
             Padding( padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 1.0,),
               child: Row( mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Radio( value: "Commons", groupValue: _location, onChanged: _handleLocationValueChange),
-                  Text('Commons', style: TextStyle(fontSize: 16.0),),
+                  Text('Commons', style: Theme.of(context).textTheme.display2,),
                   Radio( value: "Knollcrest", groupValue: _location, onChanged: _handleLocationValueChange),
-                  Text('Knollcrest', style: TextStyle(fontSize: 16.0),),
+                  Text('Knollcrest', style: Theme.of(context).textTheme.display2,),
                 ],),),
             Padding( padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 1.0,),
                 child: Row( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
                   Radio( value: "Home", groupValue: _location, onChanged: _handleLocationValueChange),
-                  Text('Home', style: TextStyle(fontSize: 16.0),),
+                  Text('Home', style: Theme.of(context).textTheme.display2,),
                   Radio( value: "Other", groupValue: _location, onChanged: _handleLocationValueChange),
-                  Text('Elsewhere', style: TextStyle(fontSize: 16.0),),
+                  Text('Elsewhere', style: Theme.of(context).textTheme.display2),
                 ],)),
-            Text('Default Meal Type', style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold,)),
+            Text('Default Meal Type', style: Theme.of(context).textTheme.display1,),
             Padding( padding: const EdgeInsets.all(10.0),
                 child: Row( mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Radio( value: "Vegetarian", groupValue: _mealType, onChanged: _handleMealTypeChange),
-                    Text('Vegetarian', style: TextStyle(fontSize: 16.0),),
+                    Text('Vegetarian', style: Theme.of(context).textTheme.display2,),
                     Radio( value: "Vegan", groupValue: _mealType, onChanged: _handleMealTypeChange),
-                    Text('Vegan', style: TextStyle(fontSize: 16.0),),
+                    Text('Vegan', style: Theme.of(context).textTheme.display2,),
                     Radio( value: "Neither", groupValue: _mealType, onChanged: _handleMealTypeChange),
-                    Text('Neither', style: TextStyle(fontSize: 16.0),),
+                    Text('Neither', style: Theme.of(context).textTheme.display2,),
                   ],)),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 RaisedButton(
-                  child: new Text("Save Changes", style:TextStyle( color: Colors.green, fontWeight: FontWeight.bold,)),
+                  child: new Text("Save Changes", style:TextStyle( color: Theme.of(context).primaryColor,)),
                   onPressed: () { _saveSettings(); },
-                  color: Colors.white,
+                  color: Theme.of(context).accentColor,
                 ),
               ]
             ),

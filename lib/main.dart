@@ -185,7 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// Returns selected sub-page for display.
-  Column _getSubPage() {
+  Container _getSubPage() {
     switch (_mainMenuOptions) {
       case 'EAT':{
           return displayEAT();
@@ -203,8 +203,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// Returns the EAT column.
-  Column displayEAT() {
-    return Column(
+  Container displayEAT() {
+    return Container(
+      child: Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text('Record a Meal:',
             style: Theme.of(context).textTheme.title),
@@ -281,21 +284,29 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         )
       ],
+    )
+        )
     );
   }
 
   /// Returns the LEARN Column.
-  Column displayLEARN() {
-    return Column(
-      children: <Widget>[
-        Text('LEARN')
-      ],
+  Container displayLEARN() {
+    return Container(
+    child: Center(
+        child: Column(
+        children: <Widget>[
+          Text('LEARN')
+    ],
+    )
+    )
     );
   }
 
   /// Returns the TRACK Column.
-  Column displayTRACK() {
-    return Column(
+  Container displayTRACK() {
+    return Container(
+      child: Center(
+        child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
@@ -357,6 +368,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         )
       ],
+    )
+      )
     );
   }
 

@@ -188,17 +188,17 @@ class _MyHomePageState extends State<MyHomePage> {
   Container _getSubPage() {
     switch (_mainMenuOptions) {
       case 'EAT':{
-          return displayEAT();
-        }
+        return displayEAT();
+      }
       case 'LEARN':{
-          return displayLEARN();
-        }
+        return displayLEARN();
+      }
       case 'TRACK':{
-            return displayTRACK();
-        }
+        return displayTRACK();
+      }
       default:{
-          return displayEAT();
-        }
+        return displayEAT();
+      }
     }
   }
 
@@ -206,9 +206,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Container displayEAT() {
     return Container(
         child: Padding(
-        padding:  EdgeInsets.symmetric(vertical: 152.0),                //TODO: This padding only moves the form down a bit. We want it centered on the page.
-            child: Padding(                                             //TODO: This is just a cosmetic thing, but it would make the app look nicer.
-                padding:  EdgeInsets.symmetric(horizontal: 10.0),
+            padding:  EdgeInsets.symmetric(vertical: 152.0),                //TODO: This padding only moves the form down a bit. We want it centered on the page.
+            child: Padding(                                                 //TODO: This is just a cosmetic thing, but it would make the app look nicer.
+                padding:  EdgeInsets.symmetric(horizontal: 10.0),           //TODO: I tried using 'crossAxisAlignment: CrossAxisAlignment.center here, but it didn't work. IDK why
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -253,28 +253,28 @@ class _MyHomePageState extends State<MyHomePage> {
                               setState(() {
                                 _mealLocation = newValue;
                               });
-                              },
+                            },
                             items: <String>['Commons', 'Knollcrest', 'Home', 'Other']
                                 .map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value,
-                                        style: Theme.of(context).textTheme.display2),
-                                  );
-                                }).toList(),
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value,
+                                    style: Theme.of(context).textTheme.display2),
+                              );
+                            }).toList(),
                           )
                       )
                     ]),
-                ///the button to submit the record of the eaten meal
-                   Padding(padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
-                       child: RaisedButton(
-                           color: Theme.of(context).accentColor,
-                           onPressed: () { _submitForm(_mealType, _mealLocation); },
-                           child: Text('Submit',
-                             style: TextStyle( color: Theme.of(context).primaryColor, ),
-                           )
-                       )
-                   )
+                    ///the button to submit the record of the eaten meal
+                    Padding(padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+                        child: RaisedButton(
+                            color: Theme.of(context).accentColor,
+                            onPressed: () { _submitForm(_mealType, _mealLocation); },
+                            child: Text('Submit',
+                              style: TextStyle( color: Theme.of(context).primaryColor, ),
+                            )
+                        )
+                    )
                   ],
                 )
             )
@@ -298,69 +298,69 @@ class _MyHomePageState extends State<MyHomePage> {
   Container displayTRACK() {
     return Container(
         child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.all(20.0),
-          alignment: Alignment(0.0, 0.0),
-          child: Text(_scope,
-            style: TextStyle(
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.green,
-            ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0,),
-          alignment: Alignment(0.0, 0.0),
-          child: Text(
-            'Progress Towards Goal',
-            style: Theme.of(context).textTheme.display1,
-          ),
-        ),
-        Image.asset(_progressImage),
-        Container(
-          margin: EdgeInsets.all(10.0),
-          alignment: Alignment(0.0, 0.0),
-          child: Text(
-            'Meals by Day',
-            style: Theme.of(context).textTheme.display1,
-          ),
-        ),
-        Image.asset(_chartImage),
-        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RaisedButton(
-                color: Theme.of(context).accentColor,
-                onPressed: _setOverall,
-                child: Text(
-                    'Overall',
-                    style: Theme.of(context).textTheme.display4,
-                )
+            Container(
+              margin: EdgeInsets.all(20.0),
+              alignment: Alignment(0.0, 0.0),
+              child: Text(_scope,
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                ),
+              ),
             ),
-            RaisedButton(
-                color: Theme.of(context).accentColor,
-                onPressed: _setVegetarian,
-                child: Text(
-                    'Vegetarian',
-                    style: Theme.of(context).textTheme.display4,
-                )
+            Container(
+              margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0,),
+              alignment: Alignment(0.0, 0.0),
+              child: Text(
+                'Progress Towards Goal',
+                style: Theme.of(context).textTheme.display1,
+              ),
             ),
-            RaisedButton(
-                color: Theme.of(context).accentColor,
-                onPressed: _setVegan,
-                child: Text(
-                    'Vegan',
-                    style: Theme.of(context).textTheme.display4,
-                )
+            Image.asset(_progressImage),
+            Container(
+              margin: EdgeInsets.all(10.0),
+              alignment: Alignment(0.0, 0.0),
+              child: Text(
+                'Meals by Day',
+                style: Theme.of(context).textTheme.display1,
+              ),
             ),
+            Image.asset(_chartImage),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                RaisedButton(
+                    color: Theme.of(context).accentColor,
+                    onPressed: _setOverall,
+                    child: Text(
+                      'Overall',
+                      style: Theme.of(context).textTheme.display4,
+                    )
+                ),
+                RaisedButton(
+                    color: Theme.of(context).accentColor,
+                    onPressed: _setVegetarian,
+                    child: Text(
+                      'Vegetarian',
+                      style: Theme.of(context).textTheme.display4,
+                    )
+                ),
+                RaisedButton(
+                    color: Theme.of(context).accentColor,
+                    onPressed: _setVegan,
+                    child: Text(
+                      'Vegan',
+                      style: Theme.of(context).textTheme.display4,
+                    )
+                ),
+              ],
+            )
           ],
         )
-      ],
-    )
-      );
+    );
   }
 
   /// Selects the EAT page for display.
@@ -421,18 +421,18 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).accentColor,
           title: Text(
-              'Grassroots Green',
-               style: TextStyle(
-                   color: Theme.of(context).primaryColor,
-              ),
+            'Grassroots Green',
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+            ),
           ),
         ),
         drawer: Drawer(
-            // Now we add children to populate the Drawer
+          // Now we add children to populate the Drawer
 
-            // Add a ListView to the drawer. This ensures the user can scroll
-            // through the options in the drawer if there isn't enough vertical
-            // space to fit everything.
+          // Add a ListView to the drawer. This ensures the user can scroll
+          // through the options in the drawer if there isn't enough vertical
+          // space to fit everything.
             child: ListView(
               padding: EdgeInsets.zero,
               children: <Widget>[
@@ -465,18 +465,18 @@ class _MyHomePageState extends State<MyHomePage> {
                                   default:
                                     if (snapshot.hasError)
                                       return new Text(
-                                        'Not signed in.',
-                                        style: Theme.of(context).textTheme.caption
+                                          'Not signed in.',
+                                          style: Theme.of(context).textTheme.caption
                                       );
                                     else if (snapshot.data == null ||
                                         snapshot.data == "")
                                       return new Text(
-                                        'User',
-                                        style: Theme.of(context).textTheme.caption
+                                          'User',
+                                          style: Theme.of(context).textTheme.caption
                                       );
                                     else
                                       return new Text(
-                                        '${snapshot.data}',
+                                          '${snapshot.data}',
                                           style: Theme.of(context).textTheme.caption
                                       );
                                 }
@@ -534,13 +534,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Expanded(
-                        child: FlatButton(
-                          padding: const EdgeInsets.all(18),
-                          color: _mainMenuOptions == "EAT" ? Theme.of(context).buttonColor :Theme.of(context).accentColor,
-                          onPressed: (){ _displayEat();},
-                          child: new Text("EAT",
-                              style: Theme.of(context).textTheme.button),
-                        )
+                          child: FlatButton(
+                            padding: const EdgeInsets.all(18),
+                            color: _mainMenuOptions == "EAT" ? Theme.of(context).buttonColor :Theme.of(context).accentColor,
+                            onPressed: (){ _displayEat();},
+                            child: new Text("EAT",
+                                style: Theme.of(context).textTheme.button),
+                          )
                       ),
                       Expanded(
                           child: FlatButton(

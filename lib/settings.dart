@@ -107,7 +107,7 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
     return Scaffold(
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             //Meals a Day
             Row(

@@ -9,6 +9,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  /// Widget that manages app information.
+
+  /// Authenticator with information about authenticated user.
   final BaseAuth auth = new Auth();
 
   /// Returns widget for root of the app.
@@ -18,8 +21,6 @@ class MyApp extends StatelessWidget {
       //This declares all routes
       routes: <String, WidgetBuilder>{
         //Route declared for settings route
-        Settings.routeName: (context) => Settings(),
-        Goals.routeName: (context) => Goals(),
         Settings.routeName: (context) => Settings(auth:auth),
         Login.routeName: (context) => Login(auth: auth),
         Compete.routeName: (context) => Compete(auth: auth),
@@ -187,17 +188,17 @@ class _MyHomePageState extends State<MyHomePage> {
   Column _getSubPage() {
     switch (_mainMenuOptions) {
       case 'EAT':{
-          return displayEAT();
-        }
+        return displayEAT();
+      }
       case 'LEARN':{
-          return displayLEARN();
-        }
+        return displayLEARN();
+      }
       case 'TRACK':{
-            return displayTRACK();
-        }
+        return displayTRACK();
+      }
       default:{
-          return displayEAT();
-        }
+        return displayEAT();
+      }
     }
   }
 
@@ -217,15 +218,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     groupValue: _mealType,
                     onChanged: _handleMealTypeChange),
                 Text(
-                  'Vegetarian',
-                  style: Theme.of(context).textTheme.display2
+                    'Vegetarian',
+                    style: Theme.of(context).textTheme.display2
                 ),
                 Radio(
                     value: "Vegan",
                     groupValue: _mealType,
                     onChanged: _handleMealTypeChange),
                 Text(
-                  'Vegan',
+                    'Vegan',
                     style: Theme.of(context).textTheme.display2
                 ),
                 Radio(
@@ -233,7 +234,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     groupValue: _mealType,
                     onChanged: _handleMealTypeChange),
                 Text(
-                  'Neither',
+                    'Neither',
                     style: Theme.of(context).textTheme.display2
                 ),
               ],
@@ -269,15 +270,15 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ]),
         RaisedButton(
-          color: Theme.of(context).accentColor,
-          onPressed: () {
-            _submitForm(_mealType, _mealLocation);
-          },
-          child: Text('Submit',
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-            ),
-          )
+            color: Theme.of(context).accentColor,
+            onPressed: () {
+              _submitForm(_mealType, _mealLocation);
+            },
+            child: Text('Submit',
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+              ),
+            )
         )
       ],
     );
@@ -285,12 +286,107 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// Returns the LEARN Column.
   Column displayLEARN() {
-    return Column(
-      children: <Widget>[
-        Text('LEARN')
-      ],
-    );
-  }
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/learn_background/grassandivy.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              child: Column(
+                  children: <Widget>[
+                    Container(
+                      height: 90,
+                      width: 500,
+                      color: Colors.green,
+                      alignment: Alignment.topCenter,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: Text("Animal Rights",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,)),
+                    ),
+                  ]
+              )),
+          Column(
+              children: <Widget>[
+                Container(
+                  height: 90,
+                  width: 500,
+                  color: Colors.green,
+                  alignment: Alignment.topCenter,
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: Text("Climate Change",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,)),
+                ),
+              ]
+          ),
+          Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              child: Column(
+                  children: <Widget>[
+                    Container(
+                      height: 90,
+                      width: 500,
+                      color: Colors.green,
+                      alignment: Alignment.topCenter,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: Text("Sustainability",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,)),
+                    ),
+                  ]
+              )),
+          Column(
+              children: <Widget>[
+                Container(
+                  height: 90,
+                  width: 500,
+                  color: Colors.green,
+                  alignment: Alignment.topCenter,
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: Text("Workers' Rights",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,)),
+                ),
+              ]
+          ),
+          Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              child: Column(
+                  children: <Widget>[
+                    Container(
+                      height: 90,
+                      width: 500,
+                      color: Colors.green,
+                      alignment: Alignment.topCenter,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: Text("Climate Change",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,)),
+                    ),
+                  ]
+              )),
+
+        ],
+      );
+    }
 
   /// Returns the TRACK Column.
   Column displayTRACK() {
@@ -333,24 +429,24 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Theme.of(context).accentColor,
                 onPressed: _setOverall,
                 child: Text(
-                    'Overall',
-                    style: Theme.of(context).textTheme.display4,
+                  'Overall',
+                  style: Theme.of(context).textTheme.display4,
                 )
             ),
             RaisedButton(
                 color: Theme.of(context).accentColor,
                 onPressed: _setVegetarian,
                 child: Text(
-                    'Vegetarian',
-                    style: Theme.of(context).textTheme.display4,
+                  'Vegetarian',
+                  style: Theme.of(context).textTheme.display4,
                 )
             ),
             RaisedButton(
                 color: Theme.of(context).accentColor,
                 onPressed: _setVegan,
                 child: Text(
-                    'Vegan',
-                    style: Theme.of(context).textTheme.display4,
+                  'Vegan',
+                  style: Theme.of(context).textTheme.display4,
                 )
             ),
           ],
@@ -417,18 +513,18 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).accentColor,
           title: Text(
-              'Grassroots Green',
-               style: TextStyle(
-                   color: Theme.of(context).primaryColor,
-              ),
+            'Grassroots Green',
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+            ),
           ),
         ),
         drawer: Drawer(
-            // Now we add children to populate the Drawer
+          // Now we add children to populate the Drawer
 
-            // Add a ListView to the drawer. This ensures the user can scroll
-            // through the options in the drawer if there isn't enough vertical
-            // space to fit everything.
+          // Add a ListView to the drawer. This ensures the user can scroll
+          // through the options in the drawer if there isn't enough vertical
+          // space to fit everything.
             child: ListView(
               padding: EdgeInsets.zero,
               children: <Widget>[
@@ -461,18 +557,18 @@ class _MyHomePageState extends State<MyHomePage> {
                                   default:
                                     if (snapshot.hasError)
                                       return new Text(
-                                        'Not signed in.',
-                                        style: Theme.of(context).textTheme.caption
+                                          'Not signed in.',
+                                          style: Theme.of(context).textTheme.caption
                                       );
                                     else if (snapshot.data == null ||
                                         snapshot.data == "")
                                       return new Text(
-                                        'User',
-                                        style: Theme.of(context).textTheme.caption
+                                          'User',
+                                          style: Theme.of(context).textTheme.caption
                                       );
                                     else
                                       return new Text(
-                                        '${snapshot.data}',
+                                          '${snapshot.data}',
                                           style: Theme.of(context).textTheme.caption
                                       );
                                 }
@@ -530,13 +626,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Expanded(
-                        child: FlatButton(
-                          padding: const EdgeInsets.all(18),
-                          color: _mainMenuOptions == "EAT" ? Theme.of(context).buttonColor :Theme.of(context).accentColor,
-                          onPressed: (){ _displayEat();},
-                          child: new Text("EAT",
-                              style: Theme.of(context).textTheme.button),
-                        )
+                          child: FlatButton(
+                            padding: const EdgeInsets.all(18),
+                            color: _mainMenuOptions == "EAT" ? Theme.of(context).buttonColor :Theme.of(context).accentColor,
+                            onPressed: (){ _displayEat();},
+                            child: new Text("EAT",
+                                style: Theme.of(context).textTheme.button),
+                          )
                       ),
                       Expanded(
                           child: FlatButton(
@@ -563,3 +659,6 @@ class _MyHomePageState extends State<MyHomePage> {
             )));
   }
 }
+
+
+

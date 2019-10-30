@@ -207,7 +207,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Container(
       child: Center(
         child: Padding(
-        padding:  EdgeInsets.symmetric(vertical: 32.0),
+        padding:  EdgeInsets.symmetric(vertical: 152.0),
         child: Padding(
         padding:  EdgeInsets.symmetric(horizontal: 10.0),
         child: Column(

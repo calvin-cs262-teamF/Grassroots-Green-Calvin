@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:grassroots_green/compete.dart';
 import 'package:grassroots_green/settings.dart';
 import 'package:grassroots_green/login.dart';
-import 'package:grassroots_green/goals.dart';
 import 'package:grassroots_green/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// Runs the app.
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   final BaseAuth auth = new Auth();
 
-  // This widget is the root of your application.
+  /// Returns widget for root of the app.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,7 +20,9 @@ class MyApp extends StatelessWidget {
         //Route declared for settings route
         Settings.routeName: (context) => Settings(),
         Goals.routeName: (context) => Goals(),
+        Settings.routeName: (context) => Settings(auth:auth),
         Login.routeName: (context) => Login(auth: auth),
+        Compete.routeName: (context) => Compete(auth: auth),
       },
 
       //When a route is generated, return the route to page,
@@ -31,17 +34,55 @@ class MyApp extends StatelessWidget {
       },
 
       title: 'Grassroots Green',
+
+      //All theme data will be stored here
       theme: ThemeData(
         // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the consoleEw where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted..
-        primarySwatch: Colors.green,
+
+        primaryColor: Colors.white,
+        accentColor: Colors.green,
+        buttonColor: Colors.green[800],
+
+        fontFamily: 'Roboto',
+
+        textTheme: TextTheme(
+
+          //for some reason if I call Theme.of(context).accentColor for the text, it renders the 'EAT', 'LEARN', 'TRACK' text as gray
+          //This style is for buttons on the homepage
+          button: new TextStyle(fontSize: 22, color: Colors.white),
+
+          //for some reason if I call Theme.of(context).primaryColor for the title, it renders the 'Record a Meal' text as blue
+          title: new TextStyle(fontSize: 26, color: Colors.green, fontWeight: FontWeight.bold),
+
+          //this style is used for login text with firestore in the drawer
+          caption: new TextStyle(fontSize: 20, color: Colors.white),
+
+          //this style is used for regular bold text
+          display1: new TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
+
+          //this style is used for regular text
+          display2: new TextStyle(fontSize: 16, color: Colors.black),
+
+          //this style is used for Drawer items
+          display3: new TextStyle(fontSize: 16, color: Colors.black,),
+
+          //this style is used for buttons in TRACK
+          display4: new TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+
+          //All available theme values are listed below:
+          //display4
+          //display3
+          //display2
+          //display1
+          //headline
+          //title
+          //subhead
+          //body2
+          //body1
+          //caption
+          //button
+
+        ),
       ),
       // home: MyHomePage(title: 'Welcome to Grassroots Green!'),
       home: MyHomePage(auth: auth),
@@ -50,21 +91,17 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  //Routename sed for Navigation
-  //static const String routeName = "/";
+  /// Homepage Widget
+  ///
+  /// This widget is the homepage of the app, including the "EAT", "LEARN", and "TRACK" sub-pages
+  /// the user can access the other pages from this page.
 
   MyHomePage({Key key, this.title, this.auth}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
+  /// Title displayed in header bar
   final String title;
+
+  /// Information about authenticated user.
   final BaseAuth auth;
 
   @override
@@ -72,62 +109,104 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _mealType = "NULL"; // TODO: set to user's default
+  /// Homepage State
+  ///
+  /// This state contains information about the state of the app,
+  /// including images and interactive features.
 
-  void _handleRadioValueChange1(String value) {
+  /// Authenticator with user information.
+  final BaseAuth auth;
+
+
+  /// Type of meal selected with radio button for meal submission.
+  String _mealType = "NULL";
+  /// Location of meal submitted by user.
+  String _mealLocation = 'Commons';
+  /// Home page sub-page selection. Defaults to EAT
+  String _mainMenuOptions = "EAT";
+
+  /// Size of icons on page
+  static double _iconSize = 24;
+  /// Elevation for dropdown buttons
+  static int _elevation = 16;
+  /// Height of buttons.
+  static double _height = 2;
+
+  /// Creates a new _MyHomePageState object.
+  _MyHomePageState({this.auth}) {
+    _loadSettings();
+  }
+
+  /// Modifies the meal type when value is changed by user.
+  void _handleMealTypeChange(String value) {
     setState(() {
       _mealType = value;
     });
   }
 
-  static double _iconSize = 24;
-  static int _elevation = 16;
-  static double _height = 2;
+  /// Location of goal progress image. (Temporary)
+  String _progressImage = 'assets/goal_progress/overall_prog.png';
+  /// Location of goal progress chart image. (Temporary)
+  String _chartImage = 'assets/goal_progress/overall_chart.png';
+  /// Type of goal charts being displayed.
+  String _scope = 'Overall';
 
-  //Default values for Drop Downs
-  String _mealLocation = 'Commons';
+  /// Sets goal scope to show all meals.
+  void _setOverall() {
+    setState(() {
+      _progressImage = 'assets/goal_progress/overall_prog.png';
+      _chartImage = 'assets/goal_progress/overall_chart.png';
+      _scope = 'Overall';
+    });
+  }
 
-  //Default Home page option set to EAT
-  String _mainMenuOptions;
+  /// Sets goal scope to show only vegetarian meals.
+  void _setVegetarian() {
+    setState(() {
+      _progressImage = 'assets/goal_progress/vegetarian_prog.png';
+      _chartImage = 'assets/goal_progress/vegetarian_chart.png';
+      _scope = 'Vegetarian';
+    });
+  }
 
-  void _SubmitForm(String type, String location) async {
+  /// Sets goal scope to show only vegan meals.
+  void _setVegan() {
+    setState(() {
+      _progressImage = 'assets/goal_progress/vegan_prog.png';
+      _chartImage = 'assets/goal_progress/vegan_chart.png';
+      _scope = 'Vegan';
+    });
+  }
+
+  /// Submit form and save to database.
+  void _submitForm(String type, String location) async {
     Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').document().setData({'type': type, 'location': location, 'time': FieldValue.serverTimestamp()});
   }
 
-  Column _testbuild() {
+  /// Returns selected sub-page for display.
+  Column _getSubPage() {
     switch (_mainMenuOptions) {
       case 'EAT':{
-          return recordMeal();
+          return displayEAT();
         }
       case 'LEARN':{
-          return Column(
-            children: <Widget>[
-              Text('LEARN')
-            ],
-          );
+          return displayLEARN();
         }
       case 'TRACK':{
-          return Column(
-            children: <Widget>[
-              Text('TRACK')
-            ],
-          );
+            return displayTRACK();
         }
       default:{
-          return recordMeal();
+          return displayEAT();
         }
     }
   }
 
-  Column recordMeal() {
+  /// Returns the EAT column.
+  Column displayEAT() {
     return Column(
       children: <Widget>[
         Text('Record a Meal:',
-            style: TextStyle(
-              color: Colors.green,
-              fontSize: 26,
-              fontWeight: FontWeight.bold,
-            )),
+            style: Theme.of(context).textTheme.title),
         Padding(
             padding: const EdgeInsets.all(10.0),
             child: Row(
@@ -136,35 +215,32 @@ class _MyHomePageState extends State<MyHomePage> {
                 Radio(
                     value: "Vegetarian",
                     groupValue: _mealType,
-                    onChanged: _handleRadioValueChange1),
+                    onChanged: _handleMealTypeChange),
                 Text(
                   'Vegetarian',
-                  style: TextStyle(fontSize: 16.0),
+                  style: Theme.of(context).textTheme.display2
                 ),
                 Radio(
                     value: "Vegan",
                     groupValue: _mealType,
-                    onChanged: _handleRadioValueChange1),
+                    onChanged: _handleMealTypeChange),
                 Text(
                   'Vegan',
-                  style: TextStyle(fontSize: 16.0),
+                    style: Theme.of(context).textTheme.display2
                 ),
                 Radio(
                     value: "Neither",
                     groupValue: _mealType,
-                    onChanged: _handleRadioValueChange1),
+                    onChanged: _handleMealTypeChange),
                 Text(
                   'Neither',
-                  style: TextStyle(fontSize: 16.0),
+                    style: Theme.of(context).textTheme.display2
                 ),
               ],
             )),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text('Location:',
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-              )),
+              style: Theme.of(context).textTheme.display1),
 
           //Dropdown for the location the meal has been eaten
           DropdownButton<String>(
@@ -174,56 +250,160 @@ class _MyHomePageState extends State<MyHomePage> {
             elevation: _elevation,
             underline: Container(
               height: _height,
-              color: Colors.green,
+              color: Theme.of(context).accentColor,
             ),
             onChanged: (String newValue) {
               setState(() {
                 _mealLocation = newValue;
               });
             },
-            items: <String>['Commons', 'Knollcrest', 'Other']
+            items: <String>['Commons', 'Knollcrest', 'Home', 'Other']
                 .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
-                child: Text(value),
+                child: Text(value,
+                    style: Theme.of(context).textTheme.display2
+                ),
               );
             }).toList(),
           )
         ]),
         RaisedButton(
+          color: Theme.of(context).accentColor,
           onPressed: () {
-            _SubmitForm(_mealType, _mealLocation);
+            _submitForm(_mealType, _mealLocation);
           },
-          child: Text('Submit'),
+          child: Text('Submit',
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+            ),
+          )
         )
       ],
     );
   }
 
+  /// Returns the LEARN Column.
+  Column displayLEARN() {
+    return Column(
+      children: <Widget>[
+        Text('LEARN')
+      ],
+    );
+  }
+
+  /// Returns the TRACK Column.
+  Column displayTRACK() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.all(20.0),
+          alignment: Alignment(0.0, 0.0),
+          child: Text(_scope,
+            style: TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.green,
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.all(10.0),
+          alignment: Alignment(0.0, 0.0),
+          child: Text(
+            'Progress Towards Goal',
+            style: Theme.of(context).textTheme.display1,
+          ),
+        ),
+        Image.asset(_progressImage),
+        Container(
+          margin: EdgeInsets.all(10.0),
+          alignment: Alignment(0.0, 0.0),
+          child: Text(
+            'Meals by Day',
+            style: Theme.of(context).textTheme.display1,
+          ),
+        ),
+        Image.asset(_chartImage),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            RaisedButton(
+                color: Theme.of(context).accentColor,
+                onPressed: _setOverall,
+                child: Text(
+                    'Overall',
+                    style: Theme.of(context).textTheme.display4,
+                )
+            ),
+            RaisedButton(
+                color: Theme.of(context).accentColor,
+                onPressed: _setVegetarian,
+                child: Text(
+                    'Vegetarian',
+                    style: Theme.of(context).textTheme.display4,
+                )
+            ),
+            RaisedButton(
+                color: Theme.of(context).accentColor,
+                onPressed: _setVegan,
+                child: Text(
+                    'Vegan',
+                    style: Theme.of(context).textTheme.display4,
+                )
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
+  /// Selects the EAT page for display.
   void _displayEat() {
     setState(() {
+      _loadSettings(); // TODO: change to update as soon as settings are saved
       _mainMenuOptions = "EAT";
     });
   }
 
+  /// Selects the LEARN page for display.
   void _displayLearn() {
     setState(() {
       _mainMenuOptions = "LEARN";
     });
   }
 
+  /// Selects the TRACK page for display.
   void _displayTrack() {
     setState(() {
       _mainMenuOptions = "TRACK";
     });
   }
 
-  _MyHomePageState({this.auth});
+  /// Loads default values from settings for EAT page.
+  void _loadSettings() {
+    _getUserData().then( (data) {
+      setState(() {
+        if(data.exists) {
+          if(data['defaultLocation'] != null) {
+            _mealLocation = data['defaultLocation'];
+          }
+          if(data['defaultMealType'] != null) {
+            _mealType = data['defaultMealType'];
+          }
+        }
+      });
+    });
+  }
 
-  final BaseAuth auth;
+  /// Gets user data from Firestore.
+  Future<DocumentSnapshot> _getUserData() async {
+    return Firestore.instance.collection('users').document(await auth.getCurrentUser()).get();
+  }
 
-  final double _buttonMenuSize = 22;
 
+  /// Builds the main page.
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -235,12 +415,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
         appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-
-          // widget.title resulted in errors on compile for some reason, so
-          // title is hardcoded for now
-          title: Text('Grassroots Green'),
+          backgroundColor: Theme.of(context).accentColor,
+          title: Text(
+              'Grassroots Green',
+               style: TextStyle(
+                   color: Theme.of(context).primaryColor,
+              ),
+          ),
         ),
         drawer: Drawer(
             // Now we add children to populate the Drawer
@@ -253,7 +434,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 DrawerHeader(
                     decoration: BoxDecoration(
-                      color: Colors.green,
+                      color: Theme.of(context).accentColor,
                     ),
                     child: Container(
                         child: Column(
@@ -268,28 +449,31 @@ class _MyHomePageState extends State<MyHomePage> {
                                   AsyncSnapshot<String> snapshot) {
                                 switch (snapshot.connectionState) {
                                   case ConnectionState.none:
-                                    return new Text('Press button to start');
+                                    return new Text(
+                                        'Press button to start',
+                                        style: Theme.of(context).textTheme.caption
+                                    );
                                   case ConnectionState.waiting:
-                                    return new Text('Awaiting result...');
+                                    return new Text(
+                                        'Awaiting result...',
+                                        style: Theme.of(context).textTheme.caption
+                                    );
                                   default:
                                     if (snapshot.hasError)
                                       return new Text(
                                         'Not signed in.',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 20),
+                                        style: Theme.of(context).textTheme.caption
                                       );
                                     else if (snapshot.data == null ||
                                         snapshot.data == "")
                                       return new Text(
                                         'User',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 20),
+                                        style: Theme.of(context).textTheme.caption
                                       );
                                     else
                                       return new Text(
                                         '${snapshot.data}',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 20),
+                                          style: Theme.of(context).textTheme.caption
                                       );
                                 }
                               },
@@ -297,14 +481,20 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                         ))),
                 ListTile(
-                  title: Text('Login'),
+                  title: Text(
+                      'Login',
+                      style: Theme.of(context).textTheme.display3
+                  ),
                   onTap: () {
                     Navigator.pop(context); // close drawer
                     Navigator.pushNamed(context, Login.routeName);
                   },
                 ),
                 ListTile(
-                  title: Text('Logout'),
+                  title: Text(
+                      'Logout',
+                      style: Theme.of(context).textTheme.display3
+                  ),
                   onTap:() {
                     auth.signOut();
                     Navigator.pop(context); // close drawer
@@ -312,14 +502,21 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ),
                 ListTile(
-                  title: Text('Goal Progress'),
+                  title: Text(
+                      'Compete',
+                      style: Theme.of(context).textTheme.display3
+                  ),
                   onTap: () {
-                    Navigator.pushNamed(context, Goals.routeName);
+                    Navigator.pushNamed(context, Compete.routeName);
                   },
                 ),
                 ListTile(
-                  title: Text('Settings'),
+                  title: Text(
+                      'Settings',
+                      style: Theme.of(context).textTheme.display3
+                  ),
                   onTap: () {
+                    Navigator.pop(context); // close drawer
                     //push the settings route to the Navigator
                     Navigator.pushNamed(context, Settings.routeName);
                   },
@@ -335,36 +532,33 @@ class _MyHomePageState extends State<MyHomePage> {
                       Expanded(
                         child: FlatButton(
                           padding: const EdgeInsets.all(18),
-                          textColor: Colors.white,
-                          color: Colors.green,
+                          color: _mainMenuOptions == "EAT" ? Theme.of(context).buttonColor :Theme.of(context).accentColor,
                           onPressed: (){ _displayEat();},
                           child: new Text("EAT",
-                              style: TextStyle(fontSize: _buttonMenuSize)),
+                              style: Theme.of(context).textTheme.button),
                         )
                       ),
                       Expanded(
                           child: FlatButton(
                             padding: const EdgeInsets.all(18),
-                            textColor: Colors.white,
-                            color: Colors.green,
+                            color:_mainMenuOptions == "LEARN" ? Theme.of(context).buttonColor :Theme.of(context).accentColor,
                             onPressed: (){ _displayLearn();},
                             child: new Text("LEARN",
-                                style: TextStyle(fontSize: _buttonMenuSize)),
+                                style: Theme.of(context).textTheme.button),
                           )
                       ),
                       Expanded(
                           child: FlatButton(
                             padding: const EdgeInsets.all(18),
-                            textColor: Colors.white,
-                            color: Colors.green,
+                            color:_mainMenuOptions == "TRACK" ? Theme.of(context).buttonColor :Theme.of(context).accentColor,
                             onPressed: (){ _displayTrack();},
                             child: new Text("TRACK",
-                                style: TextStyle(fontSize: _buttonMenuSize)),
+                                style: Theme.of(context).textTheme.button),
                           )
                       ),
                     ],
                   ),
-                  new Container(child: _testbuild(),)
+                  new Container(child: _getSubPage(),)
                 ]
             )));
   }

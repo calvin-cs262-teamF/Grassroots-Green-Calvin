@@ -206,6 +206,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Container displayEAT() {
     return Container(
       child: Center(
+        child: Padding(
+        padding:  EdgeInsets.symmetric(vertical: 32.0),
+        child: Padding(
+        padding:  EdgeInsets.symmetric(horizontal: 10.0),
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -286,6 +290,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     )
         )
+    )
+    )
     );
   }
 

@@ -206,8 +206,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Container displayEAT() {
     return Container(
         child: Padding(
-        padding:  EdgeInsets.symmetric(vertical: 152.0),
-            child: Padding(
+        padding:  EdgeInsets.symmetric(vertical: 152.0),                //TODO: This padding only moves the form down a bit. We want it centered on the page.
+            child: Padding(                                             //TODO: This is just a cosmetic thing, but it would make the app look nicer.
                 padding:  EdgeInsets.symmetric(horizontal: 10.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -266,7 +266,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       )
                     ]),
                 ///the button to submit the record of the eaten meal
-                   Padding(padding: EdgeInsets.fromLTRB(left, top, right, bottom),
+                   Padding(padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
                        child: RaisedButton(
                            color: Theme.of(context).accentColor,
                            onPressed: () { _submitForm(_mealType, _mealLocation); },
@@ -285,17 +285,16 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns the LEARN Column.
   Container displayLEARN() {
     return Container(
-    child: Center(
         child: Column(
-        children: <Widget>[
-          Text('LEARN')
-    ],
-    )
-    )
+          children: <Widget>[
+            Text('LEARN')
+          ],
+        )
     );
   }
 
   /// Returns the TRACK Column.
+  //TODO We'll have to change the padding here once the graphs are being drawn dynamically and not just static images that get switched between each other
   Container displayTRACK() {
     return Container(
         child: Column(

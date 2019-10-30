@@ -205,93 +205,80 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns the EAT column.
   Container displayEAT() {
     return Container(
-      child: Center(
         child: Padding(
         padding:  EdgeInsets.symmetric(vertical: 152.0),
-        child: Padding(
-        padding:  EdgeInsets.symmetric(horizontal: 10.0),
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text('Record a Meal:',
-            style: Theme.of(context).textTheme.title),
-        Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Radio(
-                    value: "Vegetarian",
-                    groupValue: _mealType,
-                    onChanged: _handleMealTypeChange),
-                Text(
-                  'Vegetarian',
-                  style: Theme.of(context).textTheme.display2
-                ),
-                Radio(
-                    value: "Vegan",
-                    groupValue: _mealType,
-                    onChanged: _handleMealTypeChange),
-                Text(
-                  'Vegan',
-                    style: Theme.of(context).textTheme.display2
-                ),
-                Radio(
-                    value: "Neither",
-                    groupValue: _mealType,
-                    onChanged: _handleMealTypeChange),
-                Text(
-                  'Neither',
-                    style: Theme.of(context).textTheme.display2
-                ),
-              ],
-            )),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text('Location:',
-              style: Theme.of(context).textTheme.display1),
-
-          //Dropdown for the location the meal has been eaten
-          DropdownButton<String>(
-            value: _mealLocation,
-            icon: Icon(Icons.arrow_downward),
-            iconSize: _iconSize,
-            elevation: _elevation,
-            underline: Container(
-              height: _height,
-              color: Theme.of(context).accentColor,
-            ),
-            onChanged: (String newValue) {
-              setState(() {
-                _mealLocation = newValue;
-              });
-            },
-            items: <String>['Commons', 'Knollcrest', 'Home', 'Other']
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value,
-                    style: Theme.of(context).textTheme.display2
-                ),
-              );
-            }).toList(),
-          )
-        ]),
-        RaisedButton(
-          color: Theme.of(context).accentColor,
-          onPressed: () {
-            _submitForm(_mealType, _mealLocation);
-          },
-          child: Text('Submit',
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-            ),
-          )
+            child: Padding(
+                padding:  EdgeInsets.symmetric(horizontal: 10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text('Record a Meal:',
+                        style: Theme.of(context).textTheme.title),
+                    Padding(padding: const EdgeInsets.all(10.0),
+                        child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Radio(value: "Vegetarian",
+                                groupValue: _mealType,
+                                onChanged: _handleMealTypeChange),
+                            Text('Vegetarian',
+                                style: Theme.of(context).textTheme.display2),
+                            Radio(value: "Vegan",
+                                groupValue: _mealType,
+                                onChanged: _handleMealTypeChange),
+                            Text('Vegan',
+                                style: Theme.of(context).textTheme.display2),
+                            Radio(value: "Neither",
+                                groupValue: _mealType,
+                                onChanged: _handleMealTypeChange),
+                            Text('Neither',
+                                style: Theme.of(context).textTheme.display2),
+                          ],
+                        )
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Padding(padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                        child: Text('Location:',
+                            style: Theme.of(context).textTheme.display1),
+                      ),
+                      //Dropdown for the location the meal has been eaten
+                      Padding(padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                          child:DropdownButton<String>(
+                            value: _mealLocation,
+                            icon: Icon(Icons.arrow_downward),
+                            iconSize: _iconSize,
+                            elevation: _elevation,
+                            underline: Container(height: _height,
+                              color: Theme.of(context).accentColor,),
+                            onChanged: (String newValue) {
+                              setState(() {
+                                _mealLocation = newValue;
+                              });
+                              },
+                            items: <String>['Commons', 'Knollcrest', 'Home', 'Other']
+                                .map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value,
+                                        style: Theme.of(context).textTheme.display2),
+                                  );
+                                }).toList(),
+                          )
+                      )
+                    ]),
+                ///the button to submit the record of the eaten meal
+                   Padding(padding: EdgeInsets.fromLTRB(left, top, right, bottom),
+                       child: RaisedButton(
+                           color: Theme.of(context).accentColor,
+                           onPressed: () { _submitForm(_mealType, _mealLocation); },
+                           child: Text('Submit',
+                             style: TextStyle( color: Theme.of(context).primaryColor, ),
+                           )
+                       )
+                   )
+                  ],
+                )
+            )
         )
-      ],
-    )
-        )
-    )
-    )
     );
   }
 
@@ -311,7 +298,6 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns the TRACK Column.
   Container displayTRACK() {
     return Container(
-      child: Center(
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -327,7 +313,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         Container(
-          margin: EdgeInsets.all(10.0),
+          margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0,),
           alignment: Alignment(0.0, 0.0),
           child: Text(
             'Progress Towards Goal',
@@ -375,8 +361,7 @@ class _MyHomePageState extends State<MyHomePage> {
         )
       ],
     )
-      )
-    );
+      );
   }
 
   /// Selects the EAT page for display.

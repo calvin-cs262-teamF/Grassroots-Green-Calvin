@@ -214,6 +214,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding:  EdgeInsets.symmetric(horizontal: 10.0),           //TODO: I tried using 'crossAxisAlignment: CrossAxisAlignment.center here, but it didn't work. IDK why
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text('Record a Meal:',
                         style: Theme.of(context).textTheme.title),
@@ -517,9 +518,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.pushNamed(context, Compete.routeName);
                   },
                 ),
-                ListTile(
-                  title: Text(
-                      'Settings',
+                ListTile( //The gear icon is called "settings" if we want to add that to the drawer next to the settings word
+                  title: Text('Settings',
                       style: Theme.of(context).textTheme.display3
                   ),
                   onTap: () {

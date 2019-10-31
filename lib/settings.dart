@@ -174,6 +174,8 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
                     Radio( value: "Neither", groupValue: _mealType, onChanged: _handleMealTypeChange),
                     Text('Neither', style: Theme.of(context).textTheme.display2,),
                   ],)),
+
+            //TODO: Here's a question from Sam: Do we need a button here? could we have it save the settings when a user navigates away from the settings page?
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

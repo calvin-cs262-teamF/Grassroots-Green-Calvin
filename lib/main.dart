@@ -1,3 +1,18 @@
+/*  main.dart
+*
+* The main dart file for the GrassRoots Green application. The entry point for
+* the app is in this file. This project is a semester long project for CS 262
+* Software Engineering at Calvin University with Professor Keith VanderLinden
+*
+* @author Elizabeth Koning
+* @author Mason VanMeurs
+* @author Nathan Meyer
+* @author Lorrayya Williams
+* @author Sam Tuit
+*
+* @since 2019-9-10
+*
+*/
 import 'package:flutter/material.dart';
 import 'package:grassroots_green/compete.dart';
 import 'package:grassroots_green/settings.dart';

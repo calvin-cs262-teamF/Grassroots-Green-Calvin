@@ -1,3 +1,8 @@
+/*  learn.dart
+*
+* Returns a container used to display LEARN content
+*
+*/
 import 'package:flutter/material.dart';
 import 'package:grassroots_green/auth.dart';
 import 'package:grassroots_green/main.dart';

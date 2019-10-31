@@ -1,3 +1,8 @@
+/*  settings.dart
+*
+* A class used to set default values for meal logs to simply the meal logging process for users
+*
+*/
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grassroots_green/auth.dart';

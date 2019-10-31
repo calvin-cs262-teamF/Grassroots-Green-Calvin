@@ -1,3 +1,8 @@
+/*  drawer.dart
+*
+* Returns a drawer that is used for application navigation and to view user information
+*
+*/
 import 'package:flutter/material.dart';
 import 'package:grassroots_green/auth.dart';
 import 'package:grassroots_green/main.dart';

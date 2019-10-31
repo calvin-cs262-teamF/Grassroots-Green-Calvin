@@ -439,6 +439,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
         appBar: AppBar(
+          iconTheme: new IconThemeData(color: Theme.of(context).primaryColor),
           backgroundColor: Theme.of(context).accentColor,
           title: Text(
             'Grassroots Green',

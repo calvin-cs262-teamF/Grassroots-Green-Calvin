@@ -70,6 +70,9 @@ class MyApp extends StatelessWidget {
           //this style is used for buttons in TRACK
           display4: new TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
 
+          //this style is being experimented with being used for the labels in settings
+          body1: TextStyle(fontSize: 16, color: Colors.green[800], fontWeight: FontWeight.bold),
+
           //All available theme values are listed below:
           //display4
           //display3

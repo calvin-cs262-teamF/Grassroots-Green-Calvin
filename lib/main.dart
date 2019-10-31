@@ -4,6 +4,7 @@ import 'package:grassroots_green/settings.dart';
 import 'package:grassroots_green/login.dart';
 import 'package:grassroots_green/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:charts_flutter/flutter.dart';
 
 /// Runs the app.
 void main() => runApp(MyApp());

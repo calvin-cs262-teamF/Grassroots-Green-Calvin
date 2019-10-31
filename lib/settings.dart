@@ -113,7 +113,7 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
             Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Meals per Day:', style: Theme.of(context).textTheme.body1),
+                  Text('Meals per Day:', style: Theme.of(context).textTheme.display1),
                   Padding(padding: const EdgeInsets.symmetric(horizontal: 10.0)),
                   //Dropdown for how many meals per day
                   DropdownButton<String>(
@@ -143,7 +143,7 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
             ),
             Align(
               alignment: Alignment.center,
-              child: Text('Default Location:', style: Theme.of(context).textTheme.body1,),
+              child: Text('Default Location:', style: Theme.of(context).textTheme.display1,),
             ),
               Padding(padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 1.0,),
                 child: Row( mainAxisAlignment: MainAxisAlignment.center,
@@ -162,7 +162,7 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
                 ],)),
             Align(
               alignment: Alignment.center,
-              child: Text('Default Meal Type:', style: Theme.of(context).textTheme.body1,),
+              child: Text('Default Meal Type:', style: Theme.of(context).textTheme.display1,),
             ),
               Padding( padding: const EdgeInsets.all(10.0),
                 child: Row( mainAxisAlignment: MainAxisAlignment.center,

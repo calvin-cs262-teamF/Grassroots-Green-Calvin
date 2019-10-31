@@ -5,6 +5,7 @@ import 'package:grassroots_green/login.dart';
 import 'package:grassroots_green/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grassroots_green/drawer.dart';
+import 'package:grassroots_green/learn.dart';
 
 /// Runs the app.
 void main() => runApp(MyApp());
@@ -210,7 +211,7 @@ class _MyHomePageState extends State<MyHomePage> {
         return displayEAT();
       }
       case 'LEARN':{
-        return displayLEARN();
+        return Learn.getLEARN(context, auth);
       }
       case 'TRACK':{
         return displayTRACK();
@@ -298,17 +299,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 )
             )
-        )
-    );
-  }
-
-  /// Returns the LEARN Column.
-  Container displayLEARN() {
-    return Container(
-        child: Column(
-          children: <Widget>[
-            Text('LEARN')
-          ],
         )
     );
   }

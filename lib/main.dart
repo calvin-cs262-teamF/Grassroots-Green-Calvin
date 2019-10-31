@@ -86,6 +86,9 @@ class MyApp extends StatelessWidget {
           //this style is used for buttons in TRACK
           display4: new TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
 
+          //this style is being experimented with being used for the labels in settings
+          body1: TextStyle(fontSize: 16, color: Colors.green[800], fontWeight: FontWeight.bold),
+
           //All available theme values are listed below:
           //display4
           //display3
@@ -201,178 +204,182 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// Returns selected sub-page for display.
-  Column _getSubPage() {
+  Container _getSubPage() {
     switch (_mainMenuOptions) {
       case 'EAT':{
-          return displayEAT();
-        }
+        return displayEAT();
+      }
       case 'LEARN':{
-          return displayLEARN();
-        }
+        return displayLEARN();
+      }
       case 'TRACK':{
-            return displayTRACK();
-        }
+        return displayTRACK();
+      }
       default:{
-          return displayEAT();
-        }
+        return displayEAT();
+      }
     }
   }
 
   /// Returns the EAT column.
-  Column displayEAT() {
-    return Column(
-      children: <Widget>[
-        Text('Record a Meal:',
-            style: Theme.of(context).textTheme.title),
-        Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Radio(
-                    value: "Vegetarian",
-                    groupValue: _mealType,
-                    onChanged: _handleMealTypeChange),
-                Text(
-                  'Vegetarian',
-                  style: Theme.of(context).textTheme.display2
-                ),
-                Radio(
-                    value: "Vegan",
-                    groupValue: _mealType,
-                    onChanged: _handleMealTypeChange),
-                Text(
-                  'Vegan',
-                    style: Theme.of(context).textTheme.display2
-                ),
-                Radio(
-                    value: "Neither",
-                    groupValue: _mealType,
-                    onChanged: _handleMealTypeChange),
-                Text(
-                  'Neither',
-                    style: Theme.of(context).textTheme.display2
-                ),
-              ],
-            )),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text('Location:',
-              style: Theme.of(context).textTheme.display1),
-
-          //Dropdown for the location the meal has been eaten
-          DropdownButton<String>(
-            value: _mealLocation,
-            icon: Icon(Icons.arrow_downward),
-            iconSize: _iconSize,
-            elevation: _elevation,
-            underline: Container(
-              height: _height,
-              color: Theme.of(context).accentColor,
-            ),
-            onChanged: (String newValue) {
-              setState(() {
-                _mealLocation = newValue;
-              });
-            },
-            items: <String>['Commons', 'Knollcrest', 'Home', 'Other']
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value,
-                    style: Theme.of(context).textTheme.display2
-                ),
-              );
-            }).toList(),
-          )
-        ]),
-        RaisedButton(
-          color: Theme.of(context).accentColor,
-          onPressed: () {
-            _submitForm(_mealType, _mealLocation);
-          },
-          child: Text('Submit',
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-            ),
-          )
+  Container displayEAT() {
+    return Container(
+        child: Padding(
+            padding:  EdgeInsets.symmetric(vertical: 152.0),                //TODO: This padding only moves the form down a bit. We want it centered on the page.
+            child: Padding(                                                 //TODO: This is just a cosmetic thing, but it would make the app look nicer.
+                padding:  EdgeInsets.symmetric(horizontal: 10.0),           //TODO: I tried using 'crossAxisAlignment: CrossAxisAlignment.center here, but it didn't work. IDK why
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text('Record a Meal:',
+                        style: Theme.of(context).textTheme.title),
+                    Padding(padding: const EdgeInsets.all(10.0),
+                        child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Radio(value: "Vegetarian",
+                                groupValue: _mealType,
+                                onChanged: _handleMealTypeChange),
+                            Text('Vegetarian',
+                                style: Theme.of(context).textTheme.display2),
+                            Radio(value: "Vegan",
+                                groupValue: _mealType,
+                                onChanged: _handleMealTypeChange),
+                            Text('Vegan',
+                                style: Theme.of(context).textTheme.display2),
+                            Radio(value: "Neither",
+                                groupValue: _mealType,
+                                onChanged: _handleMealTypeChange),
+                            Text('Neither',
+                                style: Theme.of(context).textTheme.display2),
+                          ],
+                        )
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Padding(padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                        child: Text('Location:',
+                            style: Theme.of(context).textTheme.display1),
+                      ),
+                      //Dropdown for the location the meal has been eaten
+                      Padding(padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                          child:DropdownButton<String>(
+                            value: _mealLocation,
+                            icon: Icon(Icons.arrow_downward),
+                            iconSize: _iconSize,
+                            elevation: _elevation,
+                            underline: Container(height: _height,
+                              color: Theme.of(context).accentColor,),
+                            onChanged: (String newValue) {
+                              setState(() {
+                                _mealLocation = newValue;
+                              });
+                            },
+                            items: <String>['Commons', 'Knollcrest', 'Home', 'Other']
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value,
+                                    style: Theme.of(context).textTheme.display2),
+                              );
+                            }).toList(),
+                          )
+                      )
+                    ]),
+                    ///the button to submit the record of the eaten meal
+                    Padding(padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+                        child: RaisedButton(
+                            color: Theme.of(context).accentColor,
+                            onPressed: () { _submitForm(_mealType, _mealLocation); },
+                            child: Text('Submit',
+                              style: TextStyle( color: Theme.of(context).primaryColor, ),
+                            )
+                        )
+                    )
+                  ],
+                )
+            )
         )
-      ],
     );
   }
 
   /// Returns the LEARN Column.
-  Column displayLEARN() {
-    return Column(
-      children: <Widget>[
-        Text('LEARN')
-      ],
+  Container displayLEARN() {
+    return Container(
+        child: Column(
+          children: <Widget>[
+            Text('LEARN')
+          ],
+        )
     );
   }
 
   /// Returns the TRACK Column.
-  Column displayTRACK() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.all(20.0),
-          alignment: Alignment(0.0, 0.0),
-          child: Text(_scope,
-            style: TextStyle(
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.green,
-            ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.all(10.0),
-          alignment: Alignment(0.0, 0.0),
-          child: Text(
-            'Progress Towards Goal',
-            style: Theme.of(context).textTheme.display1,
-          ),
-        ),
-        Image.asset(_progressImage),
-        Container(
-          margin: EdgeInsets.all(10.0),
-          alignment: Alignment(0.0, 0.0),
-          child: Text(
-            'Meals by Day',
-            style: Theme.of(context).textTheme.display1,
-          ),
-        ),
-        Image.asset(_chartImage),
-        Row(
+  //TODO We'll have to change the padding here once the graphs are being drawn dynamically and not just static images that get switched between each other
+  Container displayTRACK() {
+    return Container(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RaisedButton(
-                color: Theme.of(context).accentColor,
-                onPressed: _setOverall,
-                child: Text(
-                    'Overall',
-                    style: Theme.of(context).textTheme.display4,
-                )
+            Container(
+              margin: EdgeInsets.all(20.0),
+              alignment: Alignment(0.0, 0.0),
+              child: Text(_scope,
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                ),
+              ),
             ),
-            RaisedButton(
-                color: Theme.of(context).accentColor,
-                onPressed: _setVegetarian,
-                child: Text(
-                    'Vegetarian',
-                    style: Theme.of(context).textTheme.display4,
-                )
+            Container(
+              margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0,),
+              alignment: Alignment(0.0, 0.0),
+              child: Text(
+                'Progress Towards Goal',
+                style: Theme.of(context).textTheme.display1,
+              ),
             ),
-            RaisedButton(
-                color: Theme.of(context).accentColor,
-                onPressed: _setVegan,
-                child: Text(
-                    'Vegan',
-                    style: Theme.of(context).textTheme.display4,
-                )
+            Image.asset(_progressImage),
+            Container(
+              margin: EdgeInsets.all(10.0),
+              alignment: Alignment(0.0, 0.0),
+              child: Text(
+                'Meals by Day',
+                style: Theme.of(context).textTheme.display1,
+              ),
             ),
+            Image.asset(_chartImage),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                RaisedButton(
+                    color: Theme.of(context).accentColor,
+                    onPressed: _setOverall,
+                    child: Text(
+                      'Overall',
+                      style: Theme.of(context).textTheme.display4,
+                    )
+                ),
+                RaisedButton(
+                    color: Theme.of(context).accentColor,
+                    onPressed: _setVegetarian,
+                    child: Text(
+                      'Vegetarian',
+                      style: Theme.of(context).textTheme.display4,
+                    )
+                ),
+                RaisedButton(
+                    color: Theme.of(context).accentColor,
+                    onPressed: _setVegan,
+                    child: Text(
+                      'Vegan',
+                      style: Theme.of(context).textTheme.display4,
+                    )
+                ),
+              ],
+            )
           ],
         )
-      ],
     );
   }
 
@@ -434,10 +441,10 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).accentColor,
           title: Text(
-              'Grassroots Green',
-               style: TextStyle(
-                   color: Theme.of(context).primaryColor,
-              ),
+            'Grassroots Green',
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+            ),
           ),
         ),
         drawer: GGDrawer.getDrawer(context, auth),
@@ -448,13 +455,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Expanded(
-                        child: FlatButton(
-                          padding: const EdgeInsets.all(18),
-                          color: _mainMenuOptions == "EAT" ? Theme.of(context).buttonColor :Theme.of(context).accentColor,
-                          onPressed: (){ _displayEat();},
-                          child: new Text("EAT",
-                              style: Theme.of(context).textTheme.button),
-                        )
+                          child: FlatButton(
+                            padding: const EdgeInsets.all(18),
+                            color: _mainMenuOptions == "EAT" ? Theme.of(context).buttonColor :Theme.of(context).accentColor,
+                            onPressed: (){ _displayEat();},
+                            child: new Text("EAT",
+                                style: Theme.of(context).textTheme.button),
+                          )
                       ),
                       Expanded(
                           child: FlatButton(

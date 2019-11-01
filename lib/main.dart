@@ -293,7 +293,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _scope = 'Vegan';
     });
   }
-  
+
   /// Returns the TRACK Column.
   Column displayTRACK() {
     return Column(
@@ -302,32 +302,26 @@ class _MyHomePageState extends State<MyHomePage> {
         Container(
           margin: EdgeInsets.all(20.0),
           alignment: Alignment(0.0, 0.0),
-          child: Text(_scope,
-            style: TextStyle(
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.green,
+          child: CircularPercentIndicator(
+            radius: 180.0,
+            animation: true,
+            animationDuration: 1000,
+            lineWidth: 10.0,
+            percent: 7 / 9, // TODO: change from hardcoded to user's meal data
+            header: Container(
+              margin: EdgeInsets.all(10.0),
+              child: Text(
+                'Progress Towards Goal',
+                style: Theme.of(context).textTheme.display1,
+              ),
             ),
+            center: Text( 
+              ((7 / 9) * 100).round().toString() + '%',
+              style: Theme.of(context).textTheme.display1,
+            ),
+            circularStrokeCap: CircularStrokeCap.round,
+            progressColor: Theme.of(context).accentColor,
           ),
-        ),
-
-
-
-        // Image.asset(_progressImage),
-
-        CircularPercentIndicator(
-          radius: 180.0,
-          animation: true,
-          animationDuration: 1000,
-          lineWidth: 10.0,
-          percent: 7 / 9, // TODO: change from hardcoded to user's meal data
-          header: Text(
-            'Progress Towards Goal',
-            style: Theme.of(context).textTheme.display1,
-          ),
-          center: Text( ((7 / 9) * 100).round().toString() + '%'),
-          circularStrokeCap: CircularStrokeCap.round,
-          progressColor: Theme.of(context).accentColor,
         ),
 
 

@@ -19,10 +19,13 @@ import 'package:grassroots_green/settings.dart';
 import 'package:grassroots_green/login.dart';
 import 'package:grassroots_green/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:percent_indicator/percent_indicator.dart';
+import 'package:grassroots_green/track.dart';
 import 'package:grassroots_green/drawer.dart';
 import 'package:grassroots_green/learn.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 /// Runs the app.
 void main() => runApp(MyApp());
@@ -216,40 +219,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  /// Location of goal progress image. (Temporary)
-  String _progressImage = 'assets/goal_progress/overall_prog.png';
-  /// Location of goal progress chart image. (Temporary)
-  String _chartImage = 'assets/goal_progress/overall_chart.png';
-  /// Type of goal charts being displayed.
-  String _scope = 'Overall';
-
-  /// Sets goal scope to show all meals.
-  void _setOverall() {
-    setState(() {
-      _progressImage = 'assets/goal_progress/overall_prog.png';
-      _chartImage = 'assets/goal_progress/overall_chart.png';
-      _scope = 'Overall';
-    });
-  }
-
-  /// Sets goal scope to show only vegetarian meals.
-  void _setVegetarian() {
-    setState(() {
-      _progressImage = 'assets/goal_progress/vegetarian_prog.png';
-      _chartImage = 'assets/goal_progress/vegetarian_chart.png';
-      _scope = 'Vegetarian';
-    });
-  }
-
-  /// Sets goal scope to show only vegan meals.
-  void _setVegan() {
-    setState(() {
-      _progressImage = 'assets/goal_progress/vegan_prog.png';
-      _chartImage = 'assets/goal_progress/vegan_chart.png';
-      _scope = 'Vegan';
-    });
-  }
-
   /// Submit form and save to database.
   void _submitForm(String type, String location) async {
     Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').document().setData({'type': type, 'location': location, 'time': FieldValue.serverTimestamp()});
@@ -432,73 +401,120 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     }
 
+  /// Scope of time series chart being displayed.
+  String _scope = 'Week';
+
+  /// This will set the time series chart in TRACK to 'week' scope
+  void _setWeek() {
+    _scope = 'Week';
+    // TODO: Change the time series chart to this scope
+  }
+  /// This will set the time series chart in TRACK to 'month' scope
+  void _setMonth() {
+    _scope = 'Month';
+    // TODO: Change the time series chart to this scope
+  }
+
+  /// Placeholder meal data for time series chart
+  static final List<MealsByDate> placeholderVegetarian = [
+    MealsByDate(DateTime(2019, 10, 26), 0),
+    MealsByDate(DateTime(2019, 10, 27), 2),
+    MealsByDate(DateTime(2019, 10, 28), 1),
+    MealsByDate(DateTime(2019, 10, 29), 0),
+    MealsByDate(DateTime(2019, 10, 30), 0),
+    MealsByDate(DateTime(2019, 10, 31), 2),
+    MealsByDate(DateTime(2019, 11, 1), 0),
+  ];
+  static final List<MealsByDate> placeholderVegan = [
+    MealsByDate(DateTime(2019, 10, 26), 0),
+    MealsByDate(DateTime(2019, 10, 27), 0),
+    MealsByDate(DateTime(2019, 10, 28), 0),
+    MealsByDate(DateTime(2019, 10, 29), 1),
+    MealsByDate(DateTime(2019, 10, 30), 0),
+    MealsByDate(DateTime(2019, 10, 31), 0),
+    MealsByDate(DateTime(2019, 11, 1), 0),
+  ];
+
+  /// Series array in order to build time series chart
+  static final List<charts.Series<MealsByDate, DateTime>> placeholderSeries = [
+    charts.Series(
+      id: 'Vegetarian',
+      domainFn: (MealsByDate meals, _) => meals.date,
+      measureFn: (MealsByDate meals, _) => meals.meals,
+      colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
+      data: placeholderVegetarian,
+    ),
+    charts.Series(
+      id: 'Vegan',
+      domainFn: (MealsByDate meals, _) => meals.date,
+      measureFn: (MealsByDate meals, _) => meals.meals,
+      colorFn: (_, __) => charts.MaterialPalette.lime.shadeDefault,
+      data: placeholderVegan,
+    ),
+  ];
+
   /// Returns the TRACK Column.
-  //TODO We'll have to change the padding here once the graphs are being drawn dynamically and not just static images that get switched between each other
   Container displayTRACK() {
     return Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.all(20.0),
-              alignment: Alignment(0.0, 0.0),
-              child: Text(_scope,
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.all(20.0),
+            alignment: Alignment(0.0, 0.0),
+            child: CircularPercentIndicator(
+              radius: 180.0,
+              animation: true,
+              animationDuration: 1000,
+              lineWidth: 10.0,
+              percent: 7 / 9, // TODO: change from hardcoded to user's meal data
+              header: Container(
+                margin: EdgeInsets.all(10.0),
+                child: Text(
+                  'Progress Towards Goal',
+                  style: Theme.of(context).textTheme.display1,
                 ),
               ),
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0,),
-              alignment: Alignment(0.0, 0.0),
-              child: Text(
-                'Progress Towards Goal',
+              center: Text( 
+                ((7 / 9) * 100).round().toString() + '%',
                 style: Theme.of(context).textTheme.display1,
               ),
+              circularStrokeCap: CircularStrokeCap.round,
+              progressColor: Theme.of(context).accentColor,
             ),
-            Image.asset(_progressImage),
-            Container(
-              margin: EdgeInsets.all(10.0),
-              alignment: Alignment(0.0, 0.0),
-              child: Text(
-                'Meals by Day',
-                style: Theme.of(context).textTheme.display1,
+          ),
+
+          Padding(  // time series chart for meals, by date
+            padding: EdgeInsets.all(20.0),
+            child: SizedBox(
+              height: 200.0,
+              child: MealsByDateChart(placeholderSeries),
+            ),
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              FlatButton(
+                  color: Theme.of(context).accentColor,
+                  onPressed: _setWeek,
+                  child: Text(
+                      'Week',
+                      style: Theme.of(context).textTheme.display4,
+                  )
               ),
-            ),
-            Image.asset(_chartImage),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                RaisedButton(
-                    color: Theme.of(context).accentColor,
-                    onPressed: _setOverall,
-                    child: Text(
-                      'Overall',
+              FlatButton(
+                  color: Theme.of(context).accentColor,
+                  onPressed: _setMonth,
+                  child: Text(
+                      'Month',
                       style: Theme.of(context).textTheme.display4,
-                    )
-                ),
-                RaisedButton(
-                    color: Theme.of(context).accentColor,
-                    onPressed: _setVegetarian,
-                    child: Text(
-                      'Vegetarian',
-                      style: Theme.of(context).textTheme.display4,
-                    )
-                ),
-                RaisedButton(
-                    color: Theme.of(context).accentColor,
-                    onPressed: _setVegan,
-                    child: Text(
-                      'Vegan',
-                      style: Theme.of(context).textTheme.display4,
-                    )
-                ),
-              ],
-            )
-          ],
-        )
+                  )
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 

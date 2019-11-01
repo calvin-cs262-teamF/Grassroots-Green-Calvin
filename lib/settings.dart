@@ -106,6 +106,8 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             //Meals a Day
             Row(
@@ -139,14 +141,17 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
                   ),
                 ]
             ),
-            Text('Default Location:', style: Theme.of(context).textTheme.display1),
-            Padding( padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 1.0,),
-              child: Row( mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Radio( value: "Commons", groupValue: _location, onChanged: _handleLocationValueChange),
-                  Text('Commons', style: Theme.of(context).textTheme.display2,),
-                  Radio( value: "Knollcrest", groupValue: _location, onChanged: _handleLocationValueChange),
-                  Text('Knollcrest', style: Theme.of(context).textTheme.display2,),
+            Align(
+              alignment: Alignment.center,
+              child: Text('Default Location:', style: Theme.of(context).textTheme.display1,),
+            ),
+              Padding(padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 1.0,),
+                child: Row( mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Radio( value: "Commons", groupValue: _location, onChanged: _handleLocationValueChange),
+                    Text('Commons', style: Theme.of(context).textTheme.display2,),
+                    Radio( value: "Knollcrest", groupValue: _location, onChanged: _handleLocationValueChange),
+                    Text('Knollcrest', style: Theme.of(context).textTheme.display2,),
                 ],),),
             Padding( padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 1.0,),
                 child: Row( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
@@ -155,8 +160,11 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
                   Radio( value: "Other", groupValue: _location, onChanged: _handleLocationValueChange),
                   Text('Elsewhere', style: Theme.of(context).textTheme.display2),
                 ],)),
-            Text('Default Meal Type', style: Theme.of(context).textTheme.display1,),
-            Padding( padding: const EdgeInsets.all(10.0),
+            Align(
+              alignment: Alignment.center,
+              child: Text('Default Meal Type:', style: Theme.of(context).textTheme.display1,),
+            ),
+              Padding( padding: const EdgeInsets.all(10.0),
                 child: Row( mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Radio( value: "Vegetarian", groupValue: _mealType, onChanged: _handleMealTypeChange),
@@ -166,6 +174,8 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
                     Radio( value: "Neither", groupValue: _mealType, onChanged: _handleMealTypeChange),
                     Text('Neither', style: Theme.of(context).textTheme.display2,),
                   ],)),
+
+            //TODO: Here's a question from Sam: Do we need a button here? could we have it save the settings when a user navigates away from the settings page?
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

@@ -7,6 +7,7 @@ import 'package:grassroots_green/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:grassroots_green/track.dart';
+import 'package:grassroots_green/drawer.dart';
 
 /// Runs the app.
 void main() => runApp(MyApp());
@@ -16,6 +17,21 @@ class MyApp extends StatelessWidget {
 
   /// Authenticator with information about authenticated user.
   final BaseAuth auth = new Auth();
+
+  /// Gets the name of the Login route.
+  static String getLoginRouteName() {
+    return Login.routeName;
+  }
+
+  /// Gets the name of the Settings route.
+  static String getSettingsRouteName() {
+    return Settings.routeName;
+  }
+
+  /// Gets the name of the Compete route.
+  static String getCompeteRouteName() {
+    return Compete.routeName;
+  }
 
   /// Returns widget for root of the app.
   @override
@@ -72,6 +88,9 @@ class MyApp extends StatelessWidget {
 
           //this style is used for buttons in TRACK
           display4: new TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+
+          //this style is being experimented with being used for the labels in settings
+          body1: TextStyle(fontSize: 16, color: Colors.green[800], fontWeight: FontWeight.bold),
 
           //All available theme values are listed below:
           //display4
@@ -154,111 +173,112 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// Returns selected sub-page for display.
-  Column _getSubPage() {
+  Container _getSubPage() {
     switch (_mainMenuOptions) {
       case 'EAT':{
-          return displayEAT();
-        }
+        return displayEAT();
+      }
       case 'LEARN':{
-          return displayLEARN();
-        }
+        return displayLEARN();
+      }
       case 'TRACK':{
-          return displayTRACK();
-        }
+        return displayTRACK();
+      }
       default:{
-          return displayEAT();
-        }
+        return displayEAT();
+      }
     }
   }
 
   /// Returns the EAT column.
-  Column displayEAT() {
-    return Column(
-      children: <Widget>[
-        Text('Record a Meal:',
-            style: Theme.of(context).textTheme.title),
-        Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Radio(
-                    value: "Vegetarian",
-                    groupValue: _mealType,
-                    onChanged: _handleMealTypeChange),
-                Text(
-                  'Vegetarian',
-                  style: Theme.of(context).textTheme.display2
-                ),
-                Radio(
-                    value: "Vegan",
-                    groupValue: _mealType,
-                    onChanged: _handleMealTypeChange),
-                Text(
-                  'Vegan',
-                    style: Theme.of(context).textTheme.display2
-                ),
-                Radio(
-                    value: "Neither",
-                    groupValue: _mealType,
-                    onChanged: _handleMealTypeChange),
-                Text(
-                  'Neither',
-                    style: Theme.of(context).textTheme.display2
-                ),
-              ],
-            )),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text('Location:',
-              style: Theme.of(context).textTheme.display1),
-
-          //Dropdown for the location the meal has been eaten
-          DropdownButton<String>(
-            value: _mealLocation,
-            icon: Icon(Icons.arrow_downward),
-            iconSize: _iconSize,
-            elevation: _elevation,
-            underline: Container(
-              height: _height,
-              color: Theme.of(context).accentColor,
-            ),
-            onChanged: (String newValue) {
-              setState(() {
-                _mealLocation = newValue;
-              });
-            },
-            items: <String>['Commons', 'Knollcrest', 'Home', 'Other']
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value,
-                    style: Theme.of(context).textTheme.display2
-                ),
-              );
-            }).toList(),
-          )
-        ]),
-        RaisedButton(
-          color: Theme.of(context).accentColor,
-          onPressed: () {
-            _submitForm(_mealType, _mealLocation);
-          },
-          child: Text('Submit',
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-            ),
-          )
+  Container displayEAT() {
+    return Container(
+        child: Padding(
+            padding:  EdgeInsets.symmetric(vertical: 152.0),                //TODO: This padding only moves the form down a bit. We want it centered on the page.
+            child: Padding(                                                 //TODO: This is just a cosmetic thing, but it would make the app look nicer.
+                padding:  EdgeInsets.symmetric(horizontal: 10.0),           //TODO: I tried using 'crossAxisAlignment: CrossAxisAlignment.center here, but it didn't work. IDK why
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text('Record a Meal:',
+                        style: Theme.of(context).textTheme.title),
+                    Padding(padding: const EdgeInsets.all(10.0),
+                        child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Radio(value: "Vegetarian",
+                                groupValue: _mealType,
+                                onChanged: _handleMealTypeChange),
+                            Text('Vegetarian',
+                                style: Theme.of(context).textTheme.display2),
+                            Radio(value: "Vegan",
+                                groupValue: _mealType,
+                                onChanged: _handleMealTypeChange),
+                            Text('Vegan',
+                                style: Theme.of(context).textTheme.display2),
+                            Radio(value: "Neither",
+                                groupValue: _mealType,
+                                onChanged: _handleMealTypeChange),
+                            Text('Neither',
+                                style: Theme.of(context).textTheme.display2),
+                          ],
+                        )
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Padding(padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                        child: Text('Location:',
+                            style: Theme.of(context).textTheme.display1),
+                      ),
+                      //Dropdown for the location the meal has been eaten
+                      Padding(padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                          child:DropdownButton<String>(
+                            value: _mealLocation,
+                            icon: Icon(Icons.arrow_downward),
+                            iconSize: _iconSize,
+                            elevation: _elevation,
+                            underline: Container(height: _height,
+                              color: Theme.of(context).accentColor,),
+                            onChanged: (String newValue) {
+                              setState(() {
+                                _mealLocation = newValue;
+                              });
+                            },
+                            items: <String>['Commons', 'Knollcrest', 'Home', 'Other']
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value,
+                                    style: Theme.of(context).textTheme.display2),
+                              );
+                            }).toList(),
+                          )
+                      )
+                    ]),
+                    ///the button to submit the record of the eaten meal
+                    Padding(padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+                        child: RaisedButton(
+                            color: Theme.of(context).accentColor,
+                            onPressed: () { _submitForm(_mealType, _mealLocation); },
+                            child: Text('Submit',
+                              style: TextStyle( color: Theme.of(context).primaryColor, ),
+                            )
+                        )
+                    )
+                  ],
+                )
+            )
         )
-      ],
     );
   }
 
   /// Returns the LEARN Column.
-  Column displayLEARN() {
-    return Column(
-      children: <Widget>[
-        Text('LEARN')
-      ],
+  Container displayLEARN() {
+    return Container(
+        child: Column(
+          children: <Widget>[
+            Text('LEARN')
+          ],
+        )
     );
   }
 
@@ -315,65 +335,67 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   /// Returns the TRACK Column.
-  Column displayTRACK() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.all(20.0),
-          alignment: Alignment(0.0, 0.0),
-          child: CircularPercentIndicator(
-            radius: 180.0,
-            animation: true,
-            animationDuration: 1000,
-            lineWidth: 10.0,
-            percent: 7 / 9, // TODO: change from hardcoded to user's meal data
-            header: Container(
-              margin: EdgeInsets.all(10.0),
-              child: Text(
-                'Progress Towards Goal',
+  Container displayTRACK() {
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.all(20.0),
+            alignment: Alignment(0.0, 0.0),
+            child: CircularPercentIndicator(
+              radius: 180.0,
+              animation: true,
+              animationDuration: 1000,
+              lineWidth: 10.0,
+              percent: 7 / 9, // TODO: change from hardcoded to user's meal data
+              header: Container(
+                margin: EdgeInsets.all(10.0),
+                child: Text(
+                  'Progress Towards Goal',
+                  style: Theme.of(context).textTheme.display1,
+                ),
+              ),
+              center: Text( 
+                ((7 / 9) * 100).round().toString() + '%',
                 style: Theme.of(context).textTheme.display1,
               ),
+              circularStrokeCap: CircularStrokeCap.round,
+              progressColor: Theme.of(context).accentColor,
             ),
-            center: Text( 
-              ((7 / 9) * 100).round().toString() + '%',
-              style: Theme.of(context).textTheme.display1,
-            ),
-            circularStrokeCap: CircularStrokeCap.round,
-            progressColor: Theme.of(context).accentColor,
           ),
-        ),
 
-        Padding(  // time series chart for meals, by date
-          padding: EdgeInsets.all(20.0),
-          child: SizedBox(
-            height: 200.0,
-            child: MealsByDateChart(placeholderSeries),
+          Padding(  // time series chart for meals, by date
+            padding: EdgeInsets.all(20.0),
+            child: SizedBox(
+              height: 200.0,
+              child: MealsByDateChart(placeholderSeries),
+            ),
           ),
-        ),
 
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            FlatButton(
-                color: Theme.of(context).accentColor,
-                onPressed: _setWeek,
-                child: Text(
-                    'Week',
-                    style: Theme.of(context).textTheme.display4,
-                )
-            ),
-            FlatButton(
-                color: Theme.of(context).accentColor,
-                onPressed: _setMonth,
-                child: Text(
-                    'Month',
-                    style: Theme.of(context).textTheme.display4,
-                )
-            ),
-          ],
-        )
-      ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              FlatButton(
+                  color: Theme.of(context).accentColor,
+                  onPressed: _setWeek,
+                  child: Text(
+                      'Week',
+                      style: Theme.of(context).textTheme.display4,
+                  )
+              ),
+              FlatButton(
+                  color: Theme.of(context).accentColor,
+                  onPressed: _setMonth,
+                  child: Text(
+                      'Month',
+                      style: Theme.of(context).textTheme.display4,
+                  )
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 
@@ -435,112 +457,13 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).accentColor,
           title: Text(
-              'Grassroots Green',
-               style: TextStyle(
-                   color: Theme.of(context).primaryColor,
-              ),
+            'Grassroots Green',
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+            ),
           ),
         ),
-        drawer: Drawer(
-            // Now we add children to populate the Drawer
-
-            // Add a ListView to the drawer. This ensures the user can scroll
-            // through the options in the drawer if there isn't enough vertical
-            // space to fit everything.
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor,
-                    ),
-                    child: Container(
-                        child: Column(
-                          children: <Widget>[
-                            Material(
-                                child: Image.asset(
-                                    'assets/Grassroots_Green_Logo_16x9.PNG')),
-                            new FutureBuilder<String>(
-                              future: auth.getUserName(),
-                              // a Future<String> or null
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<String> snapshot) {
-                                switch (snapshot.connectionState) {
-                                  case ConnectionState.none:
-                                    return new Text(
-                                        'Press button to start',
-                                        style: Theme.of(context).textTheme.caption
-                                    );
-                                  case ConnectionState.waiting:
-                                    return new Text(
-                                        'Awaiting result...',
-                                        style: Theme.of(context).textTheme.caption
-                                    );
-                                  default:
-                                    if (snapshot.hasError)
-                                      return new Text(
-                                        'Not signed in.',
-                                        style: Theme.of(context).textTheme.caption
-                                      );
-                                    else if (snapshot.data == null ||
-                                        snapshot.data == "")
-                                      return new Text(
-                                        'User',
-                                        style: Theme.of(context).textTheme.caption
-                                      );
-                                    else
-                                      return new Text(
-                                        '${snapshot.data}',
-                                          style: Theme.of(context).textTheme.caption
-                                      );
-                                }
-                              },
-                            ),
-                          ],
-                        ))),
-                ListTile(
-                  title: Text(
-                      'Login',
-                      style: Theme.of(context).textTheme.display3
-                  ),
-                  onTap: () {
-                    Navigator.pop(context); // close drawer
-                    Navigator.pushNamed(context, Login.routeName);
-                  },
-                ),
-                ListTile(
-                  title: Text(
-                      'Logout',
-                      style: Theme.of(context).textTheme.display3
-                  ),
-                  onTap:() {
-                    auth.signOut();
-                    Navigator.pop(context); // close drawer
-                    Navigator.pushNamed(context, Login.routeName);
-                  },
-                ),
-                ListTile(
-                  title: Text(
-                      'Compete',
-                      style: Theme.of(context).textTheme.display3
-                  ),
-                  onTap: () {
-                    Navigator.pushNamed(context, Compete.routeName);
-                  },
-                ),
-                ListTile(
-                  title: Text(
-                      'Settings',
-                      style: Theme.of(context).textTheme.display3
-                  ),
-                  onTap: () {
-                    Navigator.pop(context); // close drawer
-                    //push the settings route to the Navigator
-                    Navigator.pushNamed(context, Settings.routeName);
-                  },
-                ),
-              ],
-            )),
+        drawer: GGDrawer.getDrawer(context, auth),
         body: Center(
             child: Column(
                 children: <Widget>[
@@ -548,13 +471,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Expanded(
-                        child: FlatButton(
-                          padding: const EdgeInsets.all(18),
-                          color: _mainMenuOptions == "EAT" ? Theme.of(context).buttonColor :Theme.of(context).accentColor,
-                          onPressed: (){ _displayEat();},
-                          child: new Text("EAT",
-                              style: Theme.of(context).textTheme.button),
-                        )
+                          child: FlatButton(
+                            padding: const EdgeInsets.all(18),
+                            color: _mainMenuOptions == "EAT" ? Theme.of(context).buttonColor :Theme.of(context).accentColor,
+                            onPressed: (){ _displayEat();},
+                            child: new Text("EAT",
+                                style: Theme.of(context).textTheme.button),
+                          )
                       ),
                       Expanded(
                           child: FlatButton(

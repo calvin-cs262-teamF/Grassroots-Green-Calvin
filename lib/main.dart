@@ -1,3 +1,4 @@
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:grassroots_green/compete.dart';
 import 'package:grassroots_green/settings.dart';
@@ -5,6 +6,7 @@ import 'package:grassroots_green/login.dart';
 import 'package:grassroots_green/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:grassroots_green/track.dart';
 
 /// Runs the app.
 void main() => runApp(MyApp());
@@ -294,6 +296,32 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  static final List<MealsByDate> placeholderVegetarian = [
+    MealsByDate(DateTime(2019, 10, 27), 2),
+    MealsByDate(DateTime(2019, 10, 28), 1),
+    MealsByDate(DateTime(2019, 10, 31), 2),
+  ];
+  static final List<MealsByDate> placeholderVegan = [
+    MealsByDate(DateTime(2019, 10, 29), 1)
+  ];
+
+  static final List<charts.Series<MealsByDate, DateTime>> placeholderSeries = [
+    charts.Series(
+      id: 'Vegetarian',
+      domainFn: (MealsByDate meals, _) => meals.date,
+      measureFn: (MealsByDate meals, _) => meals.meals,
+      colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
+      data: placeholderVegetarian,
+    ),
+    charts.Series(
+      id: 'Vegan',
+      domainFn: (MealsByDate meals, _) => meals.date,
+      measureFn: (MealsByDate meals, _) => meals.meals,
+      colorFn: (_, __) => charts.MaterialPalette.lime.shadeDefault,
+      data: placeholderVegan,
+    ),
+  ];
+
   /// Returns the TRACK Column.
   Column displayTRACK() {
     return Column(
@@ -324,22 +352,27 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
 
-
-
-
-        Container(
-          margin: EdgeInsets.all(10.0),
-          alignment: Alignment(0.0, 0.0),
-          child: Text(
-            'Meals by Day',
-            style: Theme.of(context).textTheme.display1,
+        Padding(
+          padding: EdgeInsets.all(20.0),
+          child: SizedBox(
+            height: 200.0,
+            child: MealsByDateChart(placeholderSeries),
           ),
         ),
-        Image.asset(_chartImage),
+
+        // Container(
+        //   margin: EdgeInsets.all(10.0),
+        //   alignment: Alignment(0.0, 0.0),
+        //   child: Text(
+        //     'Meals by Day',
+        //     style: Theme.of(context).textTheme.display1,
+        //   ),
+        // ),
+        // Image.asset(_chartImage),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RaisedButton(
+            FlatButton(
                 color: Theme.of(context).accentColor,
                 onPressed: _setOverall,
                 child: Text(
@@ -347,7 +380,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     style: Theme.of(context).textTheme.display4,
                 )
             ),
-            RaisedButton(
+            FlatButton(
                 color: Theme.of(context).accentColor,
                 onPressed: _setVegetarian,
                 child: Text(
@@ -355,7 +388,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     style: Theme.of(context).textTheme.display4,
                 )
             ),
-            RaisedButton(
+            FlatButton(
                 color: Theme.of(context).accentColor,
                 onPressed: _setVegan,
                 child: Text(

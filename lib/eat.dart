@@ -1,19 +1,14 @@
-/*  learn.dart
-*
-* A class used to display LEARN content
-*
-*/
 import 'package:flutter/material.dart';
 
-class Learn extends StatelessWidget {
+class Eat extends StatelessWidget {
 
   //Routename used for Navigation
-  static const String routeName = "/learn";
+  static const String routeName = "/eat";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Learn')),
+      appBar: AppBar(title: Text('Eat')),
       body: MyStatefulWidget(),
     );
   }
@@ -31,14 +26,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-      Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-      new Text(" Here you can find information about Vegan and Vegitaran \n Eating and its environmental impact. \nGrassroots Green Maintains this site."),
-  ],
-      )
-    ]));
+        body: Center(
+
+        )
+    );
   }
 }

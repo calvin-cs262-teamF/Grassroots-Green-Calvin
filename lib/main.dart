@@ -4,7 +4,7 @@ import 'package:grassroots_green/settings.dart';
 import 'package:grassroots_green/login.dart';
 import 'package:grassroots_green/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:percent_indicator/percent_indicator.dart';
 
 /// Runs the app.
 void main() => runApp(MyApp());
@@ -318,12 +318,7 @@ class _MyHomePageState extends State<MyHomePage> {
             style: Theme.of(context).textTheme.display1,
           ),
         ),
-        
-        charts.BarChart(
-          null,
-          vertical: false,
-        ),
-
+        Image.asset(_progressImage),
         Container(
           margin: EdgeInsets.all(10.0),
           alignment: Alignment(0.0, 0.0),

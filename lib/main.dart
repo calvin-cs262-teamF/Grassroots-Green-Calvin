@@ -5,6 +5,8 @@ import 'package:grassroots_green/login.dart';
 import 'package:grassroots_green/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grassroots_green/drawer.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// Runs the app.
 void main() => runApp(MyApp());
@@ -106,6 +108,40 @@ class MyApp extends StatelessWidget {
       ),
       // home: MyHomePage(title: 'Welcome to Grassroots Green!'),
       home: MyHomePage(auth: auth),
+    );
+  }
+}
+
+
+
+//This class allows for text to become hyperlink
+//It was taken from https://dev.to/guimg/hyperlink-widget-on-flutter-4fa5
+class Hyperlink extends StatelessWidget {
+  final String _url;
+  final String _text;
+
+  Hyperlink(this._url, this._text);
+
+  _launchURL() async {
+    if (await canLaunch(_url)) {
+      await launch(_url);
+    } else {
+      throw 'Could not launch $_url';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      child: Text(
+        _text,
+        style: TextStyle(
+        fontSize: 24.0,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+      ),
+      onTap: _launchURL,
     );
   }
 }
@@ -304,41 +340,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// Returns the LEARN Column.
   Container displayLEARN() {
-    return Container(
+      return Container(
         child: Column(
-          children: <Widget>[
-            Text('LEARN')
-          ],
-        )
-    );
-  }
-  Column displayLEARN() {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/learn_background/grassandivy.jpg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+          children:<Widget> [
+          //Image.asset('assets/learn_bakcground/grass.JPEG'),
           Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
               child: Column(
                   children: <Widget>[
                     Container(
                       height: 90,
-                      width: 500,
+                      width: 400,
                       color: Colors.green,
                       alignment: Alignment.topCenter,
                       padding: EdgeInsets.symmetric(vertical: 16),
-                      child: Text("Animal Rights",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,)),
+                        child: Hyperlink('https://navs-online.org/articles/veganism-animal-rights/', 'Animal Rights')
                     ),
                   ]
               )),
@@ -346,16 +362,11 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 Container(
                   height: 90,
-                  width: 500,
+                  width:400,
                   color: Colors.green,
                   alignment: Alignment.topCenter,
                   padding: EdgeInsets.symmetric(vertical: 16),
-                  child: Text("Climate Change",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,)),
-                ),
+                  child: Hyperlink('https://www.globalchange.gov/climate-change', 'Climate Change')),
               ]
           ),
           Padding(
@@ -364,15 +375,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: <Widget>[
                     Container(
                       height: 90,
-                      width: 500,
+                      width: 400,
                       color: Colors.green,
                       alignment: Alignment.topCenter,
                       padding: EdgeInsets.symmetric(vertical: 16),
-                      child: Text("Sustainability",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,)),
+                      child: Hyperlink('http://eices.columbia.edu/2018/08/16/veganism-and-sustainability/', 'Sustainability')
                     ),
                   ]
               )),
@@ -380,38 +387,32 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 Container(
                   height: 90,
-                  width: 500,
+                  width: 400,
                   color: Colors.green,
                   alignment: Alignment.topCenter,
                   padding: EdgeInsets.symmetric(vertical: 16),
-                  child: Text("Workers' Rights",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,)),
+                  child: Hyperlink('http://socialjusticestories.leadr.msu.edu/2016/03/19/human-rights-abuses-in-u-s-meat-packing-industry/', 'Workers\' Rights')
                 ),
               ]
           ),
-          Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
-              child: Column(
-                  children: <Widget>[
-                    Container(
-                      height: 90,
-                      width: 500,
-                      color: Colors.green,
-                      alignment: Alignment.topCenter,
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      child: Text("Climate Change",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,)),
-                    ),
-                  ]
-              )),
 
-        ],
+          Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              child: Column(
+                  children: <Widget>[
+                    Container(
+                      height: 90,
+                      width: 400,
+                      color: Colors.green,
+                      alignment: Alignment.topCenter,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: Hyperlink('https://www.health.harvard.edu/staying-healthy/becoming-a-vegetarian','Health Benefits')
+                    ),
+                  ]
+              )),
+            //Image.asset('assets/Grassroots_Green_Logo_16x9.PNG'),
+          ],),
+        //Image.asset('assets/Grassroots_Green_Logo_16x9.PNG'),
       );
     }
 

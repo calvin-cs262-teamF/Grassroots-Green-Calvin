@@ -146,40 +146,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  /// Location of goal progress image. (Temporary)
-  String _progressImage = 'assets/goal_progress/overall_prog.png';
-  /// Location of goal progress chart image. (Temporary)
-  String _chartImage = 'assets/goal_progress/overall_chart.png';
-  /// Type of goal charts being displayed.
-  String _scope = 'Overall';
-
-  /// Sets goal scope to show all meals.
-  void _setOverall() {
-    setState(() {
-      _progressImage = 'assets/goal_progress/overall_prog.png';
-      _chartImage = 'assets/goal_progress/overall_chart.png';
-      _scope = 'Overall';
-    });
-  }
-
-  /// Sets goal scope to show only vegetarian meals.
-  void _setVegetarian() {
-    setState(() {
-      _progressImage = 'assets/goal_progress/vegetarian_prog.png';
-      _chartImage = 'assets/goal_progress/vegetarian_chart.png';
-      _scope = 'Vegetarian';
-    });
-  }
-
-  /// Sets goal scope to show only vegan meals.
-  void _setVegan() {
-    setState(() {
-      _progressImage = 'assets/goal_progress/vegan_prog.png';
-      _chartImage = 'assets/goal_progress/vegan_chart.png';
-      _scope = 'Vegan';
-    });
-  }
-
   /// Submit form and save to database.
   void _submitForm(String type, String location) async {
     Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').document().setData({'type': type, 'location': location, 'time': FieldValue.serverTimestamp()});
@@ -195,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
           return displayLEARN();
         }
       case 'TRACK':{
-            return displayTRACK();
+          return displayTRACK();
         }
       default:{
           return displayEAT();
@@ -294,6 +260,40 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  /// Location of goal progress image. (Temporary)
+  String _progressImage = 'assets/goal_progress/overall_prog.png';
+  /// Location of goal progress chart image. (Temporary)
+  String _chartImage = 'assets/goal_progress/overall_chart.png';
+  /// Type of goal charts being displayed.
+  String _scope = 'Overall';
+
+  /// Sets goal scope to show all meals.
+  void _setOverall() {
+    setState(() {
+      _progressImage = 'assets/goal_progress/overall_prog.png';
+      _chartImage = 'assets/goal_progress/overall_chart.png';
+      _scope = 'Overall';
+    });
+  }
+
+  /// Sets goal scope to show only vegetarian meals.
+  void _setVegetarian() {
+    setState(() {
+      _progressImage = 'assets/goal_progress/vegetarian_prog.png';
+      _chartImage = 'assets/goal_progress/vegetarian_chart.png';
+      _scope = 'Vegetarian';
+    });
+  }
+
+  /// Sets goal scope to show only vegan meals.
+  void _setVegan() {
+    setState(() {
+      _progressImage = 'assets/goal_progress/vegan_prog.png';
+      _chartImage = 'assets/goal_progress/vegan_chart.png';
+      _scope = 'Vegan';
+    });
+  }
+  
   /// Returns the TRACK Column.
   Column displayTRACK() {
     return Column(
@@ -310,15 +310,29 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        Container(
-          margin: EdgeInsets.all(10.0),
-          alignment: Alignment(0.0, 0.0),
-          child: Text(
+
+
+
+        // Image.asset(_progressImage),
+
+        CircularPercentIndicator(
+          radius: 180.0,
+          animation: true,
+          animationDuration: 1000,
+          lineWidth: 10.0,
+          percent: 7 / 9, // TODO: change from hardcoded to user's meal data
+          header: Text(
             'Progress Towards Goal',
             style: Theme.of(context).textTheme.display1,
           ),
+          center: Text( ((7 / 9) * 100).round().toString() + '%'),
+          circularStrokeCap: CircularStrokeCap.round,
+          progressColor: Theme.of(context).accentColor,
         ),
-        Image.asset(_progressImage),
+
+
+
+
         Container(
           margin: EdgeInsets.all(10.0),
           alignment: Alignment(0.0, 0.0),

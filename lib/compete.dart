@@ -1,3 +1,8 @@
+/*  compete.dart
+*
+* A class used to display inter-dorm competition data to users
+*
+*/
 import 'package:flutter/material.dart';
 import 'package:grassroots_green/auth.dart';
 

@@ -1,4 +1,18 @@
-import 'package:charts_flutter/flutter.dart' as charts;
+/*  main.dart
+*
+* The main dart file for the GrassRoots Green application. The entry point for
+* the app is in this file. This project is a semester long project for CS 262
+* Software Engineering at Calvin University with Professor Keith VanderLinden
+*
+* @author Elizabeth Koning
+* @author Mason VanMeurs
+* @author Nathan Meyer
+* @author Lorrayya Williams
+* @author Sam Tuit
+*
+* @since 2019-9-10
+*
+*/
 import 'package:flutter/material.dart';
 import 'package:grassroots_green/compete.dart';
 import 'package:grassroots_green/settings.dart';
@@ -8,6 +22,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:grassroots_green/track.dart';
 import 'package:grassroots_green/drawer.dart';
+import 'package:grassroots_green/learn.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 /// Runs the app.
 void main() => runApp(MyApp());
@@ -109,6 +127,40 @@ class MyApp extends StatelessWidget {
       ),
       // home: MyHomePage(title: 'Welcome to Grassroots Green!'),
       home: MyHomePage(auth: auth),
+    );
+  }
+}
+
+
+
+//This class allows for text to become hyperlink
+//It was taken from https://dev.to/guimg/hyperlink-widget-on-flutter-4fa5
+class Hyperlink extends StatelessWidget {
+  final String _url;
+  final String _text;
+
+  Hyperlink(this._url, this._text);
+
+  _launchURL() async {
+    if (await canLaunch(_url)) {
+      await launch(_url);
+    } else {
+      throw 'Could not launch $_url';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      child: Text(
+        _text,
+        style: TextStyle(
+        fontSize: 24.0,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+      ),
+      onTap: _launchURL,
     );
   }
 }
@@ -273,14 +325,81 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// Returns the LEARN Column.
   Container displayLEARN() {
-    return Container(
+      return Container(
         child: Column(
-          children: <Widget>[
-            Text('LEARN')
-          ],
-        )
-    );
-  }
+          children:<Widget> [
+          //Image.asset('assets/learn_bakcground/grass.JPEG'),
+          Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              child: Column(
+                  children: <Widget>[
+                    Container(
+                      height: 90,
+                      width: 400,
+                      color: Colors.green,
+                      alignment: Alignment.topCenter,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                        child: Hyperlink('https://navs-online.org/articles/veganism-animal-rights/', 'Animal Rights')
+                    ),
+                  ]
+              )),
+          Column(
+              children: <Widget>[
+                Container(
+                  height: 90,
+                  width:400,
+                  color: Colors.green,
+                  alignment: Alignment.topCenter,
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: Hyperlink('https://www.globalchange.gov/climate-change', 'Climate Change')),
+              ]
+          ),
+          Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              child: Column(
+                  children: <Widget>[
+                    Container(
+                      height: 90,
+                      width: 400,
+                      color: Colors.green,
+                      alignment: Alignment.topCenter,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: Hyperlink('http://eices.columbia.edu/2018/08/16/veganism-and-sustainability/', 'Sustainability')
+                    ),
+                  ]
+              )),
+          Column(
+              children: <Widget>[
+                Container(
+                  height: 90,
+                  width: 400,
+                  color: Colors.green,
+                  alignment: Alignment.topCenter,
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: Hyperlink('http://socialjusticestories.leadr.msu.edu/2016/03/19/human-rights-abuses-in-u-s-meat-packing-industry/', 'Workers\' Rights')
+                ),
+              ]
+          ),
+
+          Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              child: Column(
+                  children: <Widget>[
+                    Container(
+                      height: 90,
+                      width: 400,
+                      color: Colors.green,
+                      alignment: Alignment.topCenter,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: Hyperlink('https://www.health.harvard.edu/staying-healthy/becoming-a-vegetarian','Health Benefits')
+                    ),
+                  ]
+              )),
+            //Image.asset('assets/Grassroots_Green_Logo_16x9.PNG'),
+          ],),
+        //Image.asset('assets/Grassroots_Green_Logo_16x9.PNG'),
+      );
+    }
 
   /// Scope of time series chart being displayed.
   String _scope = 'Week';
@@ -455,6 +574,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
         appBar: AppBar(
+          iconTheme: new IconThemeData(color: Theme.of(context).primaryColor),
           backgroundColor: Theme.of(context).accentColor,
           title: Text(
             'Grassroots Green',
@@ -504,3 +624,6 @@ class _MyHomePageState extends State<MyHomePage> {
             )));
   }
 }
+
+
+

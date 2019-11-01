@@ -262,7 +262,7 @@ class _MyHomePageState extends State<MyHomePage> {
         return displayEAT();
       }
       case 'LEARN':{
-        return Learn.getLEARN(context, auth);
+        return displayLEARN();
       }
       case 'TRACK':{
         return displayTRACK();

@@ -544,7 +544,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _loadSettings() {
     _getUserData().then( (data) {
       setState(() {
-        if(data.exists) {
+        if(data != null && data.exists) {
           if(data['defaultLocation'] != null) {
             _mealLocation = data['defaultLocation'];
           }
@@ -558,7 +558,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   /// Gets user data from Firestore.
   Future<DocumentSnapshot> _getUserData() async {
-    return Firestore.instance.collection('users').document(await auth.getCurrentUser()).get();
+    try {
+      String user = await auth.getCurrentUser();
+      return await Firestore.instance.collection('users').document(user).get();
+    } catch(e) {
+      return null;
+    }
+    //return Firestore.instance.collection('users').document(await auth.getCurrentUser()).get();
   }
 
 

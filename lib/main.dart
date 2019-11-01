@@ -262,49 +262,41 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  /// Location of goal progress image. (Temporary)
-  String _progressImage = 'assets/goal_progress/overall_prog.png';
-  /// Location of goal progress chart image. (Temporary)
-  String _chartImage = 'assets/goal_progress/overall_chart.png';
-  /// Type of goal charts being displayed.
-  String _scope = 'Overall';
+  /// Scope of time series chart being displayed.
+  String _scope = 'Week';
 
-  /// Sets goal scope to show all meals.
-  void _setOverall() {
-    setState(() {
-      _progressImage = 'assets/goal_progress/overall_prog.png';
-      _chartImage = 'assets/goal_progress/overall_chart.png';
-      _scope = 'Overall';
-    });
+  /// This will set the time series chart in TRACK to 'week' scope
+  void _setWeek() {
+    _scope = 'Week';
+    // TODO: Change the time series chart to this scope
+  }
+  /// This will set the time series chart in TRACK to 'month' scope
+  void _setMonth() {
+    _scope = 'Month';
+    // TODO: Change the time series chart to this scope
   }
 
-  /// Sets goal scope to show only vegetarian meals.
-  void _setVegetarian() {
-    setState(() {
-      _progressImage = 'assets/goal_progress/vegetarian_prog.png';
-      _chartImage = 'assets/goal_progress/vegetarian_chart.png';
-      _scope = 'Vegetarian';
-    });
-  }
-
-  /// Sets goal scope to show only vegan meals.
-  void _setVegan() {
-    setState(() {
-      _progressImage = 'assets/goal_progress/vegan_prog.png';
-      _chartImage = 'assets/goal_progress/vegan_chart.png';
-      _scope = 'Vegan';
-    });
-  }
-
+  /// Placeholder meal data for time series chart
   static final List<MealsByDate> placeholderVegetarian = [
+    MealsByDate(DateTime(2019, 10, 26), 0),
     MealsByDate(DateTime(2019, 10, 27), 2),
     MealsByDate(DateTime(2019, 10, 28), 1),
+    MealsByDate(DateTime(2019, 10, 29), 0),
+    MealsByDate(DateTime(2019, 10, 30), 0),
     MealsByDate(DateTime(2019, 10, 31), 2),
+    MealsByDate(DateTime(2019, 11, 1), 0),
   ];
   static final List<MealsByDate> placeholderVegan = [
-    MealsByDate(DateTime(2019, 10, 29), 1)
+    MealsByDate(DateTime(2019, 10, 26), 0),
+    MealsByDate(DateTime(2019, 10, 27), 0),
+    MealsByDate(DateTime(2019, 10, 28), 0),
+    MealsByDate(DateTime(2019, 10, 29), 1),
+    MealsByDate(DateTime(2019, 10, 30), 0),
+    MealsByDate(DateTime(2019, 10, 31), 0),
+    MealsByDate(DateTime(2019, 11, 1), 0),
   ];
 
+  /// Series array in order to build time series chart
   static final List<charts.Series<MealsByDate, DateTime>> placeholderSeries = [
     charts.Series(
       id: 'Vegetarian',
@@ -352,7 +344,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
 
-        Padding(
+        Padding(  // time series chart for meals, by date
           padding: EdgeInsets.all(20.0),
           child: SizedBox(
             height: 200.0,
@@ -360,39 +352,22 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
 
-        // Container(
-        //   margin: EdgeInsets.all(10.0),
-        //   alignment: Alignment(0.0, 0.0),
-        //   child: Text(
-        //     'Meals by Day',
-        //     style: Theme.of(context).textTheme.display1,
-        //   ),
-        // ),
-        // Image.asset(_chartImage),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             FlatButton(
                 color: Theme.of(context).accentColor,
-                onPressed: _setOverall,
+                onPressed: _setWeek,
                 child: Text(
-                    'Overall',
+                    'Week',
                     style: Theme.of(context).textTheme.display4,
                 )
             ),
             FlatButton(
                 color: Theme.of(context).accentColor,
-                onPressed: _setVegetarian,
+                onPressed: _setMonth,
                 child: Text(
-                    'Vegetarian',
-                    style: Theme.of(context).textTheme.display4,
-                )
-            ),
-            FlatButton(
-                color: Theme.of(context).accentColor,
-                onPressed: _setVegan,
-                child: Text(
-                    'Vegan',
+                    'Month',
                     style: Theme.of(context).textTheme.display4,
                 )
             ),

@@ -1,6 +1,8 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
+// TODO: Refactor the "TRACK" page back into this file
+
 class MealsByDateChart extends StatelessWidget {
   final List<charts.Series> seriesList;
   final bool animate;

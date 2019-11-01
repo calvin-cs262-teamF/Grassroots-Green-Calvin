@@ -1,3 +1,8 @@
+/*  login.dart
+*
+* A class used to implement the login of users in the application
+*
+*/
 import 'package:flutter/material.dart';
 import 'package:grassroots_green/auth.dart';
 import 'package:email_validator/email_validator.dart';

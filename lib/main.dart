@@ -1,3 +1,18 @@
+/*  main.dart
+*
+* The main dart file for the GrassRoots Green application. The entry point for
+* the app is in this file. This project is a semester long project for CS 262
+* Software Engineering at Calvin University with Professor Keith VanderLinden
+*
+* @author Elizabeth Koning
+* @author Mason VanMeurs
+* @author Nathan Meyer
+* @author Lorrayya Williams
+* @author Sam Tuit
+*
+* @since 2019-9-10
+*
+*/
 import 'package:flutter/material.dart';
 import 'package:grassroots_green/compete.dart';
 import 'package:grassroots_green/settings.dart';
@@ -5,6 +20,7 @@ import 'package:grassroots_green/login.dart';
 import 'package:grassroots_green/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grassroots_green/drawer.dart';
+import 'package:grassroots_green/learn.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -246,7 +262,7 @@ class _MyHomePageState extends State<MyHomePage> {
         return displayEAT();
       }
       case 'LEARN':{
-        return displayLEARN();
+        return Learn.getLEARN(context, auth);
       }
       case 'TRACK':{
         return displayTRACK();

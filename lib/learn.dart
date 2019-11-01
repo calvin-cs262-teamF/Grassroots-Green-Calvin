@@ -1,3 +1,8 @@
+/*  learn.dart
+*
+* A class used to display LEARN content
+*
+*/
 import 'package:flutter/material.dart';
 
 class Learn extends StatelessWidget {
@@ -37,4 +42,3 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     ]));
   }
 }
-

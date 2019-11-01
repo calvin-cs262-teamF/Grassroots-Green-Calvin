@@ -22,7 +22,18 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Login')),
+      appBar: AppBar(
+        iconTheme: IconThemeData(
+            color: Theme.of(context).primaryColor, //change your color here
+        ),
+          title: Text(
+            'Login',
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+          backgroundColor: Theme.of(context).accentColor,
+      ),
       body: LoginStatefulWidget(auth: auth),
     );
   }

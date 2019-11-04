@@ -192,7 +192,6 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Authenticator with user information.
   final BaseAuth auth;
 
-
   /// Type of meal selected with radio button for meal submission.
   String _mealType = "NULL";
   /// Location of meal submitted by user.
@@ -220,8 +219,21 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// Submit form and save to database.
-  void _submitForm(String type, String location) async {
-    Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').document().setData({'type': type, 'location': location, 'time': FieldValue.serverTimestamp()});
+  void _submitForm(BuildContext snackContext, String type, String location) async {
+    String snackMessage = "";
+    try {
+      await Firestore.instance.collection('users').document(
+          await auth.getCurrentUser()).collection('meals').document().setData({
+        'type': type,
+        'location': location,
+        'time': FieldValue.serverTimestamp()
+      });
+      snackMessage = "Meal saved.";
+    } catch(e) {
+      print("ERROR SAVING MEAL");
+      snackMessage = "Error saving meal.";
+    }
+    Scaffold.of(snackContext).showSnackBar(new SnackBar(content: new Text(snackMessage)));
   }
 
   /// Returns selected sub-page for display.
@@ -308,14 +320,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     ]),
                     ///the button to submit the record of the eaten meal
                     Padding(padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
-                        child: RaisedButton(
-                            color: Theme.of(context).accentColor,
-                            onPressed: () { _submitForm(_mealType, _mealLocation); },
-                            child: Text('Submit',
-                              style: TextStyle( color: Theme.of(context).primaryColor, ),
-                            )
-                        )
-                    )
+                        child: Builder( // Note: be careful about this when refactoring. It was a bit weird to get it to work at all.
+                          builder: (context) => RaisedButton(
+                              child: Text('Submit', style: TextStyle( color: Theme.of(context).primaryColor)),
+                              color: Theme.of(context).accentColor,
+                              onPressed: () {
+                                _submitForm(context, _mealType, _mealLocation);
+                              }),
+                          ),
+                        ),
                   ],
                 )
             )
@@ -577,7 +590,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-
     return Scaffold(
         appBar: AppBar(
           iconTheme: new IconThemeData(color: Theme.of(context).primaryColor),

@@ -198,14 +198,19 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
 
   /// Saves the settings to Firestore.
   void _saveSettings() async {
+    String saveMessage = "";
     try {
       await Firestore.instance.collection('users').document(
           await auth.getCurrentUser()).updateData({
         'mealsPerDay': _mealsPerDay,
         'defaultLocation': _location,
         'defaultMealType': _mealType});
+      saveMessage = "Saved settings.";
     } catch(e) {
-      return;
+      saveMessage = "Error saving settings.";
     }
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text(saveMessage),
+    ));
   }
 }

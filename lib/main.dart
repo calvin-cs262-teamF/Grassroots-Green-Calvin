@@ -273,18 +273,34 @@ class _MyHomePageState extends State<MyHomePage> {
                             Radio(value: "Vegetarian",
                                 groupValue: _mealType,
                                 onChanged: _handleMealTypeChange),
-                            Text('Vegetarian',
-                                style: Theme.of(context).textTheme.display2),
+                            ButtonTheme(
+                                minWidth: 0.0,
+                                child: FlatButton(
+                                  onPressed: () { _handleMealTypeChange("Vegetarian"); },
+                                  padding: EdgeInsets.all(0),
+                                  child: Text('Vegetarian', style: Theme.of(context).textTheme.display2),
+                                )),
                             Radio(value: "Vegan",
                                 groupValue: _mealType,
                                 onChanged: _handleMealTypeChange),
-                            Text('Vegan',
-                                style: Theme.of(context).textTheme.display2),
+                            ButtonTheme(
+                                minWidth: 0.0,
+                                child: FlatButton(
+                                  onPressed: () { _handleMealTypeChange("Vegan"); },
+                                  padding: EdgeInsets.all(0),
+                                  child: Text('Vegan', style: Theme.of(context).textTheme.display2),
+                                )),
                             Radio(value: "Neither",
                                 groupValue: _mealType,
                                 onChanged: _handleMealTypeChange),
-                            Text('Neither',
-                                style: Theme.of(context).textTheme.display2),
+//                            Text('Neither', style: Theme.of(context).textTheme.display2),
+                          ButtonTheme(
+                            minWidth: 0.0,
+                            child: FlatButton(
+                              onPressed: () { _handleMealTypeChange("Neither"); },
+                              padding: EdgeInsets.all(0),
+                              child: Text('Neither', style: Theme.of(context).textTheme.display2),
+                            )),
                           ],
                         )
                     ),

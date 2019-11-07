@@ -228,6 +228,11 @@ class _MyHomePageState extends State<MyHomePage> {
         'location': location,
         'time': FieldValue.serverTimestamp()
       });
+      await Firestore.instance.collection('users').document(
+          await auth.getCurrentUser()).updateData({
+        'Count': FieldValue.increment(1),
+        '$type': FieldValue.increment(1),
+      });
       snackMessage = "Meal saved.";
     } catch(e) {
       print("ERROR SAVING MEAL");
@@ -466,6 +471,25 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
   ];
 
+  Future<double> _getPlantPercent() async {
+    // TODO: make this more efficient by including a counter in the document
+    DocumentSnapshot doc = await _getUserData();
+    int count = 0;
+    int veg = 0;
+    if(doc['Count'] != null) {
+      count = doc['Count'];
+    }
+    if (doc['Vegetarian'] != null) {
+      veg += doc['Vegetarian'];
+    }
+    if (doc['Vegan'] != null) {
+      veg += doc['Vegan'];
+    }
+
+    if(count == 0 || veg > count ) { return 0; }
+    else { return veg / count; }
+  }
+
   /// Returns the TRACK Column.
   Container displayTRACK() {
     return Container(
@@ -475,27 +499,30 @@ class _MyHomePageState extends State<MyHomePage> {
           Container(
             margin: EdgeInsets.all(20.0),
             alignment: Alignment(0.0, 0.0),
-            child: CircularPercentIndicator(
-              radius: 180.0,
-              animation: true,
-              animationDuration: 1000,
-              lineWidth: 10.0,
-              percent: 7 / 9, // TODO: change from hardcoded to user's meal data
-              header: Container(
-                margin: EdgeInsets.all(10.0),
-                child: Text(
-                  'Progress Towards Goal',
-                  style: Theme.of(context).textTheme.display1,
-                ),
-              ),
-              center: Text( 
-                ((7 / 9) * 100).round().toString() + '%',
-                style: Theme.of(context).textTheme.display1,
-              ),
-              circularStrokeCap: CircularStrokeCap.round,
-              progressColor: Theme.of(context).accentColor,
-            ),
-          ),
+            child: FutureBuilder<double>(
+              future: _getPlantPercent(),
+              builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
+                return CircularPercentIndicator(
+                  radius: 180.0,
+                  animation: true,
+                  animationDuration: 1000,
+                  lineWidth: 10.0,
+                  percent: snapshot.data, // TODO: change from hardcoded to user's meal data
+                  header: Container(
+                    margin: EdgeInsets.all(10.0),
+                    child: Text(
+                      'Plant-Based Meals',
+                      style: Theme.of(context).textTheme.display1,
+                    ),
+                  ),
+                  center: Text(
+                    // TODO: load % value here
+                    (snapshot.data * 100).round().toString() + '%',
+                    style: Theme.of(context).textTheme.display1,
+                  ),
+                  circularStrokeCap: CircularStrokeCap.round,
+                  progressColor: Theme.of(context).accentColor,
+            );},),),
 
           Padding(  // time series chart for meals, by date
             padding: EdgeInsets.all(20.0),

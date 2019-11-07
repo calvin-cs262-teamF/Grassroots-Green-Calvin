@@ -472,7 +472,6 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   Future<double> _getPlantPercent() async {
-    // TODO: make this more efficient by including a counter in the document
     DocumentSnapshot doc = await _getUserData();
     int count = 0;
     int veg = 0;
@@ -502,12 +501,16 @@ class _MyHomePageState extends State<MyHomePage> {
             child: FutureBuilder<double>(
               future: _getPlantPercent(),
               builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
+                double percent = 0;
+                if ( !snapshot.hasError && snapshot.connectionState == ConnectionState.done ) {
+                  percent = snapshot.data;
+                }
                 return CircularPercentIndicator(
                   radius: 180.0,
                   animation: true,
                   animationDuration: 1000,
                   lineWidth: 10.0,
-                  percent: snapshot.data, // TODO: change from hardcoded to user's meal data
+                  percent: percent,
                   header: Container(
                     margin: EdgeInsets.all(10.0),
                     child: Text(
@@ -516,8 +519,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   center: Text(
-                    // TODO: load % value here
-                    (snapshot.data * 100).round().toString() + '%',
+                    (percent * 100).round().toString() + '%',
                     style: Theme.of(context).textTheme.display1,
                   ),
                   circularStrokeCap: CircularStrokeCap.round,

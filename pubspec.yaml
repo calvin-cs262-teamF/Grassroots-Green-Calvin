@@ -50,8 +50,12 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
   assets:
-    - assets/
+    - assets/grass.JPG
+    - assets/skygrass.JPG
+    - assets/praireygrass.JPG
+    - assets/learn_background/customgrass.PNG
     - assets/goal_progress/
+    - assets/learn_background/
 
 
   # The following line ensures that the Material Icons font is

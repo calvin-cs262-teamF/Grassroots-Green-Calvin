@@ -1,0 +1,4 @@
+#Wed Oct 16 17:09:41 EDT 2019
+base.0=/home/llw5/AndroidStudioProjects/Grassroots-Green-Calvin/grassroots_green/build/app/intermediates/transforms/dexMerger/debug/0
+path.0=classes.dex
+renamed.0=classes.dex

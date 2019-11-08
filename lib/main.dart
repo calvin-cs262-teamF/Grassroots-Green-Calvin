@@ -262,7 +262,16 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Returns the EAT column.
   Container displayEAT() {
     return Container(
-        child: Padding(
+        child: Stack(
+          children: <Widget>[
+          Container(
+          height: 540,
+          width: 420,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/learn_background/customgrass.PNG' ),
+                  fit: BoxFit.cover)),),
+         Padding(
             padding:  EdgeInsets.symmetric(vertical: 152.0),                //TODO: This padding only moves the form down a bit. We want it centered on the page.
             child: Padding(                                                 //TODO: This is just a cosmetic thing, but it would make the app look nicer.
                 padding:  EdgeInsets.symmetric(horizontal: 10.0),           //TODO: I tried using 'crossAxisAlignment: CrossAxisAlignment.center here, but it didn't work. IDK why
@@ -354,15 +363,23 @@ class _MyHomePageState extends State<MyHomePage> {
                 )
             )
         )
-    );
+    ]),);
   }
 
   /// Returns the LEARN Column.
   Container displayLEARN() {
       return Container(
-        child: Column(
+        child: Stack(
+        children: <Widget>[
+          Container(
+            height: 540,
+            width: 400,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+              image: AssetImage('assets/learn_background/customgrass.PNG'),
+              fit: BoxFit.cover)),),
+         Column(
           children:<Widget> [
-          //Image.asset('assets/learn_bakcground/grass.JPEG'),
           Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
               child: Column(
@@ -429,10 +446,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ]
               )),
-            //Image.asset('assets/Grassroots_Green_Logo_16x9.PNG'),
           ],),
-        //Image.asset('assets/Grassroots_Green_Logo_16x9.PNG'),
-      );
+      ],),);
     }
 
   /// Scope of time series chart being displayed.

@@ -380,7 +380,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Container(
                       height: 90,
                       width: 400,
-                      color: Colors.green,
+                      color: Theme.of(context).accentColor,
                       alignment: Alignment.topCenter,
                       padding: EdgeInsets.symmetric(vertical: 16),
                         child: Hyperlink('https://navs-online.org/articles/veganism-animal-rights/', 'Animal Rights')
@@ -392,7 +392,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Container(
                   height: 90,
                   width:400,
-                  color: Colors.green,
+                  color: Theme.of(context).accentColor,
                   alignment: Alignment.topCenter,
                   padding: EdgeInsets.symmetric(vertical: 16),
                   child: Hyperlink('https://www.globalchange.gov/climate-change', 'Climate Change')),
@@ -405,7 +405,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Container(
                       height: 90,
                       width: 400,
-                      color: Colors.green,
+                      color: Theme.of(context).accentColor,
                       alignment: Alignment.topCenter,
                       padding: EdgeInsets.symmetric(vertical: 16),
                       child: Hyperlink('http://eices.columbia.edu/2018/08/16/veganism-and-sustainability/', 'Sustainability')
@@ -417,7 +417,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Container(
                   height: 90,
                   width: 400,
-                  color: Colors.green,
+                  color: Theme.of(context).accentColor,
                   alignment: Alignment.topCenter,
                   padding: EdgeInsets.symmetric(vertical: 16),
                   child: Hyperlink('http://socialjusticestories.leadr.msu.edu/2016/03/19/human-rights-abuses-in-u-s-meat-packing-industry/', 'Workers\' Rights')
@@ -432,7 +432,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Container(
                       height: 90,
                       width: 400,
-                      color: Colors.green,
+                      color: Theme.of(context).accentColor,
                       alignment: Alignment.topCenter,
                       padding: EdgeInsets.symmetric(vertical: 16),
                       child: Hyperlink('https://www.health.harvard.edu/staying-healthy/becoming-a-vegetarian','Health Benefits')

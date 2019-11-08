@@ -23,7 +23,14 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Settings', style: TextStyle(color: Theme.of(context).primaryColor,),), backgroundColor: Theme.of(context).accentColor,),
+        appBar: AppBar(title: Text(
+          'Settings',
+          style: TextStyle(color: Theme.of(context).primaryColor,),),
+          backgroundColor: Theme.of(context).accentColor,
+          iconTheme: IconThemeData(
+            color: Theme.of(context).primaryColor, //change your color here
+          ),
+        ),
         body: SettingsStatefulWidget(auth: auth),
     );
   }

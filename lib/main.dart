@@ -371,17 +371,10 @@ class _MyHomePageState extends State<MyHomePage> {
       return Container(
         child: Stack(
         children: <Widget>[
-          Container(
-            height: 540,
-            width: 400,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-              image: AssetImage('assets/learn_background/customgrass.PNG'),
-              fit: BoxFit.cover)),),
          Column(
           children:<Widget> [
           Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
+              padding: EdgeInsets.symmetric(vertical: 15.0),
               child: Column(
                   children: <Widget>[
                     Container(
@@ -406,7 +399,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ]
           ),
           Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
+              padding: EdgeInsets.symmetric(vertical: 15.0),
               child: Column(
                   children: <Widget>[
                     Container(
@@ -433,7 +426,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
 
           Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
+              padding: EdgeInsets.symmetric(vertical: 15.0),
               child: Column(
                   children: <Widget>[
                     Container(

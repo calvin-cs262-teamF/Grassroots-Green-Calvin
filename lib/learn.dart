@@ -4,41 +4,82 @@
 *
 */
 import 'package:flutter/material.dart';
+import 'Hyperlink.dart';
 
-class Learn extends StatelessWidget {
-
-  //Routename used for Navigation
-  static const String routeName = "/learn";
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Learn')),
-      body: MyStatefulWidget(),
-    );
-  }
-}
-
-class MyStatefulWidget extends StatefulWidget {
-  MyStatefulWidget({Key key}) : super(key: key);
-
-  @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
-}
-
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
+class Learn {
+  static Container getLearn(BuildContext context){
+    return Container(
+      child: Stack(
         children: <Widget>[
-      Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-      new Text(" Here you can find information about Vegan and Vegitaran \n Eating and its environmental impact. \nGrassroots Green Maintains this site."),
-  ],
-      )
-    ]));
+          Column(
+            children:<Widget> [
+              Padding(
+                  padding: EdgeInsets.symmetric(vertical: 15.0),
+                  child: Column(
+                      children: <Widget>[
+                        Container(
+                            height: 90,
+                            width: 400,
+                            color: Theme.of(context).accentColor,
+                            alignment: Alignment.topCenter,
+                            padding: EdgeInsets.symmetric(vertical: 16),
+                            child: Hyperlink('https://navs-online.org/articles/veganism-animal-rights/', 'Animal Rights')
+                        ),
+                      ]
+                  )),
+              Column(
+                  children: <Widget>[
+                    Container(
+                        height: 90,
+                        width:400,
+                        color: Theme.of(context).accentColor,
+                        alignment: Alignment.topCenter,
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: Hyperlink('https://www.globalchange.gov/climate-change', 'Climate Change')),
+                  ]
+              ),
+              Padding(
+                  padding: EdgeInsets.symmetric(vertical: 15.0),
+                  child: Column(
+                      children: <Widget>[
+                        Container(
+                            height: 90,
+                            width: 400,
+                            color: Theme.of(context).accentColor,
+                            alignment: Alignment.topCenter,
+                            padding: EdgeInsets.symmetric(vertical: 16),
+                            child: Hyperlink('http://eices.columbia.edu/2018/08/16/veganism-and-sustainability/', 'Sustainability')
+                        ),
+                      ]
+                  )),
+              Column(
+                  children: <Widget>[
+                    Container(
+                        height: 90,
+                        width: 400,
+                        color: Theme.of(context).accentColor,
+                        alignment: Alignment.topCenter,
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: Hyperlink('http://socialjusticestories.leadr.msu.edu/2016/03/19/human-rights-abuses-in-u-s-meat-packing-industry/', 'Workers\' Rights')
+                    ),
+                  ]
+              ),
+
+              Padding(
+                  padding: EdgeInsets.symmetric(vertical: 15.0),
+                  child: Column(
+                      children: <Widget>[
+                        Container(
+                            height: 90,
+                            width: 400,
+                            color: Theme.of(context).accentColor,
+                            alignment: Alignment.topCenter,
+                            padding: EdgeInsets.symmetric(vertical: 16),
+                            child: Hyperlink('https://www.health.harvard.edu/staying-healthy/becoming-a-vegetarian','Health Benefits')
+                        ),
+                      ]
+                  )),
+            ],),
+        ],),);
   }
 }

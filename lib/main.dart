@@ -385,6 +385,22 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
   ];
 
+  Future<List<MealsByDate>> getWeeksMeals(String type) async {
+    // TODO: return a list of meals from the past week
+    // TODO: decide -- do we want this to be starting on the first day of the week and going forward, or should it be from exactly 7 days ago?
+
+    // TODO: add error handling
+    DateTime time = new DateTime.now().add( new Duration(days: -7) );
+    List<DocumentSnapshot> docs = (await Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').where('time', isGreaterThan: time).where('type', isEqualTo: type).getDocuments()).documents;
+    List<MealsByDate> meals = [];
+    docs.forEach( (doc) => {
+      // TODO: turn into a MealsByDate
+      // TODO: convert timestamp into a DateTime properly
+      meals.add( MealsByDate(doc.data['time'], doc.data['type'] ))
+    });
+    return meals;
+  }
+
   Future<double> _getPlantPercent() async {
     DocumentSnapshot doc = await _getUserData();
     

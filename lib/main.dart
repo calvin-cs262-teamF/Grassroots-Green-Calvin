@@ -15,6 +15,7 @@
 */
 import 'package:flutter/material.dart';
 import 'package:grassroots_green/compete.dart';
+import 'package:grassroots_green/eat.dart';
 import 'package:grassroots_green/settings.dart';
 import 'package:grassroots_green/login.dart';
 import 'package:grassroots_green/auth.dart';
@@ -211,7 +212,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Container _getSubPage() {
     switch (_mainMenuOptions) {
       case 'EAT':{
-        return displayEAT();
+        return EatStatefulWidgetState().getEAT();
       }
       case 'LEARN':{
         return Learn.getLearn(context);
@@ -220,7 +221,7 @@ class _MyHomePageState extends State<MyHomePage> {
         return displayTRACK();
       }
       default:{
-        return displayEAT();
+        return EatStatefulWidgetState().getEAT();
       }
     }
   }

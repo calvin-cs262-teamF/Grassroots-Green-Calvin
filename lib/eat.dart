@@ -39,7 +39,7 @@ class EatStatefulWidget extends StatefulWidget {
 
 class EatStatefulWidgetState extends State<EatStatefulWidget> {
 
-  Container getEAT(){
+  Container getEAT(BuildContext context){
      return Container(
        child: Stack(
            children: <Widget>[

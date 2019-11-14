@@ -212,7 +212,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Container _getSubPage() {
     switch (_mainMenuOptions) {
       case 'EAT':{
-        return EatStatefulWidgetState().getEAT();
+        return EatStatefulWidgetState().getEAT(context);
       }
       case 'LEARN':{
         return Learn.getLearn(context);
@@ -221,7 +221,7 @@ class _MyHomePageState extends State<MyHomePage> {
         return displayTRACK();
       }
       default:{
-        return EatStatefulWidgetState().getEAT();
+        return EatStatefulWidgetState().getEAT(context);
       }
     }
   }
@@ -580,7 +580,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ],
                   ),
-                  new Container(child: _getSubPage(),)
+                  _getSubPage(),
+                  //new Container(child: _getSubPage(),)
                 ]
             )));
   }

@@ -178,11 +178,6 @@ class EatStatefulWidgetState extends State<EatStatefulWidget> {
         'location': location,
         'time': FieldValue.serverTimestamp()
       });
-      await Firestore.instance.collection('users').document(
-          await auth.getCurrentUser()).updateData({
-        'Count': FieldValue.increment(1),
-        '$type': FieldValue.increment(1),
-      });
       snackMessage = "Meal saved.";
     } catch(e) {
       print("ERROR SAVING MEAL");

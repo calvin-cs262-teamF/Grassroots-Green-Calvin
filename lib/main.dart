@@ -387,6 +387,29 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<double> _getPlantPercent() async {
     DocumentSnapshot doc = await _getUserData();
+    
+    double percent = 0;
+    int plantCount = 0, totalCount = 0;
+    // TODO: add error catching/handling
+    QuerySnapshot querySnapshot = await Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').getDocuments();
+    List<DocumentSnapshot> meals = querySnapshot.documents;
+    meals.forEach((meal) => {
+      if (meal.data['mealType'] == "Vegetarian" || meal.data['mealType'] == "Vegan" ) {
+        plantCount += 1
+      },
+      totalCount += 1
+    } );
+    setState(() {
+      percent = plantCount / totalCount;
+      return percent;
+    });
+
+    return 1;
+
+    setState(() {
+      // TODO:
+    });
+
     int count = 0;
     int veg = 0;
     if(doc['Count'] != null) {

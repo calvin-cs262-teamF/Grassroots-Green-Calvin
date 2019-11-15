@@ -209,10 +209,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   /// Returns selected sub-page for display.
-  Container _getSubPage() {
+  StatelessWidget _getSubPage() {
     switch (_mainMenuOptions) {
       case 'EAT':{
-        return EatStatefulWidgetState().getEAT(context);
+        return Eat();
       }
       case 'LEARN':{
         return Learn.getLearn(context);
@@ -221,116 +221,9 @@ class _MyHomePageState extends State<MyHomePage> {
         return displayTRACK();
       }
       default:{
-        return EatStatefulWidgetState().getEAT(context);
+        return Eat();
       }
     }
-  }
-
-  /// Returns the EAT column.
-  Container displayEAT() {
-    return Container(
-        child: Stack(
-          children: <Widget>[
-          Container(
-          height: 540,
-          width: 420,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('assets/learn_background/customgrass.PNG' ),
-                  fit: BoxFit.cover)),),
-         Padding(
-            padding:  EdgeInsets.symmetric(vertical: 152.0),                //TODO: This padding only moves the form down a bit. We want it centered on the page.
-            child: Padding(                                                 //TODO: This is just a cosmetic thing, but it would make the app look nicer.
-                padding:  EdgeInsets.symmetric(horizontal: 10.0),           //TODO: I tried using 'crossAxisAlignment: CrossAxisAlignment.center here, but it didn't work. IDK why
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text('Record a Meal:',
-                        style: Theme.of(context).textTheme.title),
-                    Padding(padding: const EdgeInsets.all(10.0),
-                        child: Row(mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Radio(value: "Vegetarian",
-                                groupValue: _mealType,
-                                onChanged: _handleMealTypeChange),
-                            ButtonTheme(
-                                minWidth: 0.0,
-                                child: FlatButton(
-                                  onPressed: () { _handleMealTypeChange("Vegetarian"); },
-                                  padding: EdgeInsets.all(0),
-                                  child: Text('Vegetarian', style: Theme.of(context).textTheme.display2),
-                                )),
-                            Radio(value: "Vegan",
-                                groupValue: _mealType,
-                                onChanged: _handleMealTypeChange),
-                            ButtonTheme(
-                                minWidth: 0.0,
-                                child: FlatButton(
-                                  onPressed: () { _handleMealTypeChange("Vegan"); },
-                                  padding: EdgeInsets.all(0),
-                                  child: Text('Vegan', style: Theme.of(context).textTheme.display2),
-                                )),
-                            Radio(value: "Neither",
-                                groupValue: _mealType,
-                                onChanged: _handleMealTypeChange),
-//                            Text('Neither', style: Theme.of(context).textTheme.display2),
-                          ButtonTheme(
-                            minWidth: 0.0,
-                            child: FlatButton(
-                              onPressed: () { _handleMealTypeChange("Neither"); },
-                              padding: EdgeInsets.all(0),
-                              child: Text('Neither', style: Theme.of(context).textTheme.display2),
-                            )),
-                          ],
-                        )
-                    ),
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Padding(padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-                        child: Text('Location:',
-                            style: Theme.of(context).textTheme.display1),
-                      ),
-                      //Dropdown for the location the meal has been eaten
-                      Padding(padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-                          child:DropdownButton<String>(
-                            value: _mealLocation,
-                            icon: Icon(Icons.arrow_downward),
-                            iconSize: _iconSize,
-                            elevation: _elevation,
-                            underline: Container(height: _height,
-                              color: Theme.of(context).accentColor,),
-                            onChanged: (String newValue) {
-                              setState(() {
-                                _mealLocation = newValue;
-                              });
-                            },
-                            items: <String>['Commons', 'Knollcrest', 'Home', 'Other']
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value,
-                                    style: Theme.of(context).textTheme.display2),
-                              );
-                            }).toList(),
-                          )
-                      )
-                    ]),
-                    ///the button to submit the record of the eaten meal
-                    Padding(padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
-                        child: Builder( // Note: be careful about this when refactoring. It was a bit weird to get it to work at all.
-                          builder: (context) => RaisedButton(
-                              child: Text('Submit', style: TextStyle( color: Theme.of(context).primaryColor)),
-                              color: Theme.of(context).accentColor,
-                              onPressed: () {
-                                _submitForm(context, _mealType, _mealLocation);
-                              }),
-                          ),
-                        ),
-                  ],
-                )
-            )
-        )
-    ]),);
   }
 
   /// Scope of time series chart being displayed.
@@ -581,7 +474,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     ],
                   ),
                   _getSubPage(),
-                  //new Container(child: _getSubPage(),)
                 ]
             )));
   }

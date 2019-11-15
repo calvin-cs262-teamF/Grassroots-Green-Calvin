@@ -39,112 +39,6 @@ class EatStatefulWidget extends StatefulWidget {
 
 class EatStatefulWidgetState extends State<EatStatefulWidget> {
 
-  Container getEAT(BuildContext context){
-     return Container(
-       child: Stack(
-           children: <Widget>[
-             Container(
-               height: 540,
-               width: 420,
-               decoration: BoxDecoration(
-                   image: DecorationImage(
-                       image: AssetImage('assets/learn_background/customgrass.PNG' ),
-                       fit: BoxFit.cover)),),
-             Padding(
-                 padding:  EdgeInsets.symmetric(vertical: 152.0),                //TODO: This padding only moves the form down a bit. We want it centered on the page.
-                 child: Padding(                                                 //TODO: This is just a cosmetic thing, but it would make the app look nicer.
-                     padding:  EdgeInsets.symmetric(horizontal: 10.0),           //TODO: I tried using 'crossAxisAlignment: CrossAxisAlignment.center here, but it didn't work. IDK why
-                     child: Column(
-                       mainAxisAlignment: MainAxisAlignment.center,
-                       crossAxisAlignment: CrossAxisAlignment.center,
-                       children: <Widget>[
-                         Text('Record a Meal:',
-                             style: Theme.of(context).textTheme.title),
-                         Padding(padding: const EdgeInsets.all(10.0),
-                             child: Row(mainAxisAlignment: MainAxisAlignment.center,
-                               children: <Widget>[
-                                 Radio(value: "Vegetarian",
-                                     groupValue: _mealType,
-                                     onChanged: _handleMealTypeChange),
-                                 ButtonTheme(
-                                     minWidth: 0.0,
-                                     child: FlatButton(
-                                       onPressed: () { _handleMealTypeChange("Vegetarian"); },
-                                       padding: EdgeInsets.all(0),
-                                       child: Text('Vegetarian', style: Theme.of(context).textTheme.display2),
-                                     )),
-                                 Radio(value: "Vegan",
-                                     groupValue: _mealType,
-                                     onChanged: _handleMealTypeChange),
-                                 ButtonTheme(
-                                     minWidth: 0.0,
-                                     child: FlatButton(
-                                       onPressed: () { _handleMealTypeChange("Vegan"); },
-                                       padding: EdgeInsets.all(0),
-                                       child: Text('Vegan', style: Theme.of(context).textTheme.display2),
-                                     )),
-                                 Radio(value: "Neither",
-                                     groupValue: _mealType,
-                                     onChanged: _handleMealTypeChange),
-//                            Text('Neither', style: Theme.of(context).textTheme.display2),
-                                 ButtonTheme(
-                                     minWidth: 0.0,
-                                     child: FlatButton(
-                                       onPressed: () { _handleMealTypeChange("Neither"); },
-                                       padding: EdgeInsets.all(0),
-                                       child: Text('Neither', style: Theme.of(context).textTheme.display2),
-                                     )),
-                               ],
-                             )
-                         ),
-                         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                           Padding(padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-                             child: Text('Location:',
-                                 style: Theme.of(context).textTheme.display1),
-                           ),
-                           //Dropdown for the location the meal has been eaten
-                           Padding(padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-                               child:DropdownButton<String>(
-                                 value: _mealLocation,
-                                 icon: Icon(Icons.arrow_downward),
-                                 iconSize: _iconSize,
-                                 elevation: _elevation,
-                                 underline: Container(height: _height,
-                                   color: Theme.of(context).accentColor,),
-                                 onChanged: (String newValue) {
-                                   setState(() {
-                                     _mealLocation = newValue;
-                                   });
-                                 },
-                                 items: <String>['Commons', 'Knollcrest', 'Home', 'Other']
-                                     .map<DropdownMenuItem<String>>((String value) {
-                                   return DropdownMenuItem<String>(
-                                     value: value,
-                                     child: Text(value,
-                                         style: Theme.of(context).textTheme.display2),
-                                   );
-                                 }).toList(),
-                               )
-                           )
-                         ]),
-                         ///the button to submit the record of the eaten meal
-                         Padding(padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
-                           child: Builder( // Note: be careful about this when refactoring. It was a bit weird to get it to work at all.
-                             builder: (context) => RaisedButton(
-                                 child: Text('Submit', style: TextStyle( color: Theme.of(context).primaryColor)),
-                                 color: Theme.of(context).accentColor,
-                                 onPressed: () {
-                                   _submitForm(context, _mealType, _mealLocation);
-                                 }),
-                           ),
-                         ),
-                       ],
-                     )
-                 )
-             )
-           ]),);
-  }
-
   final BaseAuth auth;
 
   /// Type of meal selected with radio button for meal submission.
@@ -159,7 +53,34 @@ class EatStatefulWidgetState extends State<EatStatefulWidget> {
   /// Height of buttons.
   static double _height = 2;
 
-  EatStatefulWidgetState({this.auth}) {;}
+  EatStatefulWidgetState({this.auth});
+
+  /// Loads default values from settings for EAT page.
+  void _loadSettings() {
+    _getUserData().then( (data) {
+      setState(() {
+        if(data != null && data.exists) {
+          if(data['defaultLocation'] != null) {
+            _mealLocation = data['defaultLocation'];
+          }
+          if(data['defaultMealType'] != null) {
+            _mealType = data['defaultMealType'];
+          }
+        }
+      });
+    });
+  }
+
+  /// Gets user data from Firestore.
+  Future<DocumentSnapshot> _getUserData() async {
+    try {
+      String user = await auth.getCurrentUser();
+      return await Firestore.instance.collection('users').document(user).get();
+    } catch(e) {
+      return null;
+    }
+    //return Firestore.instance.collection('users').document(await auth.getCurrentUser()).get();
+  }
 
   /// Modifies the meal type when value is changed by user.
   void _handleMealTypeChange(String value) {
@@ -188,6 +109,7 @@ class EatStatefulWidgetState extends State<EatStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
+    _loadSettings();
     return Container(
       child: Stack(
           children: <Widget>[

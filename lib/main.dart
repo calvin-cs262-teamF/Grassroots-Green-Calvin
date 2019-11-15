@@ -131,40 +131,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
-
-//This class allows for text to become hyperlink
-//It was taken from https://dev.to/guimg/hyperlink-widget-on-flutter-4fa5
-class Hyperlink extends StatelessWidget {
-  final String _url;
-  final String _text;
-
-  Hyperlink(this._url, this._text);
-
-  _launchURL() async {
-    if (await canLaunch(_url)) {
-      await launch(_url);
-    } else {
-      throw 'Could not launch $_url';
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      child: Text(
-        _text,
-        style: TextStyle(
-        fontSize: 24.0,
-        fontWeight: FontWeight.bold,
-        color: Colors.white,
-      ),
-      ),
-      onTap: _launchURL,
-    );
-  }
-}
-
 class MyHomePage extends StatefulWidget {
   /// Homepage Widget
   ///
@@ -248,7 +214,7 @@ class _MyHomePageState extends State<MyHomePage> {
         return displayEAT();
       }
       case 'LEARN':{
-        return displayLEARN();
+        return Learn.getLearn(context);
       }
       case 'TRACK':{
         return displayTRACK();
@@ -365,83 +331,6 @@ class _MyHomePageState extends State<MyHomePage> {
         )
     ]),);
   }
-
-  /// Returns the LEARN Column.
-  Container displayLEARN() {
-      return Container(
-        child: Stack(
-        children: <Widget>[
-         Column(
-          children:<Widget> [
-          Padding(
-              padding: EdgeInsets.symmetric(vertical: 15.0),
-              child: Column(
-                  children: <Widget>[
-                    Container(
-                      height: 90,
-                      width: 400,
-                      color: Theme.of(context).accentColor,
-                      alignment: Alignment.topCenter,
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                        child: Hyperlink('https://navs-online.org/articles/veganism-animal-rights/', 'Animal Rights')
-                    ),
-                  ]
-              )),
-          Column(
-              children: <Widget>[
-                Container(
-                  height: 90,
-                  width:400,
-                  color: Theme.of(context).accentColor,
-                  alignment: Alignment.topCenter,
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  child: Hyperlink('https://www.globalchange.gov/climate-change', 'Climate Change')),
-              ]
-          ),
-          Padding(
-              padding: EdgeInsets.symmetric(vertical: 15.0),
-              child: Column(
-                  children: <Widget>[
-                    Container(
-                      height: 90,
-                      width: 400,
-                      color: Theme.of(context).accentColor,
-                      alignment: Alignment.topCenter,
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      child: Hyperlink('http://eices.columbia.edu/2018/08/16/veganism-and-sustainability/', 'Sustainability')
-                    ),
-                  ]
-              )),
-          Column(
-              children: <Widget>[
-                Container(
-                  height: 90,
-                  width: 400,
-                  color: Theme.of(context).accentColor,
-                  alignment: Alignment.topCenter,
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  child: Hyperlink('http://socialjusticestories.leadr.msu.edu/2016/03/19/human-rights-abuses-in-u-s-meat-packing-industry/', 'Workers\' Rights')
-                ),
-              ]
-          ),
-
-          Padding(
-              padding: EdgeInsets.symmetric(vertical: 15.0),
-              child: Column(
-                  children: <Widget>[
-                    Container(
-                      height: 90,
-                      width: 400,
-                      color: Theme.of(context).accentColor,
-                      alignment: Alignment.topCenter,
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      child: Hyperlink('https://www.health.harvard.edu/staying-healthy/becoming-a-vegetarian','Health Benefits')
-                    ),
-                  ]
-              )),
-          ],),
-      ],),);
-    }
 
   /// Scope of time series chart being displayed.
   String _scope = 'Week';

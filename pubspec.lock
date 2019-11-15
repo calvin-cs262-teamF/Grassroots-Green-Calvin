@@ -42,7 +42,7 @@ packages:
       name: cloud_firestore
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.10"
+    version: "0.12.9+6"
   collection:
     dependency: transitive
     description:
@@ -77,7 +77,7 @@ packages:
       name: firebase_auth
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.14.0+9"
+    version: "0.14.0+5"
   firebase_core:
     dependency: "direct main"
     description:
@@ -108,7 +108,7 @@ packages:
       name: google_sign_in
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.13"
+    version: "4.0.11"
   intl:
     dependency: transitive
     description:

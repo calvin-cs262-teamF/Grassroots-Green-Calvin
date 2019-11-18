@@ -7,7 +7,7 @@ ThemeData getTheme(bool dark) {
 
       brightness: Brightness.dark,
 
-//        primaryColor: Colors.white,
+      primaryColor: Colors.white,
       accentColor: Colors.green[700],
       buttonColor: Colors.green[900],
 

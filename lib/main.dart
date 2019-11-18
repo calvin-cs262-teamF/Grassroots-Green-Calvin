@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
 
   /// Authenticator with information about authenticated user.
   final BaseAuth auth = new Auth();
-  bool darkMode = false;
+  bool darkMode = true;
 
   /// Gets the name of the Login route.
   static String getLoginRouteName() {

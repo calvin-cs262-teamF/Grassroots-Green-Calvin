@@ -212,6 +212,7 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
         'mealsPerDay': _mealsPerDay,
         'defaultLocation': _location,
         'defaultMealType': _mealType});
+      // TODO: update values on Eat page to new defaults
       saveMessage = "Saved settings.";
     } catch(e) {
       saveMessage = "Error saving settings.";

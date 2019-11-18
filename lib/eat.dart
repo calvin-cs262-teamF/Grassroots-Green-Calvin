@@ -53,7 +53,9 @@ class EatStatefulWidgetState extends State<EatStatefulWidget> {
   /// Height of buttons.
   static double _height = 2;
 
-  EatStatefulWidgetState({this.auth});
+  EatStatefulWidgetState({this.auth}) {
+    _loadSettings(); // only updates to settings after switching back to Eat (not after saving settings)
+  }
 
   /// Loads default values from settings for EAT page.
   void _loadSettings() {
@@ -93,8 +95,13 @@ class EatStatefulWidgetState extends State<EatStatefulWidget> {
   void _submitForm(BuildContext snackContext, String type, String location) async {
     String snackMessage = "";
     try {
+      String user = await auth.getCurrentUser();
+      print("User: $user");
+      if (user == null) {
+        throw Error();
+      }
       await Firestore.instance.collection('users').document(
-          await auth.getCurrentUser()).collection('meals').document().setData({
+          user).collection('meals').document().setData({
         'type': type,
         'location': location,
         'time': FieldValue.serverTimestamp()
@@ -109,7 +116,6 @@ class EatStatefulWidgetState extends State<EatStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _loadSettings();
     return Container(
       child: Stack(
           children: <Widget>[

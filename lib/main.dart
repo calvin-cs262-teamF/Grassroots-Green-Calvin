@@ -159,60 +159,17 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Authenticator with user information.
   final BaseAuth auth;
 
-  /// Type of meal selected with radio button for meal submission.
-  String _mealType = "NULL";
-  /// Location of meal submitted by user.
-  String _mealLocation = 'Commons';
   /// Home page sub-page selection. Defaults to EAT
   String _mainMenuOptions = "EAT";
 
-  /// Size of icons on page
-  static double _iconSize = 24;
-  /// Elevation for dropdown buttons
-  static int _elevation = 16;
-  /// Height of buttons.
-  static double _height = 2;
-
   /// Creates a new _MyHomePageState object.
-  _MyHomePageState({this.auth}) {
-    _loadSettings();
-  }
-
-  /// Modifies the meal type when value is changed by user.
-  void _handleMealTypeChange(String value) {
-    setState(() {
-      _mealType = value;
-    });
-  }
-
-  /// Submit form and save to database.
-  void _submitForm(BuildContext snackContext, String type, String location) async {
-    String snackMessage = "";
-    try {
-      await Firestore.instance.collection('users').document(
-          await auth.getCurrentUser()).collection('meals').document().setData({
-        'type': type,
-        'location': location,
-        'time': FieldValue.serverTimestamp()
-      });
-      await Firestore.instance.collection('users').document(
-          await auth.getCurrentUser()).updateData({
-        'Count': FieldValue.increment(1),
-        '$type': FieldValue.increment(1),
-      });
-      snackMessage = "Meal saved.";
-    } catch(e) {
-      print("ERROR SAVING MEAL");
-      snackMessage = "Error saving meal.";
-    }
-    Scaffold.of(snackContext).showSnackBar(new SnackBar(content: new Text(snackMessage)));
-  }
+  _MyHomePageState({this.auth});
 
   /// Returns selected sub-page for display.
   StatelessWidget _getSubPage() {
     switch (_mainMenuOptions) {
       case 'EAT':{
-        return Eat();
+        return Eat(auth: auth);
       }
       case 'LEARN':{
         return Learn.getLearn(context);
@@ -221,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
         return displayTRACK();
       }
       default:{
-        return Eat();
+        return Eat(auth: auth);
       }
     }
   }
@@ -370,7 +327,6 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Selects the EAT page for display.
   void _displayEat() {
     setState(() {
-      _loadSettings(); // TODO: change to update as soon as settings are saved
       _mainMenuOptions = "EAT";
     });
   }
@@ -386,22 +342,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void _displayTrack() {
     setState(() {
       _mainMenuOptions = "TRACK";
-    });
-  }
-
-  /// Loads default values from settings for EAT page.
-  void _loadSettings() {
-    _getUserData().then( (data) {
-      setState(() {
-        if(data != null && data.exists) {
-          if(data['defaultLocation'] != null) {
-            _mealLocation = data['defaultLocation'];
-          }
-          if(data['defaultMealType'] != null) {
-            _mealType = data['defaultMealType'];
-          }
-        }
-      });
     });
   }
 

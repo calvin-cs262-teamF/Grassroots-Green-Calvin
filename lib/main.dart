@@ -158,6 +158,9 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Height of buttons.
   static double _height = 2;
 
+  /// Boolean for DarkMode
+  static bool _darkMode = false;
+
   /// Creates a new _MyHomePageState object.
   _MyHomePageState({this.auth}) {
     _loadSettings();
@@ -568,6 +571,9 @@ class _MyHomePageState extends State<MyHomePage> {
           }
           if(data['defaultMealType'] != null) {
             _mealType = data['defaultMealType'];
+          }
+          if(data['darkMode'] != null) {
+            _darkMode = data['darkMode'];
           }
         }
       });

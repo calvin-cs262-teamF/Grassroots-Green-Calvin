@@ -71,7 +71,7 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
   static double _height = 2;
 
   /// boolean for DarkMode
-  static bool darkMode = false;
+  static bool _darkMode = false;
 
   /// Constructor for Setting's state.
   _SettingsStatefulWidgetState({this.auth}) {
@@ -87,6 +87,9 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
           }
           if (data['defaultMealType'] != null) {
             _mealType = data['defaultMealType'];
+          }
+          if (data['darkMode'] != null) {
+            _darkMode = data['darkMode'];
           }
         }
       });
@@ -195,10 +198,10 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
               children: <Widget>[
                 Text('Dark Mode', style: Theme.of(context).textTheme.display1,),
                 Switch(
-                  value: darkMode,
+                  value: _darkMode,
                   onChanged: (value) {
                     setState(() {
-                      darkMode = value;
+                      _darkMode = value;
                     });
                   },
                   activeTrackColor: Colors.green[700],
@@ -230,7 +233,9 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
           await auth.getCurrentUser()).updateData({
         'mealsPerDay': _mealsPerDay,
         'defaultLocation': _location,
-        'defaultMealType': _mealType});
+        'defaultMealType': _mealType,
+        'darkMode': _darkMode,
+      });
       saveMessage = "Saved settings.";
     } catch(e) {
       saveMessage = "Error saving settings.";

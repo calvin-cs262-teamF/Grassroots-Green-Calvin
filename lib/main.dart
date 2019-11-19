@@ -136,7 +136,8 @@ class MyHomePage extends StatefulWidget {
   /// This widget is the homepage of the app, including the "EAT", "LEARN", and "TRACK" sub-pages
   /// the user can access the other pages from this page.
 
-  MyHomePage({Key key, this.title, this.auth}) : super(key: key);
+  MyHomePage({Key key, this.title, this.auth}) : super(key: key) {
+  }
 
   /// Title displayed in header bar
   final String title;
@@ -161,7 +162,44 @@ class _MyHomePageState extends State<MyHomePage> {
   String _mainMenuOptions = "EAT";
 
   /// Creates a new _MyHomePageState object.
-  _MyHomePageState({this.auth});
+  _MyHomePageState({this.auth}) {
+    auth.isSignedIn().then( (result) {
+      if (!result) {
+        Navigator.pushNamed(context, MyApp.getLoginRouteName());
+      }
+    });
+    _loadSettings();
+  }
+
+  /// Modifies the meal type when value is changed by user.
+  void _handleMealTypeChange(String value) {
+    setState(() {
+      _mealType = value;
+    });
+  }
+
+  /// Submit form and save to database.
+  void _submitForm(BuildContext snackContext, String type, String location) async {
+    String snackMessage = "";
+    try {
+      await Firestore.instance.collection('users').document(
+          await auth.getCurrentUser()).collection('meals').document().setData({
+        'type': type,
+        'location': location,
+        'time': FieldValue.serverTimestamp()
+      });
+      await Firestore.instance.collection('users').document(
+          await auth.getCurrentUser()).updateData({
+        'Count': FieldValue.increment(1),
+        '$type': FieldValue.increment(1),
+      });
+      snackMessage = "Meal saved.";
+    } catch(e) {
+      print("ERROR SAVING MEAL");
+      snackMessage = "Error saving meal.";
+    }
+    Scaffold.of(snackContext).showSnackBar(new SnackBar(content: new Text(snackMessage)));
+  }
 
   /// Returns selected sub-page for display.
   StatelessWidget _getSubPage() {

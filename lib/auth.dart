@@ -15,6 +15,7 @@ abstract class BaseAuth {
   Future<String> getUserName();
   Future<void> signOut();
   Future<DocumentSnapshot> getUserData();
+  Future<bool> isSignedIn();
 }
 
 class Auth implements BaseAuth {
@@ -49,11 +50,16 @@ class Auth implements BaseAuth {
 
   /// Gets the current user's code for Firebase user data access.
   Future<String> getCurrentUser() async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
-    if(user == null) {
+    try {
+      FirebaseUser user = await _firebaseAuth.currentUser();
+      if(user == null) {
+        return null;
+      } else {
+        return user.uid;
+      }
+    } catch(error) {
+      print("Error getting the current user.");
       return null;
-    } else {
-      return user.uid;
     }
   }
 
@@ -72,5 +78,14 @@ class Auth implements BaseAuth {
   /// Signs the current user out from Firebase authentication.
   Future<void> signOut() async {
     return _firebaseAuth.signOut();
+  }
+
+  Future<bool> isSignedIn() async {
+    try {
+      return await getCurrentUser() != null;
+    } catch(error) {
+      print("Error checking for sign in");
+      return false;
+    }
   }
 }

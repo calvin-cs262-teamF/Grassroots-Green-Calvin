@@ -19,12 +19,9 @@ import 'package:grassroots_green/eat.dart';
 import 'package:grassroots_green/settings.dart';
 import 'package:grassroots_green/login.dart';
 import 'package:grassroots_green/auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grassroots_green/track.dart';
 import 'package:grassroots_green/drawer.dart';
 import 'package:grassroots_green/learn.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 /// Runs the app.
 void main() => runApp(MyApp());
@@ -168,38 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Navigator.pushNamed(context, MyApp.getLoginRouteName());
       }
     });
-    // _loadSettings();
   }
-
-  /// Modifies the meal type when value is changed by user.
-  // void _handleMealTypeChange(String value) {
-  //   setState(() {
-  //     _mealType = value;
-  //   });
-  // }
-
-  /// Submit form and save to database.
-  // void _submitForm(BuildContext snackContext, String type, String location) async {
-  //   String snackMessage = "";
-  //   try {
-  //     await Firestore.instance.collection('users').document(
-  //         await auth.getCurrentUser()).collection('meals').document().setData({
-  //       'type': type,
-  //       'location': location,
-  //       'time': FieldValue.serverTimestamp()
-  //     });
-  //     await Firestore.instance.collection('users').document(
-  //         await auth.getCurrentUser()).updateData({
-  //       'Count': FieldValue.increment(1),
-  //       '$type': FieldValue.increment(1),
-  //     });
-  //     snackMessage = "Meal saved.";
-  //   } catch(e) {
-  //     print("ERROR SAVING MEAL");
-  //     snackMessage = "Error saving meal.";
-  //   }
-  //   Scaffold.of(snackContext).showSnackBar(new SnackBar(content: new Text(snackMessage)));
-  // }
 
   /// Returns selected sub-page for display.
   StatelessWidget _getSubPage() {
@@ -218,156 +184,6 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
   }
-
-  // /// Scope of time series chart being displayed.
-  // String _scope = 'Week';
-
-  // /// This will set the time series chart in TRACK to 'week' scope
-  // void _setWeek() {
-  //   _scope = 'Week';
-  //   // TODO: Change the time series chart to this scope
-  // }
-  // /// This will set the time series chart in TRACK to 'month' scope
-  // void _setMonth() {
-  //   _scope = 'Month';
-  //   // TODO: Change the time series chart to this scope
-  // }
-
-  // /// Placeholder meal data for time series chart
-  // static final List<MealsByDate> placeholderVegetarian = [
-  //   MealsByDate(DateTime(2019, 10, 26), 0),
-  //   MealsByDate(DateTime(2019, 10, 27), 2),
-  //   MealsByDate(DateTime(2019, 10, 28), 1),
-  //   MealsByDate(DateTime(2019, 10, 29), 0),
-  //   MealsByDate(DateTime(2019, 10, 30), 0),
-  //   MealsByDate(DateTime(2019, 10, 31), 2),
-  //   MealsByDate(DateTime(2019, 11, 1), 0),
-  // ];
-  // static final List<MealsByDate> placeholderVegan = [
-  //   MealsByDate(DateTime(2019, 10, 26), 0),
-  //   MealsByDate(DateTime(2019, 10, 27), 0),
-  //   MealsByDate(DateTime(2019, 10, 28), 0),
-  //   MealsByDate(DateTime(2019, 10, 29), 1),
-  //   MealsByDate(DateTime(2019, 10, 30), 0),
-  //   MealsByDate(DateTime(2019, 10, 31), 0),
-  //   MealsByDate(DateTime(2019, 11, 1), 0),
-  // ];
-
-  /// Series array in order to build time series chart
-  // static final List<charts.Series<MealsByDate, DateTime>> placeholderSeries = [
-  //   charts.Series(
-  //     id: 'Vegetarian',
-  //     domainFn: (MealsByDate meals, _) => meals.date,
-  //     measureFn: (MealsByDate meals, _) => meals.meals,
-  //     colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-  //     data: placeholderVegetarian,
-  //   ),
-  //   charts.Series(
-  //     id: 'Vegan',
-  //     domainFn: (MealsByDate meals, _) => meals.date,
-  //     measureFn: (MealsByDate meals, _) => meals.meals,
-  //     colorFn: (_, __) => charts.MaterialPalette.lime.shadeDefault,
-  //     data: placeholderVegan,
-  //   ),
-  // ];
-
-  // Future<double> _getPlantPercent() async {
-  //   DocumentSnapshot doc = await _getUserData();
-    
-  //   double percent = 0;
-  //   int plantCount = 0, totalCount = 0;
-  //   try {
-  //     QuerySnapshot querySnapshot = await Firestore.instance.collection('users')
-  //         .document(await auth.getCurrentUser()).collection('meals')
-  //         .getDocuments();
-  //     List<DocumentSnapshot> meals = querySnapshot.documents;
-  //     meals.forEach((meal) =>
-  //     {
-  //       if (meal.data['type'] == "Vegetarian" ||
-  //           meal.data['type'] == "Vegan" ) {
-  //         plantCount += 1
-  //       },
-  //       totalCount += 1
-  //     });
-
-  //     percent = plantCount / totalCount;
-  //   } catch(e) {
-  //     print("Not able to get track data properly"); // TODO: maybe add error display for user
-  //   }
-
-  //   return percent;
-  // }
-
-  // /// Returns the TRACK Column.
-  // Container displayTRACK() {
-  //   return Container(
-  //     child: Column(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: <Widget>[
-  //         Container(
-  //           margin: EdgeInsets.all(20.0),
-  //           alignment: Alignment(0.0, 0.0),
-  //           child: FutureBuilder<double>(
-  //             future: _getPlantPercent(),
-  //             builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
-  //               double percent = 0;
-  //               if ( !snapshot.hasError && snapshot.connectionState == ConnectionState.done ) {
-  //                 percent = snapshot.data;
-  //               }
-  //               return CircularPercentIndicator(
-  //                 radius: 180.0,
-  //                 animation: true,
-  //                 animationDuration: 1000,
-  //                 lineWidth: 10.0,
-  //                 percent: percent,
-  //                 header: Container(
-  //                   margin: EdgeInsets.all(10.0),
-  //                   child: Text(
-  //                     'Plant-Based Meals',
-  //                     style: Theme.of(context).textTheme.display1,
-  //                   ),
-  //                 ),
-  //                 center: Text(
-  //                   (percent * 100).round().toString() + '%',
-  //                   style: Theme.of(context).textTheme.display1,
-  //                 ),
-  //                 circularStrokeCap: CircularStrokeCap.round,
-  //                 progressColor: Theme.of(context).accentColor,
-  //           );},),),
-
-  //         Padding(  // time series chart for meals, by date
-  //           padding: EdgeInsets.all(20.0),
-  //           child: SizedBox(
-  //             height: 200.0,
-  //             child: MealsByDateChart(placeholderSeries),
-  //           ),
-  //         ),
-
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: <Widget>[
-  //             FlatButton(
-  //                 color: Theme.of(context).accentColor,
-  //                 onPressed: _setWeek,
-  //                 child: Text(
-  //                     'Week',
-  //                     style: Theme.of(context).textTheme.display4,
-  //                 )
-  //             ),
-  //             FlatButton(
-  //                 color: Theme.of(context).accentColor,
-  //                 onPressed: _setMonth,
-  //                 child: Text(
-  //                     'Month',
-  //                     style: Theme.of(context).textTheme.display4,
-  //                 )
-  //             ),
-  //           ],
-  //         )
-  //       ],
-  //     ),
-  //   );
-  // }
 
   /// Selects the EAT page for display.
   void _displayEat() {
@@ -389,17 +205,6 @@ class _MyHomePageState extends State<MyHomePage> {
       _mainMenuOptions = "TRACK";
     });
   }
-
-  /// Gets user data from Firestore.
-  // Future<DocumentSnapshot> _getUserData() async {
-  //   try {
-  //     String user = await auth.getCurrentUser();
-  //     return await Firestore.instance.collection('users').document(user).get();
-  //   } catch(e) {
-  //     return null;
-  //   }
-  //   //return Firestore.instance.collection('users').document(await auth.getCurrentUser()).get();
-  // }
 
 
   /// Builds the main page.
@@ -463,6 +268,3 @@ class _MyHomePageState extends State<MyHomePage> {
             )));
   }
 }
-
-
-

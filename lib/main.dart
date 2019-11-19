@@ -15,6 +15,7 @@
 */
 import 'package:flutter/material.dart';
 import 'package:grassroots_green/compete.dart';
+import 'package:grassroots_green/eat.dart';
 import 'package:grassroots_green/settings.dart';
 import 'package:grassroots_green/login.dart';
 import 'package:grassroots_green/auth.dart';
@@ -157,19 +158,8 @@ class _MyHomePageState extends State<MyHomePage> {
   /// Authenticator with user information.
   final BaseAuth auth;
 
-  /// Type of meal selected with radio button for meal submission.
-  String _mealType = "NULL";
-  /// Location of meal submitted by user.
-  String _mealLocation = 'Commons';
   /// Home page sub-page selection. Defaults to EAT
   String _mainMenuOptions = "EAT";
-
-  /// Size of icons on page
-  static double _iconSize = 24;
-  /// Elevation for dropdown buttons
-  static int _elevation = 16;
-  /// Height of buttons.
-  static double _height = 2;
 
   /// Creates a new _MyHomePageState object.
   _MyHomePageState({this.auth}) {
@@ -215,7 +205,7 @@ class _MyHomePageState extends State<MyHomePage> {
   StatelessWidget _getSubPage() {
     switch (_mainMenuOptions) {
       case 'EAT':{
-        return displayEAT();
+        return Eat(auth: auth);
       }
       case 'LEARN':{
         return Learn.getLearn(context);
@@ -224,122 +214,164 @@ class _MyHomePageState extends State<MyHomePage> {
         return Track(auth: auth);
       }
       default:{
-        return displayEAT();
+        return Eat(auth: auth);
       }
     }
   }
 
-  /// Returns the EAT column.
-  Container displayEAT() {
+  /// Scope of time series chart being displayed.
+  String _scope = 'Week';
+
+  /// This will set the time series chart in TRACK to 'week' scope
+  void _setWeek() {
+    _scope = 'Week';
+    // TODO: Change the time series chart to this scope
+  }
+  /// This will set the time series chart in TRACK to 'month' scope
+  void _setMonth() {
+    _scope = 'Month';
+    // TODO: Change the time series chart to this scope
+  }
+
+  /// Placeholder meal data for time series chart
+  static final List<MealsByDate> placeholderVegetarian = [
+    MealsByDate(DateTime(2019, 10, 26), 0),
+    MealsByDate(DateTime(2019, 10, 27), 2),
+    MealsByDate(DateTime(2019, 10, 28), 1),
+    MealsByDate(DateTime(2019, 10, 29), 0),
+    MealsByDate(DateTime(2019, 10, 30), 0),
+    MealsByDate(DateTime(2019, 10, 31), 2),
+    MealsByDate(DateTime(2019, 11, 1), 0),
+  ];
+  static final List<MealsByDate> placeholderVegan = [
+    MealsByDate(DateTime(2019, 10, 26), 0),
+    MealsByDate(DateTime(2019, 10, 27), 0),
+    MealsByDate(DateTime(2019, 10, 28), 0),
+    MealsByDate(DateTime(2019, 10, 29), 1),
+    MealsByDate(DateTime(2019, 10, 30), 0),
+    MealsByDate(DateTime(2019, 10, 31), 0),
+    MealsByDate(DateTime(2019, 11, 1), 0),
+  ];
+
+  /// Series array in order to build time series chart
+  static final List<charts.Series<MealsByDate, DateTime>> placeholderSeries = [
+    charts.Series(
+      id: 'Vegetarian',
+      domainFn: (MealsByDate meals, _) => meals.date,
+      measureFn: (MealsByDate meals, _) => meals.meals,
+      colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
+      data: placeholderVegetarian,
+    ),
+    charts.Series(
+      id: 'Vegan',
+      domainFn: (MealsByDate meals, _) => meals.date,
+      measureFn: (MealsByDate meals, _) => meals.meals,
+      colorFn: (_, __) => charts.MaterialPalette.lime.shadeDefault,
+      data: placeholderVegan,
+    ),
+  ];
+
+  Future<double> _getPlantPercent() async {
+    DocumentSnapshot doc = await _getUserData();
+    
+    double percent = 0;
+    int plantCount = 0, totalCount = 0;
+    try {
+      QuerySnapshot querySnapshot = await Firestore.instance.collection('users')
+          .document(await auth.getCurrentUser()).collection('meals')
+          .getDocuments();
+      List<DocumentSnapshot> meals = querySnapshot.documents;
+      meals.forEach((meal) =>
+      {
+        if (meal.data['type'] == "Vegetarian" ||
+            meal.data['type'] == "Vegan" ) {
+          plantCount += 1
+        },
+        totalCount += 1
+      });
+
+      percent = plantCount / totalCount;
+    } catch(e) {
+      print("Not able to get track data properly"); // TODO: maybe add error display for user
+    }
+
+    return percent;
+  }
+
+  /// Returns the TRACK Column.
+  Container displayTRACK() {
     return Container(
-        child: Stack(
-          children: <Widget>[
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
           Container(
-          height: 540,
-          width: 420,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('assets/learn_background/customgrass.PNG' ),
-                  fit: BoxFit.cover)),),
-         Padding(
-            padding:  EdgeInsets.symmetric(vertical: 152.0),                //TODO: This padding only moves the form down a bit. We want it centered on the page.
-            child: Padding(                                                 //TODO: This is just a cosmetic thing, but it would make the app look nicer.
-                padding:  EdgeInsets.symmetric(horizontal: 10.0),           //TODO: I tried using 'crossAxisAlignment: CrossAxisAlignment.center here, but it didn't work. IDK why
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text('Record a Meal:',
-                        style: Theme.of(context).textTheme.title),
-                    Padding(padding: const EdgeInsets.all(10.0),
-                        child: Row(mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Radio(value: "Vegetarian",
-                                groupValue: _mealType,
-                                onChanged: _handleMealTypeChange),
-                            ButtonTheme(
-                                minWidth: 0.0,
-                                child: FlatButton(
-                                  onPressed: () { _handleMealTypeChange("Vegetarian"); },
-                                  padding: EdgeInsets.all(0),
-                                  child: Text('Vegetarian', style: Theme.of(context).textTheme.display2),
-                                )),
-                            Radio(value: "Vegan",
-                                groupValue: _mealType,
-                                onChanged: _handleMealTypeChange),
-                            ButtonTheme(
-                                minWidth: 0.0,
-                                child: FlatButton(
-                                  onPressed: () { _handleMealTypeChange("Vegan"); },
-                                  padding: EdgeInsets.all(0),
-                                  child: Text('Vegan', style: Theme.of(context).textTheme.display2),
-                                )),
-                            Radio(value: "Neither",
-                                groupValue: _mealType,
-                                onChanged: _handleMealTypeChange),
-//                            Text('Neither', style: Theme.of(context).textTheme.display2),
-                          ButtonTheme(
-                            minWidth: 0.0,
-                            child: FlatButton(
-                              onPressed: () { _handleMealTypeChange("Neither"); },
-                              padding: EdgeInsets.all(0),
-                              child: Text('Neither', style: Theme.of(context).textTheme.display2),
-                            )),
-                          ],
-                        )
+            margin: EdgeInsets.all(20.0),
+            alignment: Alignment(0.0, 0.0),
+            child: FutureBuilder<double>(
+              future: _getPlantPercent(),
+              builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
+                double percent = 0;
+                if ( !snapshot.hasError && snapshot.connectionState == ConnectionState.done ) {
+                  percent = snapshot.data;
+                }
+                return CircularPercentIndicator(
+                  radius: 180.0,
+                  animation: true,
+                  animationDuration: 1000,
+                  lineWidth: 10.0,
+                  percent: percent,
+                  header: Container(
+                    margin: EdgeInsets.all(10.0),
+                    child: Text(
+                      'Plant-Based Meals',
+                      style: Theme.of(context).textTheme.display1,
                     ),
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Padding(padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-                        child: Text('Location:',
-                            style: Theme.of(context).textTheme.display1),
-                      ),
-                      //Dropdown for the location the meal has been eaten
-                      Padding(padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-                          child:DropdownButton<String>(
-                            value: _mealLocation,
-                            icon: Icon(Icons.arrow_downward),
-                            iconSize: _iconSize,
-                            elevation: _elevation,
-                            underline: Container(height: _height,
-                              color: Theme.of(context).accentColor,),
-                            onChanged: (String newValue) {
-                              setState(() {
-                                _mealLocation = newValue;
-                              });
-                            },
-                            items: <String>['Commons', 'Knollcrest', 'Home', 'Other']
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value,
-                                    style: Theme.of(context).textTheme.display2),
-                              );
-                            }).toList(),
-                          )
-                      )
-                    ]),
-                    ///the button to submit the record of the eaten meal
-                    Padding(padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
-                        child: Builder( // Note: be careful about this when refactoring. It was a bit weird to get it to work at all.
-                          builder: (context) => RaisedButton(
-                              child: Text('Submit', style: TextStyle( color: Theme.of(context).primaryColor)),
-                              color: Theme.of(context).accentColor,
-                              onPressed: () {
-                                _submitForm(context, _mealType, _mealLocation);
-                              }),
-                          ),
-                        ),
-                  ],
-                )
-            )
-        )
-    ]),);
+                  ),
+                  center: Text(
+                    (percent * 100).round().toString() + '%',
+                    style: Theme.of(context).textTheme.display1,
+                  ),
+                  circularStrokeCap: CircularStrokeCap.round,
+                  progressColor: Theme.of(context).accentColor,
+            );},),),
+
+          Padding(  // time series chart for meals, by date
+            padding: EdgeInsets.all(20.0),
+            child: SizedBox(
+              height: 200.0,
+              child: MealsByDateChart(placeholderSeries),
+            ),
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              FlatButton(
+                  color: Theme.of(context).accentColor,
+                  onPressed: _setWeek,
+                  child: Text(
+                      'Week',
+                      style: Theme.of(context).textTheme.display4,
+                  )
+              ),
+              FlatButton(
+                  color: Theme.of(context).accentColor,
+                  onPressed: _setMonth,
+                  child: Text(
+                      'Month',
+                      style: Theme.of(context).textTheme.display4,
+                  )
+              ),
+            ],
+          )
+        ],
+      ),
+    );
   }
 
   /// Selects the EAT page for display.
   void _displayEat() {
     setState(() {
-      _loadSettings(); // TODO: change to update as soon as settings are saved
       _mainMenuOptions = "EAT";
     });
   }
@@ -355,22 +387,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void _displayTrack() {
     setState(() {
       _mainMenuOptions = "TRACK";
-    });
-  }
-
-  /// Loads default values from settings for EAT page.
-  void _loadSettings() {
-    _getUserData().then( (data) {
-      setState(() {
-        if(data != null && data.exists) {
-          if(data['defaultLocation'] != null) {
-            _mealLocation = data['defaultLocation'];
-          }
-          if(data['defaultMealType'] != null) {
-            _mealType = data['defaultMealType'];
-          }
-        }
-      });
     });
   }
 
@@ -442,7 +458,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ],
                   ),
-                  new Container(child: _getSubPage(),)
+                  _getSubPage(),
                 ]
             )));
   }

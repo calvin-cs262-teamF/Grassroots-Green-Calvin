@@ -96,7 +96,7 @@ class TrackPageState extends State<TrackPage> {
     DocumentSnapshot doc = await _getUserData();
     int count = 0;
     int veg = 0;
-    if(doc['Count'] != null) {
+    if (doc['Count'] != null) {
       count = doc['Count'];
     }
     if (doc['Vegetarian'] != null) {

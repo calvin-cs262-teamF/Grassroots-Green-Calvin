@@ -20,13 +20,11 @@ import 'package:grassroots_green/settings.dart';
 import 'package:grassroots_green/login.dart';
 import 'package:grassroots_green/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:grassroots_green/track.dart';
 import 'package:grassroots_green/drawer.dart';
 import 'package:grassroots_green/learn.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 
 /// Runs the app.
 void main() => runApp(MyApp());
@@ -175,7 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
         return Learn.getLearn(context);
       }
       case 'TRACK':{
-        return displayTRACK();
+        return Track(auth: auth);
       }
       default:{
         return Eat(auth: auth);

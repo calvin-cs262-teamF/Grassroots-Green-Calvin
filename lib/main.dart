@@ -237,20 +237,29 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<double> _getPlantPercent() async {
     DocumentSnapshot doc = await _getUserData();
-    int count = 0;
-    int veg = 0;
-    if(doc['Count'] != null) {
-      count = doc['Count'];
-    }
-    if (doc['Vegetarian'] != null) {
-      veg += doc['Vegetarian'];
-    }
-    if (doc['Vegan'] != null) {
-      veg += doc['Vegan'];
+    
+    double percent = 0;
+    int plantCount = 0, totalCount = 0;
+    try {
+      QuerySnapshot querySnapshot = await Firestore.instance.collection('users')
+          .document(await auth.getCurrentUser()).collection('meals')
+          .getDocuments();
+      List<DocumentSnapshot> meals = querySnapshot.documents;
+      meals.forEach((meal) =>
+      {
+        if (meal.data['type'] == "Vegetarian" ||
+            meal.data['type'] == "Vegan" ) {
+          plantCount += 1
+        },
+        totalCount += 1
+      });
+
+      percent = plantCount / totalCount;
+    } catch(e) {
+      print("Not able to get track data properly"); // TODO: maybe add error display for user
     }
 
-    if(count == 0 || veg > count ) { return 0; }
-    else { return veg / count; }
+    return percent;
   }
 
   /// Returns the TRACK Column.

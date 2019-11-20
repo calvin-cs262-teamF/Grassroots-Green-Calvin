@@ -92,23 +92,100 @@ class TrackPageState extends State<TrackPage> {
     ),
   ];
 
+  Future<List<charts.Series<MealsByDate, DateTime>>> _getSeries(bool week) async {
+    print("WEEK = $week");
+    return [
+      charts.Series(
+        id: 'Vegetarian',
+        domainFn: (MealsByDate meals, _) => meals.date,
+        measureFn: (MealsByDate meals, _) => meals.meals,
+        colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
+        data: week ? await getWeekMeals("Vegetarian") : await getMonthMeals("Vegetarian"),
+      ),
+      charts.Series(
+        id: 'Vegan',
+        domainFn: (MealsByDate meals, _) => meals.date,
+        measureFn: (MealsByDate meals, _) => meals.meals,
+        colorFn: (_, __) => charts.MaterialPalette.lime.shadeDefault,
+        data: week ? await getWeekMeals("Vegan") : await getMonthMeals("Vegan"),
+      ),
+    ];
+  }
+
   Future<double> _getPlantPercent() async {
     DocumentSnapshot doc = await _getUserData();
-    int count = 0;
-    int veg = 0;
-    if (doc['Count'] != null) {
-      count = doc['Count'];
-    }
-    if (doc['Vegetarian'] != null) {
-      veg += doc['Vegetarian'];
-    }
-    if (doc['Vegan'] != null) {
-      veg += doc['Vegan'];
+
+    double percent = 0;
+    int plantCount = 0, totalCount = 0;
+    try {
+      QuerySnapshot querySnapshot = await Firestore.instance.collection('users')
+          .document(await auth.getCurrentUser()).collection('meals')
+          .getDocuments();
+      List<DocumentSnapshot> meals = querySnapshot.documents;
+      meals.forEach((meal) =>
+      {
+        if (meal.data['type'] == "Vegetarian" ||
+            meal.data['type'] == "Vegan" ) {
+          plantCount += 1
+        },
+        totalCount += 1
+      });
+
+      percent = plantCount / totalCount;
+    } catch(e) {
+      print("Not able to get track data properly"); // TODO: maybe add error display for user
     }
 
-    if(count == 0 || veg > count ) { return 0; }
-    else { return veg / count; }
+    return percent;
   }
+
+  Future<List<MealsByDate>> getWeekMeals(String type) async {
+    int numDays = 7;
+    // TODO: add error handling
+    DateTime time = new DateTime.now().add( new Duration(days: -numDays) );
+    Timestamp timestamp = Timestamp.fromDate(time);
+    List<DocumentSnapshot> docs = (await Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').where('type', isEqualTo: type).where('time', isGreaterThan: timestamp).getDocuments()).documents; // should be able to use multiple where queries, but wasn't working
+    List<MealsByDate> meals = [];
+
+    List<int> mealCounts = new List<int>.filled(numDays, 0);
+
+    docs.forEach( (doc) => {
+      mealCounts[DateTime.fromMillisecondsSinceEpoch(doc.data['time'].seconds*1000).weekday] += 1,
+    });
+
+    DateTime monday = new DateTime.now().add(new Duration(days: -(DateTime.now().weekday +1)));
+
+    for(int i = 0; i < mealCounts.length; i++) {
+      meals.add( new MealsByDate(monday.add(new Duration(days: i)), mealCounts[i]));
+    }
+
+    return meals;
+  }
+
+  Future<List<MealsByDate>> getMonthMeals(String type) async {
+    int numDays = lastDayOfMonth(new DateTime.now()).day;
+    // TODO: add error handling
+    DateTime time = new DateTime.now().add( new Duration(days: -numDays) );
+    Timestamp timestamp = Timestamp.fromDate(time);
+    List<DocumentSnapshot> docs = (await Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').where('type', isEqualTo: type).where('time', isGreaterThan: timestamp).getDocuments()).documents; // should be able to use multiple where queries, but wasn't working
+    List<MealsByDate> meals = [];
+
+    List<int> mealCounts = new List<int>.filled(numDays, 0);
+
+    docs.forEach( (doc) => {
+      mealCounts[DateTime.fromMillisecondsSinceEpoch(doc.data['time'].seconds*1000).weekday] += 1,
+    });
+
+    DateTime firstDay = new DateTime.now().add(new Duration(days: -(DateTime.now().day +1)));
+
+    for(int i = 0; i < mealCounts.length; i++) {
+      meals.add( new MealsByDate(firstDay.add(new Duration(days: i)), mealCounts[i]));
+    }
+
+    return meals;
+  }
+
+
 
   /// Gets user data from Firestore.
   Future<DocumentSnapshot> _getUserData() async {
@@ -118,7 +195,6 @@ class TrackPageState extends State<TrackPage> {
     } catch(e) {
       return null;
     }
-    //return Firestore.instance.collection('users').document(await auth.getCurrentUser()).get();
   }
 
   @override
@@ -160,9 +236,19 @@ class TrackPageState extends State<TrackPage> {
 
           Padding(  // time series chart for meals, by date
             padding: EdgeInsets.all(20.0),
-            child: SizedBox(
-              height: 200.0,
-              child: MealsByDateChart(placeholderSeries),
+            child: FutureBuilder<List<charts.Series<MealsByDate, DateTime>>>(
+              future: _getSeries(_scope == 'Week'),
+              builder: (BuildContext context, AsyncSnapshot<List<charts.Series<MealsByDate, DateTime>>> snapshot) {
+                List<charts.Series<MealsByDate, DateTime>> data = [];
+                if ( !snapshot.hasError && snapshot.connectionState == ConnectionState.done ) {
+                  data = snapshot.data;
+                }
+
+                return SizedBox(
+                  height: 200.0,
+                  child: MealsByDateChart(data, animate: true)
+                );
+              },
             ),
           ),
 
@@ -214,4 +300,13 @@ class MealsByDate {
   final int meals;
 
   MealsByDate(this.date, this.meals);
+}
+
+/// The last day of a given month
+/// Implementation from: https://stackoverflow.com/questions/54606548/in-dart-language-how-to-get-the-number-of-days-in-a-specific-datetime
+DateTime lastDayOfMonth(DateTime month) {
+var beginningNextMonth = (month.month < 12)
+? new DateTime(month.year, month.month + 1, 1)
+    : new DateTime(month.year + 1, 1, 1);
+return beginningNextMonth.subtract(new Duration(days: 1));
 }

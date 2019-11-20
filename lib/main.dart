@@ -133,8 +133,7 @@ class MyHomePage extends StatefulWidget {
   /// This widget is the homepage of the app, including the "EAT", "LEARN", and "TRACK" sub-pages
   /// the user can access the other pages from this page.
 
-  MyHomePage({Key key, this.title, this.auth}) : super(key: key) {
-  }
+  MyHomePage({Key key, this.title, this.auth}) : super(key: key);
 
   /// Title displayed in header bar
   final String title;

@@ -41,7 +41,7 @@ class TrackPageState extends State<TrackPage> {
   TrackPageState({this.auth});
 
   /// Scope of time series chart being displayed.
-  String _scope = 'Week';
+  String _scope = 'Month';
 
   /// This will set the time series chart in TRACK to 'week' scope
   void _setWeek() {
@@ -53,44 +53,6 @@ class TrackPageState extends State<TrackPage> {
     _scope = 'Month';
     // TODO: Change the time series chart to this scope
   }
-
-  /// Placeholder meal data for time series chart
-  static final List<MealsByDate> placeholderVegetarian = [
-    MealsByDate(DateTime(2019, 10, 26), 0),
-    MealsByDate(DateTime(2019, 10, 27), 2),
-    MealsByDate(DateTime(2019, 10, 28), 1),
-    MealsByDate(DateTime(2019, 10, 29), 0),
-    MealsByDate(DateTime(2019, 10, 30), 0),
-    MealsByDate(DateTime(2019, 10, 31), 2),
-    MealsByDate(DateTime(2019, 11, 1), 0),
-  ];
-  static final List<MealsByDate> placeholderVegan = [
-    MealsByDate(DateTime(2019, 10, 26), 0),
-    MealsByDate(DateTime(2019, 10, 27), 0),
-    MealsByDate(DateTime(2019, 10, 28), 0),
-    MealsByDate(DateTime(2019, 10, 29), 1),
-    MealsByDate(DateTime(2019, 10, 30), 0),
-    MealsByDate(DateTime(2019, 10, 31), 0),
-    MealsByDate(DateTime(2019, 11, 1), 0),
-  ];
-
-  /// Series array in order to build time series chart
-  static final List<charts.Series<MealsByDate, DateTime>> placeholderSeries = [
-    charts.Series(
-      id: 'Vegetarian',
-      domainFn: (MealsByDate meals, _) => meals.date,
-      measureFn: (MealsByDate meals, _) => meals.meals,
-      colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-      data: placeholderVegetarian,
-    ),
-    charts.Series(
-      id: 'Vegan',
-      domainFn: (MealsByDate meals, _) => meals.date,
-      measureFn: (MealsByDate meals, _) => meals.meals,
-      colorFn: (_, __) => charts.MaterialPalette.lime.shadeDefault,
-      data: placeholderVegan,
-    ),
-  ];
 
   Future<List<charts.Series<MealsByDate, DateTime>>> _getSeries(bool week) async {
     print("WEEK = $week");
@@ -113,8 +75,6 @@ class TrackPageState extends State<TrackPage> {
   }
 
   Future<double> _getPlantPercent() async {
-    DocumentSnapshot doc = await _getUserData();
-
     double percent = 0;
     int plantCount = 0, totalCount = 0;
     try {
@@ -140,22 +100,23 @@ class TrackPageState extends State<TrackPage> {
   }
 
   Future<List<MealsByDate>> getWeekMeals(String type) async {
+    DateTime now = DateTime.now();
+    DateTime monday = new DateTime(now.year, now.month, now.day).add(new Duration(days: -(DateTime.now().weekday) + 1)); // new DateTime.now().add(new Duration(days: -(DateTime.now().weekday) + 1 ));
+    print("Monday = $monday");
     int numDays = 7;
     // TODO: add error handling
-    DateTime time = new DateTime.now().add( new Duration(days: -numDays) );
-    Timestamp timestamp = Timestamp.fromDate(time);
-    List<DocumentSnapshot> docs = (await Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').where('type', isEqualTo: type).where('time', isGreaterThan: timestamp).getDocuments()).documents; // should be able to use multiple where queries, but wasn't working
+    Timestamp timestamp = Timestamp.fromDate(monday);
+    List<DocumentSnapshot> docs = (await Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').where('type', isEqualTo: type).where('time', isGreaterThanOrEqualTo: timestamp).getDocuments()).documents; // should be able to use multiple where queries, but wasn't working
     List<MealsByDate> meals = [];
 
     List<int> mealCounts = new List<int>.filled(numDays, 0);
 
     docs.forEach( (doc) => {
-      mealCounts[DateTime.fromMillisecondsSinceEpoch(doc.data['time'].seconds*1000).weekday] += 1,
+      mealCounts[ DateTime.fromMillisecondsSinceEpoch(doc.data['time'].seconds*1000).weekday -1] += 1,
     });
 
-    DateTime monday = new DateTime.now().add(new Duration(days: -(DateTime.now().weekday +1)));
-
     for(int i = 0; i < mealCounts.length; i++) {
+      print("day = $i, count = ${mealCounts[i]}");
       meals.add( new MealsByDate(monday.add(new Duration(days: i)), mealCounts[i]));
     }
 
@@ -163,23 +124,22 @@ class TrackPageState extends State<TrackPage> {
   }
 
   Future<List<MealsByDate>> getMonthMeals(String type) async {
+    DateTime now = DateTime.now();
+    DateTime firstDay = new DateTime(now.year, now.month, 1); //.add(new Duration(days: -(DateTime.now().day +1))); // new DateTime.now().add(new Duration(days: -(DateTime.now().weekday) + 1 ));
     int numDays = lastDayOfMonth(new DateTime.now()).day;
     // TODO: add error handling
-    DateTime time = new DateTime.now().add( new Duration(days: -numDays) );
-    Timestamp timestamp = Timestamp.fromDate(time);
-    List<DocumentSnapshot> docs = (await Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').where('type', isEqualTo: type).where('time', isGreaterThan: timestamp).getDocuments()).documents; // should be able to use multiple where queries, but wasn't working
+    Timestamp timestamp = Timestamp.fromDate(firstDay);
+    List<DocumentSnapshot> docs = (await Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').where('type', isEqualTo: type).where('time', isGreaterThanOrEqualTo: timestamp).getDocuments()).documents; // should be able to use multiple where queries, but wasn't working
     List<MealsByDate> meals = [];
 
     List<int> mealCounts = new List<int>.filled(numDays, 0);
 
     docs.forEach( (doc) => {
-      mealCounts[DateTime.fromMillisecondsSinceEpoch(doc.data['time'].seconds*1000).weekday] += 1,
+      mealCounts[DateTime.fromMillisecondsSinceEpoch(doc.data['time'].seconds*1000).day-1] += 1,
     });
 
-    DateTime firstDay = new DateTime.now().add(new Duration(days: -(DateTime.now().day +1)));
-
     for(int i = 0; i < mealCounts.length; i++) {
-      meals.add( new MealsByDate(firstDay.add(new Duration(days: i)), mealCounts[i]));
+      meals.add( new MealsByDate(DateTime(now.year, now.month, i+1), mealCounts[i]));
     }
 
     return meals;
@@ -237,7 +197,7 @@ class TrackPageState extends State<TrackPage> {
           Padding(  // time series chart for meals, by date
             padding: EdgeInsets.all(20.0),
             child: FutureBuilder<List<charts.Series<MealsByDate, DateTime>>>(
-              future: _getSeries(_scope == 'Week'),
+              future: _getSeries(false),//_scope == 'Week'),
               builder: (BuildContext context, AsyncSnapshot<List<charts.Series<MealsByDate, DateTime>>> snapshot) {
                 List<charts.Series<MealsByDate, DateTime>> data = [];
                 if ( !snapshot.hasError && snapshot.connectionState == ConnectionState.done ) {

@@ -80,8 +80,14 @@ class TrackPageState extends State<TrackPage> {
     double percent = 0;
     int plantCount = 0, totalCount = 0;
     try {
+      Timestamp timestamp;
+      if(_scope == 'Week') {
+        timestamp = Timestamp.fromDate(getWeekStart());
+      } else {
+        timestamp = Timestamp.fromDate(getMonthStart());
+      }
       QuerySnapshot querySnapshot = await Firestore.instance.collection('users')
-          .document(await auth.getCurrentUser()).collection('meals')
+          .document(await auth.getCurrentUser()).collection('meals').where('time', isGreaterThanOrEqualTo: timestamp)
           .getDocuments();
       List<DocumentSnapshot> meals = querySnapshot.documents;
       meals.forEach((meal) =>
@@ -102,11 +108,9 @@ class TrackPageState extends State<TrackPage> {
   }
 
   Future<List<MealsByDate>> getWeekMeals(String type) async {
-    DateTime now = DateTime.now();
-    DateTime monday = new DateTime(now.year, now.month, now.day).add(new Duration(days: -(DateTime.now().weekday) + 1)); // new DateTime.now().add(new Duration(days: -(DateTime.now().weekday) + 1 ));
-    print("Monday = $monday");
     int numDays = 7;
     // TODO: add error handling
+    DateTime monday = getWeekStart();
     Timestamp timestamp = Timestamp.fromDate(monday);
     List<DocumentSnapshot> docs = (await Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').where('type', isEqualTo: type).where('time', isGreaterThanOrEqualTo: timestamp).getDocuments()).documents; // should be able to use multiple where queries, but wasn't working
     List<MealsByDate> meals = [];
@@ -126,9 +130,8 @@ class TrackPageState extends State<TrackPage> {
   }
 
   Future<List<MealsByDate>> getMonthMeals(String type) async {
-    DateTime now = DateTime.now();
-    DateTime firstDay = new DateTime(now.year, now.month, 1); //.add(new Duration(days: -(DateTime.now().day +1))); // new DateTime.now().add(new Duration(days: -(DateTime.now().weekday) + 1 ));
     int numDays = lastDayOfMonth(new DateTime.now()).day;
+    DateTime firstDay = getMonthStart();
     // TODO: add error handling
     Timestamp timestamp = Timestamp.fromDate(firstDay);
     List<DocumentSnapshot> docs = (await Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').where('type', isEqualTo: type).where('time', isGreaterThanOrEqualTo: timestamp).getDocuments()).documents; // should be able to use multiple where queries, but wasn't working
@@ -141,22 +144,21 @@ class TrackPageState extends State<TrackPage> {
     });
 
     for(int i = 0; i < mealCounts.length; i++) {
-      meals.add( new MealsByDate(DateTime(now.year, now.month, i+1), mealCounts[i]));
+      meals.add( new MealsByDate(DateTime(firstDay.year, firstDay.month, i+1), mealCounts[i]));
     }
 
     return meals;
   }
 
+  DateTime getMonthStart() {
+    DateTime now = DateTime.now();
+    return new DateTime(now.year, now.month, 1);
+  }
 
+  DateTime getWeekStart() {
+    DateTime now = DateTime.now();
+    return new DateTime(now.year, now.month, now.day).add(new Duration(days: -(DateTime.now().weekday) + 1));
 
-  /// Gets user data from Firestore.
-  Future<DocumentSnapshot> _getUserData() async {
-    try {
-      String user = await auth.getCurrentUser();
-      return await Firestore.instance.collection('users').document(user).get();
-    } catch(e) {
-      return null;
-    }
   }
 
   @override

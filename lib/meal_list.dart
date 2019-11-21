@@ -48,10 +48,12 @@ class _MealListState extends State<MealList> {
     return FutureBuilder<String>(
       future: auth.getCurrentUser(),
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        if (snapshot.data == null) { return ListView(); }
         return StreamBuilder<QuerySnapshot>(
             stream: Firestore.instance.collection('users').document(snapshot.data).collection('meals').orderBy("time", descending: true).limit(10).snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) return LinearProgressIndicator();
+              if (snapshot.hasError) return ListView();
               return _buildList(context, snapshot.data.documents);
             }
         );

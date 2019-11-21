@@ -56,7 +56,7 @@ class _MyDialogContentState extends State<MealEditor> {
                 Text("Location: "),
                 DropdownButton<String>(
                 value: _location,
-                icon: Icon(Icons.arrow_downward),
+                icon: Icon(Icons.arrow_drop_down),
 //                iconSize: _iconSize,
 //                elevation: _elevation,
                 underline: Container(
@@ -81,7 +81,7 @@ class _MyDialogContentState extends State<MealEditor> {
             Text("Type:        "),
             DropdownButton<String>(
                   value: _type,
-                  icon: Icon(Icons.arrow_downward),
+                  icon: Icon(Icons.arrow_drop_down),
                   underline: Container(
                     color: Theme.of(context).accentColor,),
                   onChanged: (String newValue) {
@@ -104,7 +104,7 @@ class _MyDialogContentState extends State<MealEditor> {
               Text("Date:    "),
 //              Text(date, style: Theme.of(context).textTheme.display1),
               FlatButton(
-                child: Row( children: <Widget>[Text(date, style: Theme.of(context).textTheme.display2), Icon(Icons.arrow_downward)]),
+                child: Row( children: <Widget>[Text(date, style: Theme.of(context).textTheme.display2), Icon(Icons.arrow_drop_down)]),
                 onPressed: () => {
                   setState(() {
                     _selectDate(context);

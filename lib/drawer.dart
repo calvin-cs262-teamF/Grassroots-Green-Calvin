@@ -121,6 +121,18 @@ class GGDrawer {
             ),
             ListTile(
               title: Text(
+                  'Edit Meals',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .display3
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, MyApp.getMealListRouteName());
+              },
+            ),
+            ListTile(
+              title: Text(
                   'Settings',
                   style: Theme
                       .of(context)

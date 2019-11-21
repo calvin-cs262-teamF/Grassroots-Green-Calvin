@@ -22,6 +22,7 @@ import 'package:grassroots_green/auth.dart';
 import 'package:grassroots_green/track.dart';
 import 'package:grassroots_green/drawer.dart';
 import 'package:grassroots_green/learn.dart';
+import 'package:grassroots_green/meal_list.dart';
 
 /// Runs the app.
 void main() => runApp(MyApp());
@@ -47,6 +48,10 @@ class MyApp extends StatelessWidget {
     return Compete.routeName;
   }
 
+  static String getMealListRouteName() {
+    return MealList.routeName;
+  }
+
   /// Returns widget for root of the app.
   @override
   Widget build(BuildContext context) {
@@ -57,6 +62,7 @@ class MyApp extends StatelessWidget {
         Settings.routeName: (context) => Settings(auth:auth),
         Login.routeName: (context) => Login(auth: auth),
         Compete.routeName: (context) => Compete(auth: auth),
+        MealList.routeName: (context) => MealList(auth: auth),
       },
 
       //When a route is generated, return the route to page,

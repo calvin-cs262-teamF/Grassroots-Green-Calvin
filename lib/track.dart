@@ -41,7 +41,7 @@ class TrackPageState extends State<TrackPage> {
   TrackPageState({this.auth});
 
   /// Scope of time series chart being displayed.
-  String _scope = 'Month';
+  String _scope = "Month";
 
   /// This will set the time series chart in TRACK to 'week' scope
   void _setWeek() {
@@ -197,7 +197,7 @@ class TrackPageState extends State<TrackPage> {
           Padding(  // time series chart for meals, by date
             padding: EdgeInsets.all(20.0),
             child: FutureBuilder<List<charts.Series<MealsByDate, DateTime>>>(
-              future: _getSeries(false),//_scope == 'Week'),
+              future: _getSeries(_scope == 'Week'),
               builder: (BuildContext context, AsyncSnapshot<List<charts.Series<MealsByDate, DateTime>>> snapshot) {
                 List<charts.Series<MealsByDate, DateTime>> data = [];
                 if ( !snapshot.hasError && snapshot.connectionState == ConnectionState.done ) {

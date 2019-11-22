@@ -99,9 +99,9 @@ class TrackPageState extends State<TrackPage> {
         totalCount += 1
       });
 
-      percent = plantCount / totalCount;
+      if(totalCount > 0) percent = plantCount / totalCount;
     } catch(e) {
-      print("Not able to get track data properly"); // TODO: maybe add error display for user
+      print("Not able to get track data properly");
     }
 
     return percent;
@@ -109,7 +109,6 @@ class TrackPageState extends State<TrackPage> {
 
   Future<List<MealsByDate>> getWeekMeals(String type) async {
     int numDays = 7;
-    // TODO: add error handling
     DateTime monday = getWeekStart();
     Timestamp timestamp = Timestamp.fromDate(monday);
     List<DocumentSnapshot> docs = (await Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').where('type', isEqualTo: type).where('time', isGreaterThanOrEqualTo: timestamp).getDocuments()).documents; // should be able to use multiple where queries, but wasn't working
@@ -132,7 +131,6 @@ class TrackPageState extends State<TrackPage> {
   Future<List<MealsByDate>> getMonthMeals(String type) async {
     int numDays = lastDayOfMonth(new DateTime.now()).day;
     DateTime firstDay = getMonthStart();
-    // TODO: add error handling
     Timestamp timestamp = Timestamp.fromDate(firstDay);
     List<DocumentSnapshot> docs = (await Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').where('type', isEqualTo: type).where('time', isGreaterThanOrEqualTo: timestamp).getDocuments()).documents; // should be able to use multiple where queries, but wasn't working
     List<MealsByDate> meals = [];

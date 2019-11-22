@@ -78,8 +78,8 @@ class MyApp extends StatelessWidget {
       title: 'Grassroots Green',
 
       //All theme data will be stored here
-      theme: getTheme(darkMode),
-      // home: MyHomePage(title: 'Welcome to Grassroots Green!'),
+      theme: getTheme(false),
+      darkTheme: getTheme(true),
       home: MyHomePage(auth: auth),
     );
   }

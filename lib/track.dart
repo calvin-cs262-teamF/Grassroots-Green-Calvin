@@ -252,7 +252,28 @@ class MealsByDateChart extends StatelessWidget {
     return charts.TimeSeriesChart(
       seriesList,
       animate: animate,
-      behaviors: [charts.SeriesLegend()]  // add series legend to top of chart
+      behaviors: [charts.SeriesLegend()],  // add series legend to top of chart
+      domainAxis: new charts.DateTimeAxisSpec(
+        renderSpec: charts.GridlineRendererSpec(
+          labelStyle: new charts.TextStyleSpec(
+            color: Theme.of(context).brightness == Brightness.dark ? charts.MaterialPalette.white : charts.MaterialPalette.black,
+          ),
+          axisLineStyle: charts.LineStyleSpec(
+            color: Theme.of(context).brightness == Brightness.dark ? charts.MaterialPalette.white : charts.MaterialPalette.black,
+          ),
+        ),
+      ),
+      primaryMeasureAxis: new charts.NumericAxisSpec(
+        renderSpec: charts.GridlineRendererSpec(
+          labelStyle: new charts.TextStyleSpec(
+            color: Theme.of(context).brightness == Brightness.dark ? charts.MaterialPalette.white : charts.MaterialPalette.black,
+          ),
+          axisLineStyle: charts.LineStyleSpec(
+            color: Theme.of(context).brightness == Brightness.dark ? charts.MaterialPalette.white : charts.MaterialPalette.black,
+          ),
+        ),
+      ),
+
     );
   }
 }

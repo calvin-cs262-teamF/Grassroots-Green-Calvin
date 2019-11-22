@@ -70,9 +70,6 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
   /// Height for drop down menus.
   static double _height = 2;
 
-  /// boolean for DarkMode
-  static bool _darkMode = false;
-
   /// Constructor for Setting's state.
   _SettingsStatefulWidgetState({this.auth}) {
     // set settings to stored data
@@ -87,9 +84,6 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
           }
           if (data['defaultMealType'] != null) {
             _mealType = data['defaultMealType'];
-          }
-          if (data['darkMode'] != null) {
-            _darkMode = data['darkMode'];
           }
         }
       });
@@ -193,22 +187,6 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
                     Text('Neither', style: Theme.of(context).textTheme.display2,),
                   ],)),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text('Dark Mode', style: Theme.of(context).textTheme.display1,),
-                Switch(
-                  value: _darkMode,
-                  onChanged: (value) {
-                    setState(() {
-                      _darkMode = value;
-                    });
-                  },
-                  activeTrackColor: Colors.green[700],
-                  activeColor: Colors.green,
-                ),
-              ],
-            ),
             //TODO: Here's a question from Sam: Do we need a button here? could we have it save the settings when a user navigates away from the settings page?
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -234,7 +212,6 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
         'mealsPerDay': _mealsPerDay,
         'defaultLocation': _location,
         'defaultMealType': _mealType,
-        'darkMode': _darkMode,
       });
       saveMessage = "Saved settings.";
     } catch(e) {

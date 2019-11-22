@@ -4,8 +4,8 @@
 *
 */
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grassroots_green/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Settings extends StatelessWidget {
   /// Settings page of the app.
@@ -69,6 +69,8 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
   static int _elevation = 16;
   /// Height for drop down menus.
   static double _height = 2;
+  /// Padding Value
+  static const double _padding = 8.0;
 
   /// Constructor for Setting's state.
   _SettingsStatefulWidgetState({this.auth}) {
@@ -118,15 +120,16 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             //Meals a Day
             Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text('Meals per Day:', style: Theme.of(context).textTheme.display1),
-                  Padding(padding: const EdgeInsets.symmetric(horizontal: 10.0)),
+                  Padding(padding: const EdgeInsets.symmetric(horizontal: _padding),
+                    child: Text('Meals per Day:', style: Theme.of(context).textTheme.display1),
+                  ),
                   //Dropdown for how many meals per day
                   DropdownButton<String>(
                     value: _mealsPerDay.toString(),
@@ -146,38 +149,39 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(value, style: Theme.of(context).textTheme.display2,),
                       );
                     })
                         .toList(),
                   ),
                 ]
             ),
-            Align(
-              alignment: Alignment.center,
+            Padding(
+              padding: const EdgeInsets.all(_padding),
+              //alignment: Alignment.centerLeft,
               child: Text('Default Location:', style: Theme.of(context).textTheme.display1,),
             ),
-              Padding(padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 1.0,),
-                child: Row( mainAxisAlignment: MainAxisAlignment.center,
+              Padding(padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 1.0,),
+                child: Row( mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Radio( value: "Commons", groupValue: _location, onChanged: _handleLocationValueChange),
                     Text('Commons', style: Theme.of(context).textTheme.display2,),
                     Radio( value: "Knollcrest", groupValue: _location, onChanged: _handleLocationValueChange),
                     Text('Knollcrest', style: Theme.of(context).textTheme.display2,),
                 ],),),
-            Padding( padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 1.0,),
-                child: Row( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            Padding( padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 1.0,),
+                child: Row( mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
                   Radio( value: "Home", groupValue: _location, onChanged: _handleLocationValueChange),
                   Text('Home', style: Theme.of(context).textTheme.display2,),
                   Radio( value: "Other", groupValue: _location, onChanged: _handleLocationValueChange),
-                  Text('Elsewhere', style: Theme.of(context).textTheme.display2),
+                  Text('Other', style: Theme.of(context).textTheme.display2),
                 ],)),
-            Align(
-              alignment: Alignment.center,
+            Padding(
+              padding: EdgeInsets.all(_padding),
               child: Text('Default Meal Type:', style: Theme.of(context).textTheme.display1,),
             ),
-              Padding( padding: const EdgeInsets.all(10.0),
-                child: Row( mainAxisAlignment: MainAxisAlignment.center,
+              Padding( padding: const EdgeInsets.all(8.0),
+                child: Row( mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Radio( value: "Vegetarian", groupValue: _mealType, onChanged: _handleMealTypeChange),
                     Text('Vegetarian', style: Theme.of(context).textTheme.display2,),

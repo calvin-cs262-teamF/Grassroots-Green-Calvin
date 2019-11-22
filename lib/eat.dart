@@ -182,7 +182,7 @@ class EatStatefulWidgetState extends State<EatStatefulWidget> {
                           Padding(padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                               child:DropdownButton<String>(
                                 value: _mealLocation,
-                                icon: Icon(Icons.arrow_downward),
+                                icon: Icon(Icons.arrow_drop_down),
                                 iconSize: _iconSize,
                                 elevation: _elevation,
                                 underline: Container(height: _height,

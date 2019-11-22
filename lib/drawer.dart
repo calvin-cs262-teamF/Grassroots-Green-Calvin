@@ -79,35 +79,11 @@ class GGDrawer {
                           },
                         ),
                       ],
-                    ))),
-            ListTile(
-              title: Text(
-                  'Login',
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .display3
-              ),
-              onTap: () {
-                Navigator.pop(context); // close drawer
-                Navigator.pushNamed(context, MyApp.getLoginRouteName());
-              },
+                    )
+                )
             ),
             ListTile(
-              title: Text(
-                  'Logout',
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .display3
-              ),
-              onTap: () {
-                auth.signOut();
-                Navigator.pop(context); // close drawer
-                Navigator.pushNamed(context, MyApp.getLoginRouteName());
-              },
-            ),
-            ListTile(
+              leading: Icon(Icons.star),
               title: Text(
                   'Compete',
                   style: Theme
@@ -120,6 +96,7 @@ class GGDrawer {
               },
             ),
             ListTile(
+              leading: Icon(Icons.edit),
               title: Text(
                   'Edit Meals',
                   style: Theme
@@ -131,7 +108,9 @@ class GGDrawer {
                 Navigator.pushNamed(context, MyApp.getMealListRouteName());
               },
             ),
+            getAccountOption(context, auth),
             ListTile(
+              leading: Icon(Icons.settings),
               title: Text(
                   'Settings',
                   style: Theme
@@ -147,5 +126,46 @@ class GGDrawer {
             ),
           ],
         ));
+  }
+
+  static Widget getAccountOption(BuildContext context, BaseAuth auth) {
+    return FutureBuilder<String>(
+      future: auth.getCurrentUser(),
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        bool loggedIn = snapshot.data != null;
+        if(loggedIn) {
+          return new ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text(
+                'Logout',
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .display3
+            ),
+            onTap: () {
+              auth.signOut();
+              Navigator.pop(context); // close drawer
+              Navigator.pushNamed(context, MyApp.getLoginRouteName());
+            },
+          );
+        } else {
+          return new ListTile(
+            leading: Icon(Icons.account_circle),
+            title: Text(
+                'Login',
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .display3
+            ),
+            onTap: () {
+              Navigator.pop(context); // close drawer
+              Navigator.pushNamed(context, MyApp.getLoginRouteName());
+            },
+          );
+        }
+      },
+    );
   }
 }

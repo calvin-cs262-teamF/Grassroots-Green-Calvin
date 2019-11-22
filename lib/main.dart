@@ -98,10 +98,10 @@ class MyApp extends StatelessWidget {
           caption: new TextStyle(fontSize: 20, color: Colors.white),
 
           //this style is used for regular bold text
-          display1: new TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+          display1: new TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
 
           //this style is used for regular text
-          display2: new TextStyle(fontSize: 20, color: Colors.black),
+          display2: new TextStyle(fontSize: 18, color: Colors.black),
 
           //this style is used for Drawer items
           display3: new TextStyle(fontSize: 18, color: Colors.grey[700], fontWeight: FontWeight.bold),

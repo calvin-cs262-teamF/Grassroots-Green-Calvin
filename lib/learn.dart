@@ -5,6 +5,7 @@
 */
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:grassroots_green/unicode.dart';
 
 class Learn extends StatelessWidget {
   /// RouteName used for Navigation
@@ -81,8 +82,6 @@ class LearnStatefulWidgetState extends State<LearnStatefulWidget> {
   }
 
   void _showLearnPage(LearnDoc doc) {
-    //TODO: open the learn page
-    assert(doc != null);
     Navigator.push(context, MaterialPageRoute(builder: (context) => LearnSubPage(doc: doc)));
   }
 }
@@ -100,7 +99,7 @@ class LearnDoc {
         assert(map['heading'] != null),
         assert(map['sources'] != null),
         assert(map['title'] != null),
-        content = map['content'],
+        content = parseContent(map['content']),
         heading = map['heading'],
         sources = map['sources'],
         title = map['title'],
@@ -112,6 +111,31 @@ class LearnDoc {
   @override
   String toString() => "LearnDoc<$title>";
 
+}
+
+String parseContent(String original) {
+  // TODO: change all of the characters in [] to be superscript
+  String result = original;
+  String regex = RegExp.escape("[") + "(.*?)" + RegExp.escape("]");
+  result = result.replaceAllMapped(
+      new RegExp(regex),
+          (Match m) {
+            print(m.group(0));
+            String temp = "";
+//            String temp = "${m.group(0).substring(1, m.group(0).length-1)}";
+            for(int i = 1; i < m.group(0).length - 1; i++) {
+              String char = m.group(0)[i];
+              if (char == ",") char = '-';
+              temp += unicode_map[char][0];
+//              temp += m.group(0)[i];
+            }
+            return temp;
+//            return "${m.group(0).substring(1, m.group(0).length-1)}";
+          }
+          );
+//  result = result.replaceAll("[", '');
+//  result = result.replaceAll("]", '');
+  return result;
 }
 
 class LearnSubPage extends StatelessWidget {
@@ -162,6 +186,7 @@ class LearnSubPageStatefulWidgetState extends State<LearnSubPageStatefulWidget> 
             Padding(
               padding: EdgeInsets.all(10),
             ),
+            _getImages(doc.images),
             Text(doc.content, style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.normal)),
             Padding(
               padding: EdgeInsets.all(10),
@@ -187,5 +212,20 @@ class LearnSubPageStatefulWidgetState extends State<LearnSubPageStatefulWidget> 
       padding: EdgeInsets.all(10),
       child: new Column( children: text),
     );
+  }
+
+  Container _getImages(List images) {
+    print(images.length);
+    List<Widget> widgets = [];
+    if (images.length > 0) {
+      for(int i = 0; i < images.length; i++) {
+        String name = 'assets/${images[i]}';
+        widgets.add(new Material( child: new Image.asset(name)));
+        widgets.add(new Text("Figure ${i+1}"));
+
+      }
+    }
+
+    return new Container(child: new Column( children: widgets));
   }
 }

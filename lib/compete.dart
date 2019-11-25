@@ -5,6 +5,7 @@
 */
 import 'package:flutter/material.dart';
 import 'package:grassroots_green/auth.dart';
+import 'package:grassroots_green/compete/groupList.dart';
 
 class Compete extends StatelessWidget {
   Compete({this.auth});
@@ -23,7 +24,7 @@ class Compete extends StatelessWidget {
           color: Theme.of(context).primaryColor, //change your color here
         ),
       ),
-      body: CompetePage(auth: auth),
+      body: GroupListStatefulWidget(),// CompetePage(auth: auth),
     );
   }
 }

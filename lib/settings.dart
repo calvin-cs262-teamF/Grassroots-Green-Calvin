@@ -164,16 +164,16 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
               Padding(padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 1.0,),
                 child: Row( mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Radio( value: "Commons", groupValue: _location, onChanged: _handleLocationValueChange),
+                    Radio( value: "Commons", groupValue: _location, onChanged: _handleLocationValueChange, activeColor: Theme.of(context).accentColor),
                     Text('Commons', style: Theme.of(context).textTheme.display2,),
-                    Radio( value: "Knollcrest", groupValue: _location, onChanged: _handleLocationValueChange),
+                    Radio( value: "Knollcrest", groupValue: _location, onChanged: _handleLocationValueChange, activeColor: Theme.of(context).accentColor),
                     Text('Knollcrest', style: Theme.of(context).textTheme.display2,),
                 ],),),
             Padding( padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 1.0,),
                 child: Row( mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-                  Radio( value: "Home", groupValue: _location, onChanged: _handleLocationValueChange),
+                  Radio( value: "Home", groupValue: _location, onChanged: _handleLocationValueChange, activeColor: Theme.of(context).accentColor),
                   Text('Home', style: Theme.of(context).textTheme.display2,),
-                  Radio( value: "Other", groupValue: _location, onChanged: _handleLocationValueChange),
+                  Radio( value: "Other", groupValue: _location, onChanged: _handleLocationValueChange, activeColor: Theme.of(context).accentColor),
                   Text('Other', style: Theme.of(context).textTheme.display2),
                 ],)),
             Padding(
@@ -183,11 +183,11 @@ class _SettingsStatefulWidgetState extends State<SettingsStatefulWidget> {
               Padding( padding: const EdgeInsets.all(8.0),
                 child: Row( mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Radio( value: "Vegetarian", groupValue: _mealType, onChanged: _handleMealTypeChange),
+                    Radio( value: "Vegetarian", groupValue: _mealType, onChanged: _handleMealTypeChange, activeColor: Theme.of(context).accentColor),
                     Text('Vegetarian', style: Theme.of(context).textTheme.display2,),
-                    Radio( value: "Vegan", groupValue: _mealType, onChanged: _handleMealTypeChange),
+                    Radio( value: "Vegan", groupValue: _mealType, onChanged: _handleMealTypeChange, activeColor: Theme.of(context).accentColor),
                     Text('Vegan', style: Theme.of(context).textTheme.display2,),
-                    Radio( value: "Neither", groupValue: _mealType, onChanged: _handleMealTypeChange),
+                    Radio( value: "Neither", groupValue: _mealType, onChanged: _handleMealTypeChange, activeColor: Theme.of(context).accentColor),
                     Text('Neither', style: Theme.of(context).textTheme.display2,),
                   ],)),
 

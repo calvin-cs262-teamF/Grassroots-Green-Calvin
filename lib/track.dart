@@ -57,7 +57,6 @@ class TrackPageState extends State<TrackPage> {
   }
 
   Future<List<charts.Series<MealsByDate, DateTime>>> _getSeries(bool week) async {
-    print("WEEK = $week");
     return [
       charts.Series(
         id: 'Vegetarian',
@@ -111,14 +110,23 @@ class TrackPageState extends State<TrackPage> {
     int numDays = 7;
     DateTime monday = getWeekStart();
     Timestamp timestamp = Timestamp.fromDate(monday);
-    List<DocumentSnapshot> docs = (await Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').where('type', isEqualTo: type).where('time', isGreaterThanOrEqualTo: timestamp).getDocuments()).documents; // should be able to use multiple where queries, but wasn't working
+    List<DocumentSnapshot> docs;
     List<MealsByDate> meals = [];
-
     List<int> mealCounts = new List<int>.filled(numDays, 0);
 
-    docs.forEach( (doc) => {
-      mealCounts[ DateTime.fromMillisecondsSinceEpoch(doc.data['time'].seconds*1000).weekday -1] += 1,
-    });
+    try {
+      String user = await auth.getCurrentUser();
+      if(user == null) throw Exception("Null User");
+      docs = (await Firestore.instance.collection('users').document(await auth.getCurrentUser()).collection('meals').where('type', isEqualTo: type).where('time', isGreaterThanOrEqualTo: timestamp).getDocuments()).documents; // should be able to use multiple where queries, but wasn't working
+
+      docs.forEach( (doc) => {
+        mealCounts[ DateTime.fromMillisecondsSinceEpoch(doc.data['time'].seconds*1000).weekday -1] += 1,
+      });
+
+    } catch (e) {
+      //TODO: respond
+      print("Error getting meal data");
+    }
 
     for(int i = 0; i < mealCounts.length; i++) {
       print("day = $i, count = ${mealCounts[i]}");

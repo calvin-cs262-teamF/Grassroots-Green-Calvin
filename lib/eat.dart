@@ -141,7 +141,8 @@ class EatStatefulWidgetState extends State<EatStatefulWidget> {
                               children: <Widget>[
                                 Radio(value: "Vegetarian",
                                     groupValue: _mealType,
-                                    onChanged: _handleMealTypeChange),
+                                    onChanged: _handleMealTypeChange,
+                                    activeColor: Theme.of(context).accentColor,),
                                 ButtonTheme(
                                     minWidth: 0.0,
                                     child: FlatButton(
@@ -151,7 +152,8 @@ class EatStatefulWidgetState extends State<EatStatefulWidget> {
                                     )),
                                 Radio(value: "Vegan",
                                     groupValue: _mealType,
-                                    onChanged: _handleMealTypeChange),
+                                    onChanged: _handleMealTypeChange,
+                                    activeColor: Theme.of(context).accentColor,),
                                 ButtonTheme(
                                     minWidth: 0.0,
                                     child: FlatButton(
@@ -161,7 +163,8 @@ class EatStatefulWidgetState extends State<EatStatefulWidget> {
                                     )),
                                 Radio(value: "Neither",
                                     groupValue: _mealType,
-                                    onChanged: _handleMealTypeChange),
+                                    onChanged: _handleMealTypeChange,
+                                    activeColor: Theme.of(context).accentColor,),
 //                            Text('Neither', style: Theme.of(context).textTheme.display2),
                                 ButtonTheme(
                                     minWidth: 0.0,

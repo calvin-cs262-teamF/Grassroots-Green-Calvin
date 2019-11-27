@@ -126,7 +126,6 @@ class _MyDialogContentState extends State<MealEditor> {
           onPressed: (){
             Navigator.of(context).pop('Delete');
             record.reference.delete();
-//            record.reference.updateData({'location': _location, 'type': _type, 'time': _time});
           },
           child: new Text('Delete', style: TextStyle(color: Colors.red),),
         ),

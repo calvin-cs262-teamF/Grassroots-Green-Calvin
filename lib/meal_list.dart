@@ -95,24 +95,6 @@ class _MealListState extends State<MealList> {
       context: context,
       builder: (BuildContext context){
         return new MealEditor(record: record);
-//        return new AlertDialog(
-//          title: new Text('Edit meal'),
-//          actions: <Widget>[
-//            new FlatButton(
-//              onPressed: (){Navigator.of(context).pop('Cancel');},
-//              child: new Text('Cancel'),
-//            ),
-//            new FlatButton(
-//              onPressed: (){Navigator.of(context).pop('Accept');},
-//              child: new Text('Save'),
-//            ),
-//          ],
-//          content: new SingleChildScrollView(
-//            child: new Material(
-//              child: new MealEditor(record: record),
-//            ),
-//          ),
-//        );
       },
       barrierDismissible: true,
     );

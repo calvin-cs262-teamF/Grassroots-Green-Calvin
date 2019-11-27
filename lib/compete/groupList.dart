@@ -6,23 +6,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
-class GroupList extends StatelessWidget {
-  /// RouteName used for Navigation
-//  static const String routeName = "/compete";
-
-  /// Constructor for Eat.
-  GroupList();
-
-  /// Builds the Eat page
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: GroupListStatefulWidget(),
-    );
-  }
-}
-
 class GroupListStatefulWidget extends StatefulWidget {
 
   GroupListStatefulWidget({Key key}) : super(key: key);
@@ -94,7 +77,6 @@ class GroupDoc {
   GroupDoc.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['name'] != null),
         assert(map['admin'] != null),
-        assert(reference.collection('members').reference() != null),
         name = map['name'],
         admin = map['admin'],
         members = reference.collection('members').reference();
@@ -184,7 +166,6 @@ class GroupListSubPageStatefulWidgetState extends State<GroupListSubPageStateful
           ),
           child: ListTile(
             title: Text(data['name']),
-//            onTap: () { _showGroupListPage(record); },
           )
       ),
     );

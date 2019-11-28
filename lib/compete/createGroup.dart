@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:grassroots_green/auth.dart';
 
@@ -6,6 +7,30 @@ class CreateGroup extends StatelessWidget {
   CreateGroup({this.auth});
 
   final BaseAuth auth;
+
+  @override
+  Widget build(BuildContext context) {
+    return CreateGroupStatefulWidget(auth: auth,);
+  }
+
+  }
+
+class CreateGroupStatefulWidget extends StatefulWidget {
+
+  final BaseAuth auth;
+
+  CreateGroupStatefulWidget({Key key, this.auth}) : super(key: key);
+
+  @override
+  CreateGroupStatefulWidgetState createState() => CreateGroupStatefulWidgetState(auth: auth);
+}
+
+class CreateGroupStatefulWidgetState extends State<CreateGroupStatefulWidget> {
+
+  CreateGroupStatefulWidgetState({this.auth});
+
+  final BaseAuth auth;
+  final _formKey = GlobalKey<FormState>();
 
   String _errorMessage;
   String groupName;
@@ -21,9 +46,8 @@ class CreateGroup extends StatelessWidget {
           color: Theme.of(context).primaryColor,
         ),
       ),
-      body: Column(
+      body: new Form( key: _formKey, child: Column(
         children: <Widget>[
-          //TODO: make form
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Text('Group name:', style: Theme.of(context).textTheme.title,),
@@ -53,6 +77,7 @@ class CreateGroup extends StatelessWidget {
                 color: Theme.of(context).buttonColor,
                 child: new Text('Create Group', style: Theme.of(context).textTheme.button),
                 onPressed: () {
+                  _formKey.currentState.save();
                   bool error = _createGroup();
                   if(!error) {
                     Navigator.pop(context);
@@ -60,11 +85,9 @@ class CreateGroup extends StatelessWidget {
                 },
               )
           ),
-
-          // TODO: decide if we want to get any other information about the
-          // TODO: create submit button
+          // TODO: decide if we want to get any other information about the group
         ],
-      ),
+      ),),
     );
   }
 
@@ -85,9 +108,22 @@ class CreateGroup extends StatelessWidget {
   bool _createGroup() {
     // TODO: validate group name
     if(groupName == null || groupName.length < 3) {
-      _errorMessage = "Group name must be at least 3 characters";
+      setState(() {
+        _errorMessage = "Group name must be at least 3 characters";
+        return true;
+      });
+    } else {
+      setState(() {
+        _errorMessage = null;
+      });
+      auth.getCurrentUser().then((user) {
+        Firestore.instance.collection('groups').document().setData({'name': groupName, 'admin': Firestore.instance.collection('users').document(user)});
+      });
+//        Firestore.instance.collection('groups').document().setData({'name': groupName, 'admin': Firestore.instance.collection('users').document(await auth.getCurrentUser())});
+      return false;
     }
-    // TODO: create group
     return true;
   }
+
 }
+

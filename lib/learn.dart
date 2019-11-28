@@ -192,7 +192,7 @@ class LearnSubPageStatefulWidgetState extends State<LearnSubPageStatefulWidget> 
               padding: EdgeInsets.all(10),
             ),
             _getImages(doc.images),
-            Text(doc.content, style: TextStyle(fontSize: 18, color: Colors.red, fontWeight: FontWeight.normal)),
+            Text(doc.content, style: Theme.of(context).textTheme.subhead),
             Padding(
               padding: EdgeInsets.all(10),
             ),

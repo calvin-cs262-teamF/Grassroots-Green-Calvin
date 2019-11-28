@@ -7,6 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:grassroots_green/auth.dart';
 import 'package:grassroots_green/compete/groupList.dart';
 import 'package:grassroots_green/compete/joinGroup.dart';
+import 'package:grassroots_green/compete/createGroup.dart';
+
+enum GroupAction { joinGroup, createGroup }
 
 class Compete extends StatelessWidget {
   Compete({this.auth});
@@ -25,38 +28,24 @@ class Compete extends StatelessWidget {
           color: Theme.of(context).primaryColor, //change your color here
         ),
       ),
-      body: GroupListStatefulWidget(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => JoinGroup(auth: auth)));
-        },
-        child: Icon(Icons.group_add),
-        backgroundColor: Theme.of(context).buttonColor,
+        child: PopupMenuButton<GroupAction>(
+          icon: Icon(Icons.more_horiz),
+          onSelected: (GroupAction action) {
+            if(action == GroupAction.createGroup) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CreateGroup(auth: auth)));
+            } else {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => JoinGroup(auth: auth)));
+            }
+          },
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<GroupAction>>[
+            const PopupMenuItem(child: Text("New group"), value: GroupAction.createGroup,),
+            const PopupMenuItem(child: Text("Manage groups"), value: GroupAction.joinGroup,),
+          ],
+        )
       ),
+      body: GroupListStatefulWidget(),
     );
   }
-}
 
-class CompetePage extends StatefulWidget {
-  final BaseAuth auth;
-
-  CompetePage({Key key, this.auth}) : super(key: key);
-
-  @override
-  CompetePageState createState() => CompetePageState();
-}
-
-class CompetePageState extends State<CompetePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Text('Compete')
-        ],
-      ),
-    );
-  }
 }

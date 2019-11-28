@@ -5,8 +5,9 @@
 */
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:grassroots_green/compete/groupList.dart';
 import 'package:grassroots_green/auth.dart';
+import 'package:grassroots_green/compete/group.dart';
+import 'package:grassroots_green/compete/createGroup.dart';
 
 class JoinGroup extends StatelessWidget {
 
@@ -26,6 +27,13 @@ class JoinGroup extends StatelessWidget {
         ),
       ),
       body: JoinGroupStatefulWidget(auth: auth),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => CreateGroup(auth: auth)));
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Theme.of(context).accentColor,
+      ),
     );
   }
 }
@@ -114,7 +122,8 @@ class JoinGroupStatefulWidgetState extends State<JoinGroupStatefulWidget> {
             color: groupMember ? Theme.of(context).accentColor : Theme.of(context).primaryColor,
           ),
           child: ListTile(
-            title: Text(record.name),
+            // TODO: make prettier
+            title: Text(record.name, style: groupMember ? Theme.of(context).textTheme.button : Theme.of(context).textTheme.display3,),
             onTap: () {
               _joinGroup(record, user, docs, groupMember);
             },
@@ -124,7 +133,6 @@ class JoinGroupStatefulWidgetState extends State<JoinGroupStatefulWidget> {
   }
 
   void _joinGroup(GroupDoc record, DocumentReference user, QuerySnapshot docs, bool groupMember) async {
-    // TODO: make impossible for admin to leave the group
     String userName = await auth.getUserName();
     await showDialog<String>(
       context: context,

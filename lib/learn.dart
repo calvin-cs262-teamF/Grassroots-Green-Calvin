@@ -173,8 +173,13 @@ class LearnSubPageStatefulWidgetState extends State<LearnSubPageStatefulWidget> 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(doc.title),
+        title: Text(doc.title,
+            style: TextStyle(color: Colors.white,)
+        ),
         backgroundColor: Theme.of(context).accentColor,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor, //change your color here
+        ),
       ),
       body: Container(
         margin: const EdgeInsets.all(15),
@@ -187,7 +192,7 @@ class LearnSubPageStatefulWidgetState extends State<LearnSubPageStatefulWidget> 
               padding: EdgeInsets.all(10),
             ),
             _getImages(doc.images),
-            Text(doc.content, style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.normal)),
+            Text(doc.content, style: TextStyle(fontSize: 18, color: Colors.red, fontWeight: FontWeight.normal)),
             Padding(
               padding: EdgeInsets.all(10),
             ),

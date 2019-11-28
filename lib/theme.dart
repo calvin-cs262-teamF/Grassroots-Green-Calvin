@@ -45,6 +45,9 @@ ThemeData getTheme(bool dark) {
             color: Colors.green[800],
             fontWeight: FontWeight.bold),
 
+        //this style is used for LEARN content to dynamically update with dark mode
+        subhead: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.normal),
+
         //All available theme values are listed below:
         //display4
         //display3
@@ -96,6 +99,9 @@ ThemeData getTheme(bool dark) {
 
         //this style is being experimented with being used for the labels in settings
         body1: TextStyle(fontSize: 16, color: Colors.green[800], fontWeight: FontWeight.bold),
+
+        //this style is used for LEARN content to dynamically update with dark mode
+        subhead: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.normal),
 
         //All available theme values are listed below:
         //display4

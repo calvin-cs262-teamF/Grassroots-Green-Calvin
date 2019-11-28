@@ -131,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
         return Eat(auth: auth);
       }
       case 'LEARN':{
-        return Learn.getLearn(context);
+        return Learn();
       }
       case 'TRACK':{
         return Track(auth: auth);

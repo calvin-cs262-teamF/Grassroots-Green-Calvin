@@ -34,7 +34,7 @@ ThemeData getTheme(bool dark) {
         display2: new TextStyle(fontSize: 16, color: Colors.white),
 
         //this style is used for Drawer items
-        display3: new TextStyle(fontSize: 16, color: Colors.white,),
+        display3: new TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
 
         //this style is used for buttons in TRACK
         display4: new TextStyle(
@@ -79,7 +79,7 @@ ThemeData getTheme(bool dark) {
         //for some reason if I call Theme.of(context).primaryColor for the title, it renders the 'Record a Meal' text as blue
         title: new TextStyle(fontSize: 26, color: Colors.green, fontWeight: FontWeight.bold),
 
-        //this style is used for login text with firestore in the drawer
+        //this style is used for login text with Firestore in the drawer
         caption: new TextStyle(fontSize: 20, color: Colors.white),
 
         //this style is used for regular bold text
@@ -89,7 +89,7 @@ ThemeData getTheme(bool dark) {
         display2: new TextStyle(fontSize: 16, color: Colors.black),
 
         //this style is used for Drawer items
-        display3: new TextStyle(fontSize: 16, color: Colors.black,),
+        display3: new TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
 
         //this style is used for buttons in TRACK
         display4: new TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),

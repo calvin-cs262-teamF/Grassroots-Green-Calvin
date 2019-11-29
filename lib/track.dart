@@ -129,7 +129,6 @@ class TrackPageState extends State<TrackPage> {
     }
 
     for(int i = 0; i < mealCounts.length; i++) {
-      print("day = $i, count = ${mealCounts[i]}");
       meals.add( new MealsByDate(monday.add(new Duration(days: i)), mealCounts[i]));
     }
 

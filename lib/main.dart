@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
   _MyHomePageState({this.auth}) {
     auth.isSignedIn().then( (result) {
       if (!result) {
-        Navigator.pushNamed(context, MyApp.getLoginRouteName());
+        Navigator.pushReplacementNamed(context, MyApp.getLoginRouteName());
       }
     });
   }

@@ -59,18 +59,19 @@ class TrackPageState extends State<TrackPage> {
   Future<List<charts.Series<MealsByDate, DateTime>>> _getSeries(bool week) async {
     return [
       charts.Series(
-        id: 'Vegetarian',
-        domainFn: (MealsByDate meals, _) => meals.date,
-        measureFn: (MealsByDate meals, _) => meals.meals,
-        colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-        data: week ? await getWeekMeals("Vegetarian") : await getMonthMeals("Vegetarian"),
-      ),
-      charts.Series(
         id: 'Vegan',
         domainFn: (MealsByDate meals, _) => meals.date,
         measureFn: (MealsByDate meals, _) => meals.meals,
-        colorFn: (_, __) => charts.MaterialPalette.lime.shadeDefault,
+        colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
         data: week ? await getWeekMeals("Vegan") : await getMonthMeals("Vegan"),
+      ),
+      charts.Series(
+        id: 'Vegetarian',
+        domainFn: (MealsByDate meals, _) => meals.date,
+        measureFn: (MealsByDate meals, _) => meals.meals,
+        colorFn: (_, __) => charts.MaterialPalette.lime.shadeDefault,
+        dashPatternFn: (_, __) => [2, 2],
+        data: week ? await getWeekMeals("Vegetarian") : await getMonthMeals("Vegetarian"),
       ),
     ];
   }

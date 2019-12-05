@@ -146,7 +146,7 @@ class GGDrawer {
             onTap: () {
               auth.signOut();
               Navigator.pop(context); // close drawer
-              Navigator.pushNamed(context, MyApp.getLoginRouteName());
+              Navigator.pushReplacementNamed(context, MyApp.getLoginRouteName());
             },
           );
         } else {
@@ -161,7 +161,7 @@ class GGDrawer {
             ),
             onTap: () {
               Navigator.pop(context); // close drawer
-              Navigator.pushNamed(context, MyApp.getLoginRouteName());
+              Navigator.pushReplacementNamed(context, MyApp.getLoginRouteName());
             },
           );
         }

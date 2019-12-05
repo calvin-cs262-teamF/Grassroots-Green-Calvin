@@ -65,6 +65,7 @@ class MyApp extends StatelessWidget {
         Login.routeName: (context) => Login(auth: auth),
         Compete.routeName: (context) => Compete(auth: auth),
         MealList.routeName: (context) => MealList(auth: auth),
+        MyHomePage.routeName: (context) => MyHomePage(auth: auth)
       },
 
       //When a route is generated, return the route to page,
@@ -98,6 +99,8 @@ class MyHomePage extends StatefulWidget {
 
   /// Information about authenticated user.
   final BaseAuth auth;
+
+  static const String routeName = '\homePage';
 
   @override
   _MyHomePageState createState() => _MyHomePageState(auth: auth);

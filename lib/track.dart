@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grassroots_green/auth.dart';
-import 'package:grassroots_green/theme.dart';
 
 class Track extends StatelessWidget {
 

@@ -6,6 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:grassroots_green/auth.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:grassroots_green/main.dart';
 
 class Login extends StatelessWidget {
   /// Login page of the app.
@@ -53,8 +54,8 @@ class LoginStatefulWidget extends StatefulWidget {
   _LoginStatefulWidgetState createState() => _LoginStatefulWidgetState();
 
   /// Post-sign in action.
-  void onSignedIn(BuildContext context) {
-    Navigator.pop(context);
+  StatefulWidget onSignedIn(BuildContext context) {
+    Navigator.pushReplacementNamed(context, MyHomePage.routeName);
   }
 }
 

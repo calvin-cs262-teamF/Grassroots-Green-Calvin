@@ -117,8 +117,9 @@ class CreateGroupStatefulWidgetState extends State<CreateGroupStatefulWidget> {
         _errorMessage = null;
       });
       auth.getCurrentUser().then((user) {
-        Firestore.instance.collection('groups').document().setData({'name': groupName, 'admin': Firestore.instance.collection('users').document(user), 'percent': 0});
+        Firestore.instance.collection('groups').document().setData({'name': groupName, 'admin': Firestore.instance.collection('users').document(user)});
       });
+//        Firestore.instance.collection('groups').document().setData({'name': groupName, 'admin': Firestore.instance.collection('users').document(await auth.getCurrentUser())});
       return false;
     }
     return true;

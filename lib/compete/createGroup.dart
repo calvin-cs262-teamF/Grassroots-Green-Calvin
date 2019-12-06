@@ -107,9 +107,9 @@ class CreateGroupStatefulWidgetState extends State<CreateGroupStatefulWidget> {
 
   bool _createGroup() {
     // TODO: validate group name
-    if(groupName == null || groupName.length < 3) {
+    if(groupName == null || groupName.length < 2) {
       setState(() {
-        _errorMessage = "Group name must be at least 3 characters";
+        _errorMessage = "Group name must be at least 2 characters";
         return true;
       });
     } else {

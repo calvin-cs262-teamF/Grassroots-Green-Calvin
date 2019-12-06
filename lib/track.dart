@@ -168,11 +168,11 @@ class TrackPageState extends State<TrackPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(10.0),
-      child: Container(
-        child: Center(
-          child: Column(
+    return Column(
+      children: <Widget>[
+        Container(height: 200, color: Colors.orange),
+        Expanded(
+          child: Row(
             children: <Widget>[
               Expanded(
                 child: FutureBuilder<List<charts.Series<MealsByDate, DateTime>>>(
@@ -188,10 +188,26 @@ class TrackPageState extends State<TrackPage> {
                 ),
               ),
             ],
-          )
-        ),
-      ),
+          ),
+        )
+      ],
     );
+
+    // return Padding(
+    //   padding: EdgeInsets.all(10.0),
+    //   child: Container(
+    //     child: Center(
+    //       child: Column(
+    //         children: <Widget>[
+    //           Expanded(
+    //             child: 
+    //             ),
+    //           ),
+    //         ],
+    //       )
+    //     ),
+    //   ),
+    // );
         
     //     mainAxisAlignment: MainAxisAlignment.center,
     //     children: <Widget>[

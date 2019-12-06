@@ -168,83 +168,106 @@ class TrackPageState extends State<TrackPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.all(20.0),
-            alignment: Alignment(0.0, 0.0),
-            child: FutureBuilder<double>(
-              future: _getPlantPercent(),
-              builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
-                double percent = 0;
-                if ( !snapshot.hasError && snapshot.connectionState == ConnectionState.done ) {
-                  percent = snapshot.data;
-                }
-                return CircularPercentIndicator(
-                  radius: 180.0,
-                  animation: true,
-                  animationDuration: 1000,
-                  lineWidth: 10.0,
-                  percent: percent,
-                  header: Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Text(
-                      'Plant-Based Meals',
-                      style: Theme.of(context).textTheme.display1,
-                    ),
-                  ),
-                  center: Text(
-                    (percent * 100).round().toString() + '%',
-                    style: Theme.of(context).textTheme.display1,
-                  ),
-                  circularStrokeCap: CircularStrokeCap.round,
-                  progressColor: Theme.of(context).accentColor,
-            );},),),
-
-          Padding(  // time series chart for meals, by date
-            padding: EdgeInsets.all(10.0),
-            child: FutureBuilder<List<charts.Series<MealsByDate, DateTime>>>(
-              future: _getSeries(_scope == 'Week'),
-              builder: (BuildContext context, AsyncSnapshot<List<charts.Series<MealsByDate, DateTime>>> snapshot) {
-                List<charts.Series<MealsByDate, DateTime>> data = [];
-                if ( !snapshot.hasError && snapshot.connectionState == ConnectionState.done ) {
-                  data = snapshot.data;
-                }
-
-                return SizedBox(
-                  height: 200.0,
-                  child: MealsByDateChart(data, animate: true)
-                );
-              },
-            ),
-          ),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Container(
+        child: Center(
+          child: Column(
             children: <Widget>[
-              FlatButton(
-                  color: Theme.of(context).accentColor,
-                  onPressed: _setWeek,
-                  child: Text(
-                      'Week',
-                      style: Theme.of(context).textTheme.display4,
-                  )
-              ),
-              FlatButton(
-                  color: Theme.of(context).accentColor,
-                  onPressed: _setMonth,
-                  child: Text(
-                      'Month',
-                      style: Theme.of(context).textTheme.display4,
-                  )
+              Expanded(
+                child: FutureBuilder<List<charts.Series<MealsByDate, DateTime>>>(
+                  future: _getSeries(_scope == 'Week'),
+                  builder: (BuildContext context, AsyncSnapshot<List<charts.Series<MealsByDate, DateTime>>> snapshot) {
+                    List<charts.Series<MealsByDate, DateTime>> data = [];
+                    if ( !snapshot.hasError && snapshot.connectionState == ConnectionState.done ) {
+                      data = snapshot.data;
+                    }
+
+                    return MealsByDateChart(data, animate: true);
+                  },
+                ),
               ),
             ],
           )
-        ],
+        ),
       ),
     );
+        
+    //     mainAxisAlignment: MainAxisAlignment.center,
+    //     children: <Widget>[
+    //       Container(
+    //         margin: EdgeInsets.all(20.0),
+    //         alignment: Alignment(0.0, 0.0),
+    //         child: FutureBuilder<double>(
+    //           future: _getPlantPercent(),
+    //           builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
+    //             double percent = 0;
+    //             if ( !snapshot.hasError && snapshot.connectionState == ConnectionState.done ) {
+    //               percent = snapshot.data;
+    //             }
+    //             return CircularPercentIndicator(
+    //               radius: 180.0,
+    //               animation: true,
+    //               animationDuration: 1000,
+    //               lineWidth: 10.0,
+    //               percent: percent,
+    //               header: Container(
+    //                 margin: EdgeInsets.all(10.0),
+    //                 child: Text(
+    //                   'Plant-Based Meals',
+    //                   style: Theme.of(context).textTheme.display1,
+    //                 ),
+    //               ),
+    //               center: Text(
+    //                 (percent * 100).round().toString() + '%',
+    //                 style: Theme.of(context).textTheme.display1,
+    //               ),
+    //               circularStrokeCap: CircularStrokeCap.round,
+    //               progressColor: Theme.of(context).accentColor,
+    //         );},),),
+
+    //       Padding(  // time series chart for meals, by date
+    //         padding: EdgeInsets.all(10.0),
+    //         child: FutureBuilder<List<charts.Series<MealsByDate, DateTime>>>(
+    //           future: _getSeries(_scope == 'Week'),
+    //           builder: (BuildContext context, AsyncSnapshot<List<charts.Series<MealsByDate, DateTime>>> snapshot) {
+    //             List<charts.Series<MealsByDate, DateTime>> data = [];
+    //             if ( !snapshot.hasError && snapshot.connectionState == ConnectionState.done ) {
+    //               data = snapshot.data;
+    //             }
+
+    //             return SizedBox(
+    //               height: 200.0,
+    //               child: MealsByDateChart(data, animate: true)
+    //             );
+    //           },
+    //         ),
+    //       ),
+
+    //       Row(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         children: <Widget>[
+    //           FlatButton(
+    //               color: Theme.of(context).accentColor,
+    //               onPressed: _setWeek,
+    //               child: Text(
+    //                   'Week',
+    //                   style: Theme.of(context).textTheme.display4,
+    //               )
+    //           ),
+    //           FlatButton(
+    //               color: Theme.of(context).accentColor,
+    //               onPressed: _setMonth,
+    //               child: Text(
+    //                   'Month',
+    //                   style: Theme.of(context).textTheme.display4,
+    //               )
+    //           ),
+    //         ],
+    //       )
+    //     ],
+    //   ),
+    // );
   }
 }
 

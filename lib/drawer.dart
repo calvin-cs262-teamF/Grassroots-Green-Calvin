@@ -108,11 +108,10 @@ class GGDrawer {
                 Navigator.pushNamed(context, MyApp.getMealListRouteName());
               },
             ),
-            getAccountOption(context, auth),
             ListTile(
               leading: Icon(Icons.settings),
               title: Text(
-                  'Settings',
+                  'Preferences',
                   style: Theme
                       .of(context)
                       .textTheme
@@ -124,6 +123,7 @@ class GGDrawer {
                 Navigator.pushNamed(context, MyApp.getSettingsRouteName());
               },
             ),
+            getAccountOption(context, auth),
           ],
         ));
   }

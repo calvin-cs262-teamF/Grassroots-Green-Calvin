@@ -56,21 +56,32 @@ class TrackPageState extends State<TrackPage> {
     });
   }
 
+  /// Color conversion function found from:
+  /// https://github.com/google/charts/issues/130
+  charts.Color _getChartColor(Color color) {
+    return charts.Color(
+        r: color.red,
+        g: color.green,
+        b: color.blue,
+        a: color.alpha);
+  }
+
   Future<List<charts.Series<MealsByDate, DateTime>>> _getSeries(bool week) async {
     return [
       charts.Series(
-        id: 'Vegetarian',
+        id: 'Vegan (Solid)',
         domainFn: (MealsByDate meals, _) => meals.date,
         measureFn: (MealsByDate meals, _) => meals.meals,
-        colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-        data: week ? await getWeekMeals("Vegetarian") : await getMonthMeals("Vegetarian"),
+        colorFn: (_, __) => _getChartColor(Theme.of(context).buttonColor),
+        data: week ? await getWeekMeals("Vegan") : await getMonthMeals("Vegan"),
       ),
       charts.Series(
-        id: 'Vegan',
+        id: 'Vegetarian (Dashed)',
         domainFn: (MealsByDate meals, _) => meals.date,
         measureFn: (MealsByDate meals, _) => meals.meals,
-        colorFn: (_, __) => charts.MaterialPalette.lime.shadeDefault,
-        data: week ? await getWeekMeals("Vegan") : await getMonthMeals("Vegan"),
+        colorFn: (_, __) => _getChartColor(Theme.of(context).accentColor),
+        dashPatternFn: (_, __) => [8, 4],
+        data: week ? await getWeekMeals("Vegetarian") : await getMonthMeals("Vegetarian"),
       ),
     ];
   }

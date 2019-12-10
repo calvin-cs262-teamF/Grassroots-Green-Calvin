@@ -16,6 +16,7 @@ abstract class BaseAuth {
   Future<void> signOut();
   Future<DocumentSnapshot> getUserData();
   Future<bool> isSignedIn();
+  Future<void> sendPasswordReset(String email);
 }
 
 class Auth implements BaseAuth {
@@ -87,5 +88,8 @@ class Auth implements BaseAuth {
       print("Error checking for sign in");
       return false;
     }
+  }
+  Future<void> sendPasswordReset(String email) async {
+    _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 }

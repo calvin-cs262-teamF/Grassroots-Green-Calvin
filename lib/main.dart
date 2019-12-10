@@ -65,6 +65,7 @@ class MyApp extends StatelessWidget {
         Login.routeName: (context) => Login(auth: auth),
         Compete.routeName: (context) => Compete(auth: auth),
         MealList.routeName: (context) => MealList(auth: auth),
+        MyHomePage.routeName: (context) => MyHomePage(auth: auth)
       },
 
       //When a route is generated, return the route to page,
@@ -99,6 +100,8 @@ class MyHomePage extends StatefulWidget {
   /// Information about authenticated user.
   final BaseAuth auth;
 
+  static const String routeName = '\homePage';
+
   @override
   _MyHomePageState createState() => _MyHomePageState(auth: auth);
 }
@@ -119,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
   _MyHomePageState({this.auth}) {
     auth.isSignedIn().then( (result) {
       if (!result) {
-        Navigator.pushNamed(context, MyApp.getLoginRouteName());
+        Navigator.pushReplacementNamed(context, MyApp.getLoginRouteName());
       }
     });
   }

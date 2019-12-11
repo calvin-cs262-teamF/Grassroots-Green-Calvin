@@ -19,7 +19,7 @@ class Help extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(
-        'Help',
+        'About',
         style: TextStyle(color: Theme.of(context).primaryColor,),),
         backgroundColor: Theme.of(context).accentColor,
         iconTheme: IconThemeData(
@@ -52,7 +52,7 @@ class HelpStatefulWidgetState extends State<HelpStatefulWidget> {
 
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('about').snapshots(),
+      stream: Firestore.instance.collection('help').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
         if (snapshot.hasError) return ListView(shrinkWrap: true);
@@ -72,47 +72,42 @@ class HelpStatefulWidgetState extends State<HelpStatefulWidget> {
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
     final HelpDoc record = HelpDoc.fromSnapshot(data);
 
-
     return Padding(
       key: ValueKey(record.reference),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
-
-          child: Column(
-            children: <Widget> [
-             Text(record.body1, style: Theme.of(context).textTheme.button),
-            ]
-          ),),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(5.0),
+            color: Theme.of(context).accentColor,
+          ),
+          child: ListTile(
+            title: Text(record.title, style: Theme.of(context).textTheme.button),
+            onTap: () { _showHelpPage(record); },
+          )
+      ),
     );
   }
 
-
+  void _showHelpPage(HelpDoc doc) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => HelpSubPage(doc: doc)));
+  }
 }
 
 class HelpDoc {
-  final String body1;
-  final String body2;
-  final String title1;
-  final String title2;
-  final String contact;
+  final String content;
+  final String title;
   final DocumentReference reference;
 
   HelpDoc.fromMap(Map<String, dynamic> map, {this.reference})
-      : assert(map['Body1'] != null),
-        assert(map['Body2'] != null),
-        assert(map['Title1'] != null),
-        assert(map['Title2'] != null),
-        assert(map['Contact'] != null),
-        contact = map['Contact'],
-        body1 = map['Body1'],
-        body2 = map['Body2'],
-        title1 = map['Title1'],
-        title2 = map['Title2'];
+      : assert(map['content'] != null),
+        assert(map['title'] != null),
+        content = parseContent(map['content']),
+        title = map['title'];
+
 
   HelpDoc.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
-
-
 
 }
 
@@ -141,3 +136,67 @@ String parseContent(String original) {
   return result;
 }
 
+class HelpSubPage extends StatelessWidget {
+  final HelpDoc doc;
+
+  HelpSubPage({this.doc});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: HelpSubPageStatefulWidget(doc: doc),
+    );
+  }
+}
+
+class HelpSubPageStatefulWidget extends StatefulWidget {
+
+  final HelpDoc doc;
+
+  HelpSubPageStatefulWidget({Key key, this.doc}) : super(key: key);
+
+  @override
+  HelpSubPageStatefulWidgetState createState() => HelpSubPageStatefulWidgetState(doc: doc);
+}
+
+class HelpSubPageStatefulWidgetState extends State<HelpSubPageStatefulWidget> {
+
+  final HelpDoc doc;
+
+  HelpSubPageStatefulWidgetState({this.doc}) {
+    assert(this.doc != null);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(doc.title,
+            style: TextStyle(color: Colors.white,)
+        ),
+        backgroundColor: Theme.of(context).accentColor,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor, //change your color here
+        ),
+      ),
+      body: Container(
+          margin: const EdgeInsets.all(15),
+          child: ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              // TODO: use Theme data instead of hard-coded sizes
+              Text(doc.content, style: Theme.of(context).textTheme.subhead),
+              Padding(
+                padding: EdgeInsets.all(10),
+              ),
+
+            ],
+          )
+//          child: _getSources(doc.sources),
+      ),
+    );
+  }
+
+
+
+}

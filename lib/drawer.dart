@@ -108,11 +108,10 @@ class GGDrawer {
                 Navigator.pushNamed(context, MyApp.getMealListRouteName());
               },
             ),
-            getAccountOption(context, auth),
             ListTile(
               leading: Icon(Icons.settings),
               title: Text(
-                  'Settings',
+                  'Preferences',
                   style: Theme
                       .of(context)
                       .textTheme
@@ -124,6 +123,37 @@ class GGDrawer {
                 Navigator.pushNamed(context, MyApp.getSettingsRouteName());
               },
             ),
+            ListTile(
+              leading: Icon(Icons.settings), /// Change Icon
+              title: Text(
+                  'About',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .display3
+              ),
+              onTap: () {
+                Navigator.pop(context); // close drawer
+                //push the settings route to the Navigator
+                Navigator.pushNamed(context, MyApp.getAboutRouteName());
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.settings), /// CHange Icon
+              title: Text(
+                  'Help',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .display3
+              ),
+              onTap: () {
+                Navigator.pop(context); // close drawer
+                //push the settings route to the Navigator
+                Navigator.pushNamed(context, MyApp.getHelpRouteName());
+              },
+            ),
+            getAccountOption(context, auth),
           ],
         ));
   }
@@ -146,7 +176,7 @@ class GGDrawer {
             onTap: () {
               auth.signOut();
               Navigator.pop(context); // close drawer
-              Navigator.pushNamed(context, MyApp.getLoginRouteName());
+              Navigator.pushReplacementNamed(context, MyApp.getLoginRouteName());
             },
           );
         } else {
@@ -161,7 +191,7 @@ class GGDrawer {
             ),
             onTap: () {
               Navigator.pop(context); // close drawer
-              Navigator.pushNamed(context, MyApp.getLoginRouteName());
+              Navigator.pushReplacementNamed(context, MyApp.getLoginRouteName());
             },
           );
         }

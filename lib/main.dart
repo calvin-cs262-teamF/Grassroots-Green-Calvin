@@ -24,6 +24,9 @@ import 'package:grassroots_green/drawer.dart';
 import 'package:grassroots_green/learn.dart';
 import 'package:grassroots_green/meal_list.dart';
 import 'package:grassroots_green/theme.dart';
+import 'package:grassroots_green/about.dart';
+import 'package:grassroots_green/help.dart';
+
 
 /// Runs the app.
 void main() => runApp(MyApp());
@@ -49,9 +52,19 @@ class MyApp extends StatelessWidget {
   static String getCompeteRouteName() {
     return Compete.routeName;
   }
-
+  /// Gets the name of the Meal List route.
   static String getMealListRouteName() {
     return MealList.routeName;
+  }
+
+  /// Gets the name of the Compete route.
+  static String getAboutRouteName() {
+    return About.routeName;
+  }
+
+  /// Gets the name of the Compete route.
+  static String getHelpRouteName() {
+    return Help.routeName;
   }
 
   /// Returns widget for root of the app.
@@ -65,6 +78,10 @@ class MyApp extends StatelessWidget {
         Login.routeName: (context) => Login(auth: auth),
         Compete.routeName: (context) => Compete(auth: auth),
         MealList.routeName: (context) => MealList(auth: auth),
+        MyHomePage.routeName: (context) => MyHomePage(auth: auth),
+        About.routeName: (context) => About(),
+        Help.routeName: (context) => Help(),
+
       },
 
       //When a route is generated, return the route to page,
@@ -99,6 +116,8 @@ class MyHomePage extends StatefulWidget {
   /// Information about authenticated user.
   final BaseAuth auth;
 
+  static const String routeName = '\homePage';
+
   @override
   _MyHomePageState createState() => _MyHomePageState(auth: auth);
 }
@@ -119,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
   _MyHomePageState({this.auth}) {
     auth.isSignedIn().then( (result) {
       if (!result) {
-        Navigator.pushNamed(context, MyApp.getLoginRouteName());
+        Navigator.pushReplacementNamed(context, MyApp.getLoginRouteName());
       }
     });
   }

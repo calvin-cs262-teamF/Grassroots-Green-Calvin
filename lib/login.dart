@@ -60,7 +60,7 @@ class LoginStatefulWidget extends StatefulWidget {
 }
 
 /// Enum for login or create account mode
-enum FormMode { LOGIN, SIGNUP }
+enum FormMode { LOGIN, SIGNUP, RESET }
 
 class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
   /// State for Login page.
@@ -85,80 +85,16 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
 
     _isIos = Theme.of(context).platform == TargetPlatform.iOS;
 
-    return Scaffold(
+    return new Scaffold(
       body: Stack(
         children: <Widget>[
           //Login
 
           // UI inspired by: https://medium.com/flutterpub/flutter-how-to-do-user-login-with-firebase-a6af760b14d5
-          new Form(
-            key: _formKey,
-           child: new ListView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
-                    child: Image.asset('assets/Grassroots_Green_Logo_16x9.PNG')
-                ),
-                //Email input
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0, 20.0, 0.0, 0.0),
-                  child: new TextFormField(
-                    maxLines: 1,
-                    keyboardType: TextInputType.emailAddress,
-                    autofocus: false,
-                    decoration: new InputDecoration(
-                      hintText: 'Email',
-                      icon: new Icon(
-                        Icons.mail,
-                        color: Colors.grey,
-                      )
-                    ),
-                    validator: (value) => EmailValidator.validate(value) ? null : "Invalid email",
-                    onSaved: (value) => _email = value.trim(),
-                  )
-                ),
-                //Password Input
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0, 15.0, 0.0, 20.0),
-                  child: new TextFormField(
-                    maxLines: 1,
-                    obscureText: true,
-                    autofocus: false,
-                    decoration: new InputDecoration(
-                      hintText: 'Password',
-                      icon: new Icon(
-                        Icons.lock,
-                        color: Colors.grey,
-                      )
-                    ),
-                    validator: (value) => value.isEmpty || value.length < 6 ? "Password must be at least 6 characters" : null,
-                    onSaved: (value) => _password = value.trim(),
-                  )
-                ),
-                _showErrorMessage(),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-                  child: new MaterialButton(
-                    elevation: 5.0,
-                    minWidth: 200.0,
-                    height: 42.0,
-                    color: Colors.green,
-                    child: _formMode == FormMode.LOGIN ? new Text('Login', style: new TextStyle(fontSize: 20.0, color: Colors.white))
-                        : new Text('Create account', style: new TextStyle(fontSize: 20.0, color: Colors.white)),
-                    onPressed: _validateAndSubmit,
-                  )
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 100.0),
-                  child: new FlatButton(
-                      child: _formMode == FormMode.LOGIN ? new Text('Create an account', style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300))
-                          : new Text('Have an account? Sign in', style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
-                    onPressed: _formMode == FormMode.LOGIN ? _changeFormToSignUp : _changeFormToLogin,
-                  )
-                ),
-              ]
-          ),
-          ),
+
+
+              _showBody(),
+          //_showCircularProgress(),
         ],
       ),
     );
@@ -182,6 +118,221 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
     });
   }
 
+  /// Toggles form to be the login form.
+  void _changeFormToReset() {
+    _formKey.currentState.reset();
+    _errorMessage = "";
+    setState(() {
+      _formMode = FormMode.RESET;
+    });
+  }
+
+
+
+
+  void _showVerifyEmailSentDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Verify your account"),
+          content:
+          new Text("Link to verify account has been sent to your email"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Dismiss"),
+              onPressed: () {
+                _changeFormToLogin();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showPasswordEmailSentDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Forgot your password"),
+          content: new Text("An email has been sent to reset your password"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Dismiss"),
+              onPressed: () {
+                _changeFormToLogin();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _showBody() {
+    return  Padding(
+        padding: EdgeInsets.fromLTRB(0.0, 0, 0.0, 0.0),
+        child: new Form(
+          key: _formKey,
+          child: new ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              _showLogo(),
+              _showEmailInput(),
+              _showPasswordInput(),
+              _showPrimaryButton(),
+              _showSecondaryButton(),
+              _showForgotPasswordButton(),
+              _showErrorMessage(),
+            ],
+          ),
+        ));
+  }
+
+  Widget _showLogo() {
+    return new Hero(
+      tag: 'hero',
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(0.0, 70.0, 0.0, 0.0),
+        child: CircleAvatar(
+          backgroundColor: Colors.transparent,
+          radius: 48.0,
+          child: Image.asset('assets/Grassroots_Green_Logo_16x9.PNG'),
+        ),
+      ),
+    );
+  }
+
+
+
+  Widget _showEmailInput() {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(10.0, 20.0, 0.0, 0.0),
+        child: new TextFormField(
+          maxLines: 1,
+          keyboardType: TextInputType.emailAddress,
+          autofocus: false,
+          decoration: new InputDecoration(
+              hintText: 'Email',
+              icon: new Icon(
+                Icons.mail,
+                color: Colors.grey,
+              )
+          ),
+          validator: (value) => EmailValidator.validate(value) ? null : "Invalid email",
+          onSaved: (value) => _email = value.trim(),
+        )
+    );
+  }
+
+  Widget _showPasswordInput() {
+    if (_formMode != FormMode.RESET) {
+      return Padding(
+          padding: const EdgeInsets.fromLTRB(10.0, 15.0, 0.0, 20.0),
+          child: new TextFormField(
+            maxLines: 1,
+            obscureText: true,
+            autofocus: false,
+            decoration: new InputDecoration(
+                hintText: 'Password',
+                icon: new Icon(
+                  Icons.lock,
+                  color: Colors.grey,
+                )
+            ),
+            validator: (value) =>
+            value.isEmpty || value.length < 6
+                ? "Password must be at least 6 characters"
+                : null,
+            onSaved: (value) => _password = value.trim(),
+          ));
+    }  else {
+      return new Text('An email will be sent allowing you to reset your password',
+          style:
+          new TextStyle(fontSize: 14.0, fontWeight: FontWeight.w300));
+    }
+  }
+
+
+
+  Widget _showPrimaryButton() {
+    return new Padding(
+        padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
+        child: SizedBox(
+          height: 40.0,
+          child: new RaisedButton(
+            elevation: 5.0,
+            shape: new RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(30.0)),
+            color: Colors.green,
+            child: _textPrimaryButton(),
+            onPressed:  _validateAndSubmit,
+          ),
+        ));
+  }
+
+  Widget _showSecondaryButton() {
+    return new FlatButton(
+      child: _textSecondaryButton(),
+      onPressed: _formMode == FormMode.LOGIN
+          ? _changeFormToSignUp
+          : _changeFormToLogin,
+    );
+  }
+
+  Widget _showForgotPasswordButton() {
+    return new FlatButton(
+      child: _formMode == FormMode.LOGIN
+          ? new Text('Forgot password?',
+          style: new TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300))
+          : new Text('',
+          style:
+          new TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300)),
+      onPressed:  _changeFormToReset,
+    );
+  }
+
+  Widget _textPrimaryButton() {
+    switch (_formMode) {
+      case FormMode.LOGIN:
+        return new Text('Login',
+            style: new TextStyle(fontSize: 20.0, color: Colors.white));
+        break;
+      case FormMode.SIGNUP:
+        return new Text('Create account',
+            style: new TextStyle(fontSize: 20.0, color: Colors.white));
+        break;
+      case FormMode.RESET:
+        return new Text('Reset password',
+            style: new TextStyle(fontSize: 20.0, color: Colors.white));
+        break;
+    }
+    return new Spacer();
+  }
+
+  Widget _textSecondaryButton() {
+    switch (_formMode) {
+      case FormMode.LOGIN:
+        return new Text('Create an account',
+            style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300));
+        break;
+      case FormMode.SIGNUP:
+        return new Text('Have an account? Sign in',
+            style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300));
+        break;
+      case FormMode.RESET:
+        return new Text('Enter your email address or ... Cancel',
+            style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300));
+        break;
+    }
+    return new Spacer();
+  }
   /// Validates and submits the login form
   ///
   /// If currently in LOGIN state, will attempt to log the user in.
@@ -199,10 +350,14 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
             return;
           }
           print('Signed in: $userId');
-        } else {
+        }  else if (_formMode ==FormMode.SIGNUP){
           userId = await widget.auth.signUp(_email, _password);
           print('Signed up user: $userId');
+        } else {
+          widget.auth.sendPasswordReset(_email);
+          _showPasswordEmailSentDialog();
         }
+
         if (userId.length > 0 && userId != null) {
           widget.onSignedIn(context);
         }

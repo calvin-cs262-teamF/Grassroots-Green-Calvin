@@ -112,27 +112,10 @@ class HelpDoc {
 }
 
 String parseContent(String original) {
-  // TODO: change all of the characters in [] to be superscript
   String result = original;
-  String regex = RegExp.escape("[") + "(.*?)" + RegExp.escape("]");
-  result = result.replaceAllMapped(
-      new RegExp(regex),
-          (Match m) {
-        print(m.group(0));
-        String temp = "";
-//            String temp = "${m.group(0).substring(1, m.group(0).length-1)}";
-        for(int i = 1; i < m.group(0).length - 1; i++) {
-          String char = m.group(0)[i];
-          if (char == ",") char = '-';
-          temp += unicode_map[char][0];
-//              temp += m.group(0)[i];
-        }
-        return temp;
-//            return "${m.group(0).substring(1, m.group(0).length-1)}";
-      }
-  );
-//  result = result.replaceAll("[", '');
-//  result = result.replaceAll("]", '');
+
+  result = result.replaceAll(new RegExp(RegExp.escape(r'\n')), "\n");
+
   return result;
 }
 

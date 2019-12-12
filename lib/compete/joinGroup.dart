@@ -119,7 +119,7 @@ class JoinGroupStatefulWidgetState extends State<JoinGroupStatefulWidget> {
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey),
             borderRadius: BorderRadius.circular(5.0),
-            color: groupMember ? Theme.of(context).accentColor : Theme.of(context).primaryColor,
+            color: groupMember ? Theme.of(context).accentColor : Colors.transparent,
           ),
           child: ListTile(
             // TODO: make prettier

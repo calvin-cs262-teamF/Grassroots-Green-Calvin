@@ -189,7 +189,6 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
               _showPrimaryButton(),
               _showSecondaryButton(),
               _showForgotPasswordButton(),
-              _showErrorMessage(),
             ],
           ),
         ));
@@ -223,7 +222,8 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
               icon: new Icon(
                 Icons.mail,
                 color: Colors.grey,
-              )
+              ),
+              errorStyle: TextStyle(fontSize: 16.0),
           ),
           validator: (value) => EmailValidator.validate(value) ? null : "Invalid email",
           onSaved: (value) => _email = value.trim(),
@@ -244,7 +244,8 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
                 icon: new Icon(
                   Icons.lock,
                   color: Colors.grey,
-                )
+                ),
+                errorStyle: TextStyle(fontSize: 16.0),
             ),
             validator: (value) =>
             value.isEmpty || value.length < 6
@@ -385,23 +386,4 @@ class _LoginStatefulWidgetState extends State<LoginStatefulWidget> {
     return false;
   }
 
-  /// Displays an error messages from user login.
-  ///
-  /// Displays errors regarding account existence or invalid credentials.
-  Widget _showErrorMessage() {
-    if (_errorMessage.length > 0 && _errorMessage != null) {
-      return new Text(
-        _errorMessage,
-        style: TextStyle(
-            fontSize: 13.0,
-            color: Colors.red,
-            height: 1.0,
-            fontWeight: FontWeight.w300),
-      );
-    } else {
-      return new Container(
-        height: 0.0,
-      );
-    }
-  }
 }

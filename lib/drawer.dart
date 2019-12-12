@@ -109,7 +109,7 @@ class GGDrawer {
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings), /// Change Icon
+              leading: Icon(Icons.info),
               title: Text(
                   'About',
                   style: Theme
@@ -124,7 +124,7 @@ class GGDrawer {
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings), /// CHange Icon
+              leading: Icon(Icons.help),
               title: Text(
                   'Help',
                   style: Theme

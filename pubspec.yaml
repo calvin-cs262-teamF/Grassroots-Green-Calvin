@@ -1,4 +1,4 @@
-name: grassroots_green
+name: GG
 description: The app for Calvin University&#x27;s Grassroots Green group.
 
 # The following defines the version and build number for your application.
@@ -40,8 +40,13 @@ dependencies:
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
+  flutter_launcher_name: "^0.0.1"
+
   flutter_test:
     sdk: flutter
+
+flutter_launcher_name:
+  name: "GG"
 
 
 # For information on the generic Dart part of this file, see the

@@ -115,14 +115,14 @@ class GroupListSubPageStatefulWidgetState extends State<GroupListSubPageStateful
             shrinkWrap: true,
             children: <Widget>[
               Text(doc.name, style: Theme.of(context).textTheme.title),
-          StreamBuilder<QuerySnapshot>(
-            stream: doc.members.snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) return LinearProgressIndicator();
-              if (snapshot.hasError) return ListView(shrinkWrap: true);
-              return _buildList(context, snapshot.data.documents);
-            },
-          ),
+              StreamBuilder<QuerySnapshot>(
+                stream: doc.members.snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) return LinearProgressIndicator();
+                  if (snapshot.hasError) return ListView(shrinkWrap: true);
+                  return _buildList(context, snapshot.data.documents);
+                },
+              ),
             ],
           )
       ),
@@ -150,15 +150,13 @@ class GroupListSubPageStatefulWidgetState extends State<GroupListSubPageStateful
           child: ListTile(
             title: Text(data['name']),
             trailing: FutureBuilder<double>(
-              future: getUserPlantPercent(data['ref'].toString(), "Month", null),
+              future: getUserPlantPercent(data['ref'].documentID, 'Month'),
               builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
-                double percent = 0;
-                if ( !snapshot.hasError && snapshot.connectionState == ConnectionState.done ) {
-                  percent = snapshot.data;
-                  return Text(percent.toString() + '%');
-                } else {
-                  return Text("");
+                String text = "";
+                if(snapshot.hasData) {
+                  text = (snapshot.data*100).round().toString() + '%';
                 }
+                return Text(text);
               },
             ),
           )

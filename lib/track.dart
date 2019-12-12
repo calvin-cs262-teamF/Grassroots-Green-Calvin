@@ -88,7 +88,7 @@ class TrackPageState extends State<TrackPage> {
   }
 
   Future<double> _getPlantPercent() async {
-    return await getUserPlantPercent(await auth.getCurrentUser(), _scope, auth);
+    return await getUserPlantPercent(await auth.getCurrentUser(), _scope);
   }
 
   Future<List<MealsByDate>> getWeekMeals(String type) async {

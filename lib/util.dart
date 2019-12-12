@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grassroots_green/auth.dart';
 
-Future<double> getUserPlantPercent(String userID, String scope, BaseAuth auth) async {
+Future<double> getUserPlantPercent(String userID, String scope) async {
   double percent = 0;
   int plantCount = 0, totalCount = 0;
   try {
@@ -12,7 +12,7 @@ Future<double> getUserPlantPercent(String userID, String scope, BaseAuth auth) a
       timestamp = Timestamp.fromDate(getMonthStart());
     }
     QuerySnapshot querySnapshot = await Firestore.instance.collection('users')
-        .document(await auth.getCurrentUser()).collection('meals').where('time', isGreaterThanOrEqualTo: timestamp)
+        .document(userID).collection('meals').where('time', isGreaterThanOrEqualTo: timestamp)
         .getDocuments();
     List<DocumentSnapshot> meals = querySnapshot.documents;
     meals.forEach((meal) =>

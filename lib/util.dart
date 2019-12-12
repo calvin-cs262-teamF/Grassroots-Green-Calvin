@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grassroots_green/auth.dart';
 
-Future<double> _getUserPlantPercent(String userID, String scope, BaseAuth auth) async {
+Future<double> getUserPlantPercent(String userID, String scope, BaseAuth auth) async {
   double percent = 0;
   int plantCount = 0, totalCount = 0;
   try {

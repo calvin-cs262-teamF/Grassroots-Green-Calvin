@@ -6,6 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grassroots_green/compete/group.dart';
+import 'package:grassroots_green/util.dart';
 
 class GroupListStatefulWidget extends StatefulWidget {
 
@@ -148,7 +149,18 @@ class GroupListSubPageStatefulWidgetState extends State<GroupListSubPageStateful
           ),
           child: ListTile(
             title: Text(data['name']),
-            trailing: Text("%"),
+            trailing: FutureBuilder<double>(
+              future: getUserPlantPercent(data['ref'].toString(), "Month", null),
+              builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
+                double percent = 0;
+                if ( !snapshot.hasError && snapshot.connectionState == ConnectionState.done ) {
+                  percent = snapshot.data;
+                  return Text(percent.toString() + '%');
+                } else {
+                  return Text("");
+                }
+              },
+            ),
           )
       ),
     );

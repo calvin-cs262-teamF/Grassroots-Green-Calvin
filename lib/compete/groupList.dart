@@ -104,7 +104,14 @@ class GroupListSubPageStatefulWidgetState extends State<GroupListSubPageStateful
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(doc.name),
+        title: Text(doc.name,
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor, //change your color here
+        ),
         backgroundColor: Theme.of(context).accentColor,
       ),
       body: Container(

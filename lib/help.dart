@@ -19,7 +19,7 @@ class Help extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(
-        'About',
+        'Help',
         style: TextStyle(color: Theme.of(context).primaryColor,),),
         backgroundColor: Theme.of(context).accentColor,
         iconTheme: IconThemeData(

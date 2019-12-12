@@ -81,7 +81,6 @@ class MyApp extends StatelessWidget {
         MyHomePage.routeName: (context) => MyHomePage(auth: auth),
         About.routeName: (context) => About(),
         Help.routeName: (context) => Help(),
-
       },
 
       //When a route is generated, return the route to page,

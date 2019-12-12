@@ -109,21 +109,6 @@ class GGDrawer {
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text(
-                  'Preferences',
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .display3
-              ),
-              onTap: () {
-                Navigator.pop(context); // close drawer
-                //push the settings route to the Navigator
-                Navigator.pushNamed(context, MyApp.getSettingsRouteName());
-              },
-            ),
-            ListTile(
               leading: Icon(Icons.settings), /// Change Icon
               title: Text(
                   'About',
@@ -151,6 +136,21 @@ class GGDrawer {
                 Navigator.pop(context); // close drawer
                 //push the settings route to the Navigator
                 Navigator.pushNamed(context, MyApp.getHelpRouteName());
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text(
+                  'Preferences',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .display3
+              ),
+              onTap: () {
+                Navigator.pop(context); // close drawer
+                //push the settings route to the Navigator
+                Navigator.pushNamed(context, MyApp.getSettingsRouteName());
               },
             ),
             getAccountOption(context, auth),

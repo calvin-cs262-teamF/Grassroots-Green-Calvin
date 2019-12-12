@@ -58,6 +58,7 @@ class GroupListStatefulWidgetState extends State<GroupListStatefulWidget> {
           ),
           child: ListTile(
             title: Text(record.name),
+            trailing: Text("%"),
             onTap: () { _showGroupListPage(record); },
           )
       ),
@@ -136,6 +137,7 @@ class GroupListSubPageStatefulWidgetState extends State<GroupListSubPageStateful
   }
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
+
     return Padding(
       key: ValueKey(data['ref']),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -146,6 +148,7 @@ class GroupListSubPageStatefulWidgetState extends State<GroupListSubPageStateful
           ),
           child: ListTile(
             title: Text(data['name']),
+            trailing: Text("%"),
           )
       ),
     );

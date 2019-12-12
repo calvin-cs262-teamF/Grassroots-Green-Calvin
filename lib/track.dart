@@ -237,7 +237,7 @@ class TrackPageState extends State<TrackPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               FlatButton(
-                  color: Theme.of(context).accentColor,
+                  color: _scope == 'Week' ? Theme.of(context).buttonColor :Theme.of(context).accentColor,
                   onPressed: _setWeek,
                   child: Text(
                       'Week',
@@ -245,7 +245,7 @@ class TrackPageState extends State<TrackPage> {
                   )
               ),
               FlatButton(
-                  color: Theme.of(context).accentColor,
+                  color: _scope == 'Month' ? Theme.of(context).buttonColor :Theme.of(context).accentColor,
                   onPressed: _setMonth,
                   child: Text(
                       'Month',

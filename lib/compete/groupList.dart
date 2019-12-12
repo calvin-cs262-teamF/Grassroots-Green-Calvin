@@ -113,9 +113,9 @@ class GroupListSubPageStatefulWidgetState extends State<GroupListSubPageStateful
             shrinkWrap: true,
             children: <Widget>[
               Text(doc.name, style: Theme.of(context).textTheme.title),
-          StreamBuilder<QuerySnapshot>(
-            stream: doc.members.snapshots(),
-            builder: (context, snapshot) {
+            StreamBuilder<QuerySnapshot>(
+              stream: doc.members.snapshots(),
+              builder: (context, snapshot) {
               if (!snapshot.hasData) return LinearProgressIndicator();
               if (snapshot.hasError) return ListView(shrinkWrap: true);
               return _buildList(context, snapshot.data.documents);

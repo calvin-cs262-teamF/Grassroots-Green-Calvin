@@ -6,6 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grassroots_green/compete/group.dart';
+import 'package:grassroots_green/util.dart';
 
 class GroupListStatefulWidget extends StatefulWidget {
 
@@ -58,6 +59,7 @@ class GroupListStatefulWidgetState extends State<GroupListStatefulWidget> {
           ),
           child: ListTile(
             title: Text(record.name),
+            trailing: Text("%"),
             onTap: () { _showGroupListPage(record); },
           )
       ),
@@ -113,14 +115,14 @@ class GroupListSubPageStatefulWidgetState extends State<GroupListSubPageStateful
             shrinkWrap: true,
             children: <Widget>[
               Text(doc.name, style: Theme.of(context).textTheme.title),
-          StreamBuilder<QuerySnapshot>(
-            stream: doc.members.snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) return LinearProgressIndicator();
-              if (snapshot.hasError) return ListView(shrinkWrap: true);
-              return _buildList(context, snapshot.data.documents);
-            },
-          ),
+              StreamBuilder<QuerySnapshot>(
+                stream: doc.members.snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) return LinearProgressIndicator();
+                  if (snapshot.hasError) return ListView(shrinkWrap: true);
+                  return _buildList(context, snapshot.data.documents);
+                },
+              ),
             ],
           )
       ),
@@ -136,6 +138,7 @@ class GroupListSubPageStatefulWidgetState extends State<GroupListSubPageStateful
   }
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
+
     return Padding(
       key: ValueKey(data['ref']),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -146,6 +149,16 @@ class GroupListSubPageStatefulWidgetState extends State<GroupListSubPageStateful
           ),
           child: ListTile(
             title: Text(data['name']),
+            trailing: FutureBuilder<double>(
+              future: getUserPlantPercent(data['ref'].documentID, 'Month'),
+              builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
+                String text = "";
+                if(snapshot.hasData) {
+                  text = (snapshot.data*100).round().toString() + '%';
+                }
+                return Text(text);
+              },
+            ),
           )
       ),
     );
